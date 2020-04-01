@@ -21,7 +21,6 @@ export function RegisterScreenWrapper({navigation}) {
             }}
         >
             <Stack.Screen name="Register" component={RegisterScreen}/>
-            <Stack.Screen name="Screening" component={ScreeningScreen}/>
         </Stack.Navigator>
     );
 }
@@ -42,7 +41,6 @@ export function ScreeningScreenWrapper({navigation}) {
 
             }}
         >
-            <Stack.Screen name="Register" component={RegisterScreen}/>
             <Stack.Screen name="Screening" component={ScreeningScreen}/>
         </Stack.Navigator>
     );
