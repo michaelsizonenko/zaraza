@@ -1,8 +1,0 @@
-{
-  "webProtocol": "http",
-  "wampProtocol": "ws",
-  "server": "vilka-react.klarigon.com",
-  "httpPort": "7080",
-  "httpsPort": "7443",
-  "wampPort": "9090"
-}
