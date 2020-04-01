@@ -4,6 +4,20 @@ import {View, Button, Text, StyleSheet, SafeAreaView, Alert} from 'react-native'
 
 export default class RegisterScreen extends React.Component {
 
+    _onRegisterPress = async () => {
+        const result = await fetch('https://covid19.bitwager.app/register', {
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                firstParam: 'test1',
+                secondParam: 'test2'
+            })
+        });
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -13,7 +27,7 @@ export default class RegisterScreen extends React.Component {
                         <Text style={styles.title}>Register form</Text>
                         <Button
                             title={"Register"}
-                            onPress={() => Alert.alert('Simple Button pressed')}
+                            onPress={this._onRegisterPress}
                         />
                     </View>
                 </SafeAreaView>
