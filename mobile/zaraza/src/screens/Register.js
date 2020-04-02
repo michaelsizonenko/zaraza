@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, SafeAreaView, ScrollView, StyleSheet, View,PermissionsAndroid} from 'react-native';
+import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid} from 'react-native';
 import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
@@ -10,9 +10,10 @@ import PhoneInput from 'react-native-phone-input';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import GooglePlacesInput from '../components/Addresses';
 import ImagePicker from "react-native-image-picker";
+
 function ValidatedTextInput(props) {
-    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder,numberOfLines} = {...props};
-    numberOfLines=numberOfLines?numberOfLines:13;
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines} = {...props};
+    numberOfLines = numberOfLines ? numberOfLines : 13;
 
     return <>
         <TextInput
@@ -47,25 +48,25 @@ export default class RegisterScreen extends React.Component {
         });
     };
 
-    isValidDate=(s)=> {
+    isValidDate = (s) => {
         if (!s) return false;
-        if (s.length!=10)return false;
-        var bits = s.split('.');
-        var y = bits[2],
+        if (s.length !== 10) return false;
+        let bits = s.split('.');
+        let y = bits[2],
             m = bits[1],
             d = bits[0];
         // Assume not leap year by default (note zero index for Jan)
-        var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        let daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
         // If evenly divisible by 4 and not evenly divisible by 100,
         // or is evenly divisible by 400, then a leap year
         if ((!(y % 4) && y % 100) || !(y % 400)) {
             daysInMonth[1] = 29;
         }
-        const result= !(/\D/.test(String(d))) && d > 0 && d <= daysInMonth[--m]
+        const result = !(/\D/.test(String(d))) && d > 0 && d <= daysInMonth[--m];
         console.log(result);
         return result;
-    }
+    };
 
 
     SignUpSchema = Yup.object().shape({
@@ -84,64 +85,60 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
         doc_type: Yup.string()
             .required(T.REQUIRED),
-        dob:Yup.string()
-            .test("valid",T.WRONG_DATE,this.isValidDate),
-    sex: Yup.string()
-.required(T.REQUIRED),
-        address:Yup.string()
+        dob: Yup.string()
+            .test("valid", T.WRONG_DATE, this.isValidDate),
+        sex: Yup.string()
             .required(T.REQUIRED),
-        phone:Yup.string()
+        address: Yup.string()
+            .required(T.REQUIRED),
+        phone: Yup.string()
             .required(T.REQUIRED),
     });
 
-handleImagePress=(values)=>{
+    handleImagePress = (values) => {
 
-
-    const requestCameraPermission = async () => {
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-                {
-                    title: "Cool Photo App Camera Permission",
-                    message:
-                        "Cool Photo App needs access to your camera " +
-                        "so you can take awesome pictures.",
-                    buttonNeutral: "Ask Me Later",
-                    buttonNegative: "Cancel",
-                    buttonPositive: "OK"
+        const requestCameraPermission = async () => {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: "Cool Photo App Camera Permission",
+                        message:
+                            "Cool Photo App needs access to your camera " +
+                            "so you can take awesome pictures.",
+                        buttonNeutral: "Ask Me Later",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    console.log("You can use the camera");
+                } else {
+                    console.log("Camera permission denied");
                 }
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log("You can use the camera");
-            } else {
-                console.log("Camera permission denied");
+            } catch (err) {
+                console.warn(err);
             }
-        } catch (err) {
-            console.warn(err);
-        }
+        };
+
+        requestCameraPermission();
+        ImagePicker.launchCamera(({}, response) => {
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                values.image = {uri: 'data:image/jpeg;base64,' + response.data};
+            }
+        });
     };
 
-
-    requestCameraPermission();
-    ImagePicker.launchCamera(({},response)=>{
-
-        if (response.didCancel) {
-            console.log('User cancelled image picker');
-        } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-        } else {
-            values.image = { uri: 'data:image/jpeg;base64,' + response.data };
-}});};
-
-render() {
-
-
-
+    render() {
 
         return (
-
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
@@ -150,8 +147,9 @@ render() {
                         validationSchema={this.SignUpSchema}
                     >
                         {(props) => (
-                            <View>
-                                <AwesomeIcon name="camera" size={30} color="#900" onPress={this.handleImagePress.bind(self,props.values)}/>
+                            <View style={styles.form}>
+                                <AwesomeIcon name="camera" size={30} color="#900"
+                                             onPress={this.handleImagePress.bind(self, props.values)}/>
                                 {/*{props.values.imageCaptured ? (<Image source={props.values.imageCaptured}></Image>) :*/}
                                 {/*    (<Icon name="camera" size={30} color="#900" onPress={console.log('makePhoto')}/>)*/}
                                 {/*}:*/}
@@ -163,30 +161,31 @@ render() {
                                     style={{alignItems: 'stretch', flexDirection: 'row'}}
                                 >
                                     <View>
-                                        <Text>Паспорт</Text>
+                                        <Text>{T.PASSPORT}</Text>
                                         <RadioButton value="passport"/>
                                     </View>
                                     <View>
-                                        <Text>ID карта</Text>
+                                        <Text>{T.ID_CARD}</Text>
                                         <RadioButton value="id"/>
                                     </View>
 
                                     <View>
-                                        <Text>Права</Text>
+                                        <Text>{T.DRIVER_LICENSE}</Text>
                                         <RadioButton value="driver_licence"/>
                                     </View>
                                     {props.touched['doc_type'] && props.errors['doc_type'] &&
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                     }
                                 </RadioButton.Group>
-                                <ValidatedTextInput name='email' placeholder="Email" {...props}/>
-                                <ValidatedTextInput name='f_name' placeholder={T.LNAME} {...props}/>
-                                <ValidatedTextInput name='l_name' placeholder={T.FNAME} {...props}/>
+                                <ValidatedTextInput name='l_name' placeholder={T.LNAME} {...props}/>
+                                <ValidatedTextInput name='f_name' placeholder={T.FNAME} {...props}/>
+                                <ValidatedTextInput name='s_name' placeholder={T.SNAME} {...props}/>
                                 <ValidatedTextInput name='dob' placeholder={T.BIRTHDAY} {...props}/>
                                 {/*гражданство*/}
                                 <PhoneInput initialCountry="ua" forwardRef='phone' name='country'/>
                                 <ValidatedTextInput name='phone' placeholder={T.PHONE} {...props}/>
-                                <ValidatedTextInput name='address' numberOfLines={3} placeholder={T.ADDRESS} {...props}></ValidatedTextInput>
+                                <ValidatedTextInput name='address' numberOfLines={3}
+                                                    placeholder={T.ADDRESS} {...props} />
                                 <RadioButton.Group
                                     onValueChange={props.handleChange('sex')}
                                     value={props.values['sex']}
@@ -194,11 +193,11 @@ render() {
                                     style={{alignItems: 'stretch', flexDirection: 'row'}}
                                 >
                                     <View>
-                                        <Text>M</Text>
+                                        <Text>{T.M}</Text>
                                         <RadioButton value="m"/>
                                     </View>
                                     <View>
-                                        <Text>Ж</Text>
+                                        <Text>{T.W}</Text>
                                         <RadioButton value="f"/>
                                     </View>
 
@@ -207,7 +206,9 @@ render() {
                                     }
 
                                 </RadioButton.Group>
-                                <Button onPress={props.handleSubmit} title={T.SUBMIT}/>
+                                <Separator />
+                                <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
+
                             </View>
                         )}
                     </Formik>
@@ -217,6 +218,11 @@ render() {
         );
     }
 }
+
+function Separator() {
+  return <View style={styles.separator} />;
+}
+
 
 const styles = StyleSheet.create({
     container: {
@@ -229,12 +235,19 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         fontSize: 20,
     },
+    form: {
+        marginBottom: 30
+    },
     fixToText: {
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    submit: {
+        fontSize: 20,
+        marginVertical: 10,
+    },
     separator: {
-        marginVertical: 8,
+        marginVertical: 15,
         borderBottomColor: '#737373',
         borderBottomWidth: StyleSheet.hairlineWidth,
     },
