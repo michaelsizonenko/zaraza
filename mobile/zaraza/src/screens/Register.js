@@ -76,7 +76,7 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
         email: Yup.string()
             .email(T.WRONG_EMAIL),
-
+        //todo: неправильно
         documentIsPassport: Yup.boolean()
             .required(T.DOCUMENT_TYPE_REQUIRED),
         doc_number: Yup.string()
@@ -93,6 +93,9 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
         phone: Yup.string()
             .required(T.REQUIRED),
+        temperature: Yup.number().moreThan(3,'мало').lessThan(42,'много')
+            .required(T.REQUIRED),
+        //todo:add sex
     });
 
     handleImagePress = (values) => {
