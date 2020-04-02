@@ -205,6 +205,7 @@ export default class RegisterScreen extends React.Component {
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                     }
 
+                                    <ValidatedTextInput name='temperature' placeholder={T.TEMPERATURE} {...props}/>
                                 </RadioButton.Group>
                                 <Separator />
                                 <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
