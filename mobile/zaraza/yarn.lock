@@ -3289,6 +3289,11 @@ globals@^12.1.0:
   dependencies:
     type-fest "^0.8.1"
 
+google-libphonenumber@^3.2.2:
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.8.tgz#fb5898cbae18104d456e0fd80df52d860a3eb2b8"
+  integrity sha512-iWs1KcxOozmKQbCeGjvU0M7urrkNjBYOSBtb819RjkUNJHJLfn7DADKkKwdJTOMPLcLOE11/4h/FyFwJsTiwLg==
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.3, graceful-fs@^4.1.6, graceful-fs@^4.1.9, graceful-fs@^4.2.0, graceful-fs@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
@@ -4543,6 +4548,11 @@ lodash-es@^4.17.11, lodash-es@^4.17.14:
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
   integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -4553,7 +4563,7 @@ lodash.throttle@^4.1.1:
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
-lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.3.0:
+lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@^4.3.0:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -5655,7 +5665,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.4"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5691,6 +5701,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+
+qs@^5.2.0:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-5.2.1.tgz#801fee030e0b9450d6385adc48a4cc55b44aedfc"
+  integrity sha1-gB/uAw4LlFDWOFrcSKTMVbRK7fw=
 
 qs@~6.5.2:
   version "6.5.2"
@@ -5739,6 +5754,20 @@ react-native-gesture-handler@^1.6.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-google-places-autocomplete@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.4.1.tgz#309e28c43a8c939abe44d93a7616845e38788888"
+  integrity sha512-VeaHyBoH8h+BgMRm6s50ewu3OIv/tT5+7XXnJjWYI4e9O4LKDQBKnb+rwSsOTPT1HJcAyNTBVtEV9vmMywJHLw==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    prop-types "^15.5.10"
+    qs "^5.2.0"
+
+react-native-image-picker@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-2.3.1.tgz#1977b65e07793d2c0b2d1976fb675c5f75ad7f11"
+  integrity sha512-c/a2h7/T7yBo5KlNQhcSn4xf4+6Li6LfJ59+GZT1ZzzWrj/6X8DiJ/TJBOlOZMC5tJriZKuRkWSsr74k6z+brw==
+
 react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
@@ -5752,6 +5781,15 @@ react-native-paper@^3.6.0:
     "@callstack/react-theme-provider" "^3.0.5"
     color "^3.1.2"
     react-native-safe-area-view "^0.14.6"
+
+react-native-phone-input@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/react-native-phone-input/-/react-native-phone-input-0.2.4.tgz#32be251fa57dd73eccef0d4e10d13b17a718505d"
+  integrity sha512-NSfiY0ZyyLFRmem2x14Hdnd0tSMYEDX05B7rWXcfw/ulB2jdlXgili2xRNMwV6aZVWFfcKBJAGNi0Vxc6L1fLw==
+  dependencies:
+    google-libphonenumber "^3.2.2"
+    lodash "^4.17.4"
+    prop-types "^15.5.10"
 
 react-native-reanimated@^1.7.1:
   version "1.7.1"
