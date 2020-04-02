@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {Button, SafeAreaView, ScrollView, StyleSheet, View,PermissionsAndroid} from 'react-native';
 import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
@@ -9,6 +9,7 @@ import {RadioButton} from 'react-native-paper';
 import PhoneInput from 'react-native-phone-input';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import GooglePlacesInput from '../components/Addresses';
+import ImagePicker from "react-native-image-picker";
 function ValidatedTextInput(props) {
     let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder,numberOfLines} = {...props};
     numberOfLines=numberOfLines?numberOfLines:13;
@@ -93,7 +94,46 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
     });
 
+handleImagePress=(values)=>{
 
+
+    const requestCameraPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: "Cool Photo App Camera Permission",
+                    message:
+                        "Cool Photo App needs access to your camera " +
+                        "so you can take awesome pictures.",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log("You can use the camera");
+            } else {
+                console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    };
+
+
+    requestCameraPermission();
+    ImagePicker.launchCamera(({},response)=>{
+
+        if (response.didCancel) {
+            console.log('User cancelled image picker');
+        } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+        } else {
+            values.image = { uri: 'data:image/jpeg;base64,' + response.data };
+}});};
 
 render() {
 
@@ -111,7 +151,7 @@ render() {
                     >
                         {(props) => (
                             <View>
-                                <AwesomeIcon name="camera" size={30} color="#900"/>
+                                <AwesomeIcon name="camera" size={30} color="#900" onPress={this.handleImagePress.bind(self,props.values)}/>
                                 {/*{props.values.imageCaptured ? (<Image source={props.values.imageCaptured}></Image>) :*/}
                                 {/*    (<Icon name="camera" size={30} color="#900" onPress={console.log('makePhoto')}/>)*/}
                                 {/*}:*/}
