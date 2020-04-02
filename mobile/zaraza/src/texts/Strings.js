@@ -1,5 +1,7 @@
+export let ADDRESS = "Адрес";
+export let WRONG_DATE = "Неверная дата - требуется ДД.ММ.ГГГГ";
 export let PHONE = "Контактный телефон";
-export let BIRTHDAY = "Дата рождения";
+export let BIRTHDAY = "Дата рождения (ДД.ММ.ГГГГ)";
 export let FNAME = "Фамилия";
 export let LNAME = "Имя";
 export let SUBMIT = 'Сохранить';
