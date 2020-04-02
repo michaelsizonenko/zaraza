@@ -1,3 +1,8 @@
+export let PHONE = "Контактный телефон";
+export let BIRTHDAY = "Дата рождения";
+export let FNAME = "Фамилия";
+export let LNAME = "Имя";
+export let SUBMIT = 'Сохранить';
 export let DOC_NUMBER = "№ Документа";
 export const DOCUMENT_TYPE_REQUIRED = 'Выберите тип документа';
 export const TOO_SHORT = 'Слишком коротко!';
