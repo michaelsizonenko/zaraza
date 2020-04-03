@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid} from 'react-native';
-import {Formik, Field} from 'formik';
+import { Formik } from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
 import Text from 'react-native-paper/src/components/Typography/Text';
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     phoneInput: {
         borderWidth: 1,
         borderColor: "#333",
-        borderRadius: 4,
+        borderRadius: 3,
         paddingHorizontal: 10,
         paddingVertical: 20,
     },
