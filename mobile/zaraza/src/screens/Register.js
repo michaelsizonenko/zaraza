@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid} from 'react-native';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
 import Text from 'react-native-paper/src/components/Typography/Text';
@@ -11,6 +11,8 @@ import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import GooglePlacesInput from '../components/Addresses';
 import ImagePicker from "react-native-image-picker";
 import DatePicker from 'react-native-datepicker';
+import Geolocation from "react-native-geolocation-service";
+import NetInfo from "@react-native-community/netinfo";
 
 class ValidatedDateInput extends React.Component {
     constructor(props) {
@@ -76,6 +78,43 @@ function ValidatedTextInput(props) {
 
 
 export default class RegisterScreen extends React.Component {
+
+    async componentDidMount(): void {
+        while (!await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)) {
+            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+        }
+
+        await Geolocation.getCurrentPosition(
+            (position) => {
+                console.log(position);
+                const region = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    latitudeDelta: 0.015 * 3,
+                    longitudeDelta: 0.0121 * 3,
+                };
+                const userLocation = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+                this.setState({
+                    region: region,
+                    userLocation: userLocation
+                })
+            },
+            (error) => {
+                // See error code charts below.
+                console.error(error.code, error.message);
+            },
+            {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
+        );
+
+        //todo: continue here
+        const unsubscribe = NetInfo.addEventListener(state => {
+            console.log("Connection type", state.type);
+            console.log("Is connected?", state.isConnected);
+        });
+    }
 
     _onRegisterPress = async () => {
         const result = await fetch('https://covid19.bitwager.app/register', {
@@ -242,17 +281,22 @@ export default class RegisterScreen extends React.Component {
 
                                 <PhoneInput
                                     initialCountry="ua"
-                                    ref={ref => {this.phone = ref;}}
+                                    ref={ref => {
+                                        this.phone = ref;
+                                    }}
                                     style={styles.phoneInput}
-                                    onPressFlag={() => {}}
+                                    onPressFlag={() => {
+                                    }}
                                     value={"+380"}
                                 />
-                                <ValidatedTextInput name='address' numberOfLines={3}
-                                                    placeholder={T.ADDRESS} {...props} />
+                                {/*<ValidatedTextInput name='address' numberOfLines={3}*/}
+                                {/*                    placeholder={T.ADDRESS} {...props} />*/}
+
                                 <ValidatedTextInput name='temperature'
                                                     placeholder={T.TEMPERATURE}
                                                     keyboardType='numeric'
                                                     {...props}/>
+                                <GooglePlacesInput />
                                 <Separator/>
                                 <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
 
@@ -263,6 +307,13 @@ export default class RegisterScreen extends React.Component {
 
             </SafeAreaView>
         );
+
+        // return (
+            // <SafeAreaView>
+            //    <GooglePlacesInput />
+            // </SafeAreaView>
+
+        // );
     }
 }
 
