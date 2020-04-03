@@ -205,19 +205,10 @@ export default class RegisterScreen extends React.Component {
                                     name="doc_type"
                                     style={{alignItems: 'stretch', flexDirection: 'row'}}
                                 >
-                                    <View>
-                                        <Text>{T.PASSPORT}</Text>
-                                        <RadioButton value="passport"/>
-                                    </View>
-                                    <View>
-                                        <Text>{T.ID_CARD}</Text>
-                                        <RadioButton value="id"/>
-                                    </View>
+                                    <RadioButton.Item label={T.PASSPORT} value="passport" />
+                                    <RadioButton.Item label={T.ID_CARD} value="id" />
+                                    <RadioButton.Item label={T.DRIVER_LICENSE} value="driver_licence" />
 
-                                    <View>
-                                        <Text>{T.DRIVER_LICENSE}</Text>
-                                        <RadioButton value="driver_licence"/>
-                                    </View>
                                     {props.touched['doc_type'] && props.errors['doc_type'] &&
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                     }
@@ -227,20 +218,15 @@ export default class RegisterScreen extends React.Component {
                                 <ValidatedTextInput name='f_name' placeholder={T.FNAME} {...props}/>
                                 <ValidatedTextInput name='s_name' placeholder={T.SNAME} {...props}/>
 
+                                <BlankSeparator/>
                                 <RadioButton.Group
                                     onValueChange={props.handleChange('sex')}
                                     value={props.values['sex']}
                                     name="sex"
                                     style={{alignItems: 'stretch', flexDirection: 'row'}}
                                 >
-                                    <View>
-                                        <Text>{T.M}</Text>
-                                        <RadioButton value="m"/>
-                                    </View>
-                                    <View>
-                                        <Text>{T.W}</Text>
-                                        <RadioButton value="f"/>
-                                    </View>
+                                    <RadioButton.Item label={T.MAN} value="m" />
+                                    <RadioButton.Item label={T.WOMAN} value="f" />
 
                                     {props.touched['sex'] && props.errors['sex'] &&
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
