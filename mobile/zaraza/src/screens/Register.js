@@ -53,8 +53,9 @@ class ValidatedDateInput extends React.Component {
 
 function ValidatedTextInput(props) {
     // по name можно доставать значения input
-    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines} = {...props};
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
     numberOfLines = numberOfLines ? numberOfLines : 13;
+    keyboardType = keyboardType ? keyboardType : 'default';
 
     return <>
         <TextInput
@@ -62,6 +63,7 @@ function ValidatedTextInput(props) {
             value={values[name]}
             onBlur={setFieldTouched.bind(this, name)}
             placeholder={placeholder}
+            keyboardType={keyboardType}
             name={name}
             mode="outlined"
             numberOfLines={numberOfLines}
@@ -230,14 +232,14 @@ export default class RegisterScreen extends React.Component {
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                     }
 
-
                                 </RadioButton.Group>
 
                                 <BlankSeparator/>
                                 <ValidatedDateInput name='dob' {...props}/>
                                 <BlankSeparator/>
+
                                 {/*гражданство*/}
-                                {/*<PhoneInput initialCountry="ua" forwardRef='phone' name='country'/>*/}
+
                                 <PhoneInput
                                     initialCountry="ua"
                                     ref={ref => {this.phone = ref;}}
@@ -245,10 +247,12 @@ export default class RegisterScreen extends React.Component {
                                     onPressFlag={() => {}}
                                     value={"+380"}
                                 />
-                                <BlankSeparator/>
                                 <ValidatedTextInput name='address' numberOfLines={3}
                                                     placeholder={T.ADDRESS} {...props} />
-                                <ValidatedTextInput name='temperature' placeholder={T.TEMPERATURE} {...props}/>
+                                <ValidatedTextInput name='temperature'
+                                                    placeholder={T.TEMPERATURE}
+                                                    keyboardType='numeric'
+                                                    {...props}/>
                                 <Separator/>
                                 <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
 
