@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid} from 'react-native';
+import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid, ActivityIndicator} from 'react-native';
 import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
@@ -79,6 +79,13 @@ function ValidatedTextInput(props) {
 
 export default class RegisterScreen extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            progress: false
+        }
+    }
+
     async componentDidMount(): void {
         while (!await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)) {
             await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
@@ -109,26 +116,11 @@ export default class RegisterScreen extends React.Component {
             {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
         );
 
-        //todo: continue here
-        const unsubscribe = NetInfo.addEventListener(state => {
-            console.log("Connection type", state.type);
-            console.log("Is connected?", state.isConnected);
-        });
+        // const unsubscribe = NetInfo.addEventListener(state => {
+        //     console.log("Connection type", state.type);
+        //     console.log("Is connected?", state.isConnected);
+        // });
     }
-
-    _onRegisterPress = async () => {
-        const result = await fetch('https://covid19.bitwager.app/register', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                firstParam: 'test1',
-                secondParam: 'test2',
-            }),
-        });
-    };
 
     isValidDate = (s) => {
         if (!s) return false;
@@ -149,7 +141,6 @@ export default class RegisterScreen extends React.Component {
         console.log(result);
         return result;
     };
-
 
     SignUpSchema = Yup.object().shape({
         name: Yup.string()
@@ -223,12 +214,20 @@ export default class RegisterScreen extends React.Component {
 
     render() {
 
-        return (
-            <SafeAreaView style={styles.container}>
+        if (this.state.progress) {
+            return (
+                <View style={[styles.containerSpinner, styles.horizontal]}>
+                    <ActivityIndicator size="large" color="#0000ff"/>
+                </View>
+            )
+        }
 
+        return (
+
+            <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
-                        initialValues={{l_name: '', date: '', phone: ''}}
+                        initialValues={{f_name: '', s_name: '', l_name: '', date: '', phone: '', address: ''}}
                         onSubmit={values => console.log(values)}
                         validationSchema={this.SignUpSchema}
                     >
@@ -300,7 +299,33 @@ export default class RegisterScreen extends React.Component {
                                                     keyboardType='numeric'
                                                     {...props}/>
                                 <Separator/>
-                                <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
+                                <Button styles={styles.submit} onPress={async () => {
+                                    console.log("SUBMIT");
+                                    // console.log(props);
+                                    this.setState({
+                                        progress: true
+                                    });
+                                    try {
+                                        const result = await fetch('https://covid19.bitwager.app/citizens', {
+                                            method: 'POST',
+                                            headers: {
+                                                Accept: 'application/json',
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({
+                                                firstParam: 'test1',
+                                                secondParam: 'test2',
+                                            }),
+                                        });
+                                    } catch (e) {
+                                        console.error(e);
+                                    } finally {
+                                        this.setState({
+                                            progress: false
+                                        });
+                                    }
+
+                                }} title={T.SUBMIT}/>
 
                             </View>
                         )}
@@ -336,6 +361,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 20,
     },
+    containerSpinner: {
+        flex: 1,
+        justifyContent: "center"
+      },
+      horizontal: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10
+      },
     container: {
         flex: 1,
         marginTop: 10,
