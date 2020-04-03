@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid} from 'react-native';
-import {Formik, useField, useFormikContext} from 'formik';
+import {Formik, Field} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
 import Text from 'react-native-paper/src/components/Typography/Text';
 import * as T from '../texts/Strings';
 import {RadioButton} from 'react-native-paper';
-import PhoneInput from 'react-native-phone-input';
+import PhoneInput from "react-native-phone-input";
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import GooglePlacesInput from '../components/Addresses';
 import ImagePicker from "react-native-image-picker";
@@ -30,7 +30,7 @@ class ValidatedDateInput extends React.Component {
                 maxDate="2020-01-01"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
-                showIcon = {false}
+                showIcon={false}
                 customStyles={{
                     dateInput: {
                         marginVertical: 10,
@@ -187,7 +187,7 @@ export default class RegisterScreen extends React.Component {
 
                 <ScrollView>
                     <Formik
-                        initialValues={{l_name: '', date: ''}}
+                        initialValues={{l_name: '', date: '', phone: ''}}
                         onSubmit={values => console.log(values)}
                         validationSchema={this.SignUpSchema}
                     >
@@ -203,11 +203,10 @@ export default class RegisterScreen extends React.Component {
                                     onValueChange={props.handleChange('doc_type')}
                                     value={props.values['doc_type']}
                                     name="doc_type"
-                                    style={{alignItems: 'stretch', flexDirection: 'row'}}
                                 >
-                                    <RadioButton.Item label={T.PASSPORT} value="passport" />
-                                    <RadioButton.Item label={T.ID_CARD} value="id" />
-                                    <RadioButton.Item label={T.DRIVER_LICENSE} value="driver_licence" />
+                                    <RadioButton.Item label={T.PASSPORT} value="passport"/>
+                                    <RadioButton.Item label={T.ID_CARD} value="id"/>
+                                    <RadioButton.Item label={T.DRIVER_LICENSE} value="driver_licence"/>
 
                                     {props.touched['doc_type'] && props.errors['doc_type'] &&
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
@@ -223,10 +222,9 @@ export default class RegisterScreen extends React.Component {
                                     onValueChange={props.handleChange('sex')}
                                     value={props.values['sex']}
                                     name="sex"
-                                    style={{alignItems: 'stretch', flexDirection: 'row'}}
                                 >
-                                    <RadioButton.Item label={T.MAN} value="m" />
-                                    <RadioButton.Item label={T.WOMAN} value="f" />
+                                    <RadioButton.Item label={T.MAN} value="m"/>
+                                    <RadioButton.Item label={T.WOMAN} value="f"/>
 
                                     {props.touched['sex'] && props.errors['sex'] &&
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
@@ -239,8 +237,15 @@ export default class RegisterScreen extends React.Component {
                                 <ValidatedDateInput name='dob' {...props}/>
                                 <BlankSeparator/>
                                 {/*гражданство*/}
-                                <PhoneInput initialCountry="ua" forwardRef='phone' name='country'/>
-                                <ValidatedTextInput name='phone' placeholder={T.PHONE} {...props}/>
+                                {/*<PhoneInput initialCountry="ua" forwardRef='phone' name='country'/>*/}
+                                <PhoneInput
+                                    initialCountry="ua"
+                                    ref={ref => {this.phone = ref;}}
+                                    style={styles.phoneInput}
+                                    onPressFlag={() => {}}
+                                    value={"+380"}
+                                />
+                                <BlankSeparator/>
                                 <ValidatedTextInput name='address' numberOfLines={3}
                                                     placeholder={T.ADDRESS} {...props} />
                                 <ValidatedTextInput name='temperature' placeholder={T.TEMPERATURE} {...props}/>
@@ -258,15 +263,22 @@ export default class RegisterScreen extends React.Component {
 }
 
 function Separator() {
-    return <View style={styles.separator} />;
+    return <View style={styles.separator}/>;
 }
 
 function BlankSeparator() {
-    return <View style={styles.blankSeparator} />;
+    return <View style={styles.blankSeparator}/>;
 }
 
 
 const styles = StyleSheet.create({
+    phoneInput: {
+        borderWidth: 1,
+        borderColor: "#333",
+        borderRadius: 4,
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+    },
     container: {
         flex: 1,
         marginTop: 10,
