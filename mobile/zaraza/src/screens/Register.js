@@ -15,30 +15,31 @@ import DatePicker from 'react-native-datepicker';
 class ValidatedDateInput extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {date: "2016-05-15"}
+        this.state = {date: ""}
     }
 
     render() {
         return (
             <DatePicker
-                style={{width: 200}}
+                style={{width: undefined}}
                 date={this.state.date}
                 mode="date"
-                placeholder="select date"
+                placeholder={T.BIRTHDAY}
                 format="YYYY-MM-DD"
-                minDate="2016-05-01"
-                maxDate="2016-06-01"
+                minDate="1920-01-01"
+                maxDate="2020-01-01"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
+                showIcon = {false}
                 customStyles={{
-                    dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0
-                    },
                     dateInput: {
-                        marginLeft: 36
+                        marginVertical: 10,
+                        height: 60,
+                        borderRadius: 3,
+                    },
+                    placeholderText: {
+                        fontSize: 16,
+                        color: '#333'
                     }
                     // ... You can check the source to find the other keys.
                 }}
@@ -248,8 +249,9 @@ export default class RegisterScreen extends React.Component {
 
                                 </RadioButton.Group>
 
-                                {/*<ValidatedTextInput name='dob' placeholder={T.BIRTHDAY} {...props}/>*/}
-                                <ValidatedDateInput name='dob' />
+                                <BlankSeparator/>
+                                <ValidatedDateInput name='dob' {...props}/>
+                                <BlankSeparator/>
                                 {/*гражданство*/}
                                 <PhoneInput initialCountry="ua" forwardRef='phone' name='country'/>
                                 <ValidatedTextInput name='phone' placeholder={T.PHONE} {...props}/>
@@ -270,7 +272,11 @@ export default class RegisterScreen extends React.Component {
 }
 
 function Separator() {
-    return <View style={styles.separator}/>;
+    return <View style={styles.separator} />;
+}
+
+function BlankSeparator() {
+    return <View style={styles.blankSeparator} />;
 }
 
 
@@ -300,5 +306,8 @@ const styles = StyleSheet.create({
         marginVertical: 15,
         borderBottomColor: '#737373',
         borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    blankSeparator: {
+        marginVertical: 15,
     },
 });
