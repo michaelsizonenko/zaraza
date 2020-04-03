@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid} from 'react-native';
-import {Formik} from 'formik';
+import {Formik, useField, useFormikContext} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
 import Text from 'react-native-paper/src/components/Typography/Text';
@@ -10,6 +10,45 @@ import PhoneInput from 'react-native-phone-input';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import GooglePlacesInput from '../components/Addresses';
 import ImagePicker from "react-native-image-picker";
+import DatePicker from 'react-native-datepicker';
+
+class ValidatedDateInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {date: "2016-05-15"}
+    }
+
+    render() {
+        return (
+            <DatePicker
+                style={{width: 200}}
+                date={this.state.date}
+                mode="date"
+                placeholder="select date"
+                format="YYYY-MM-DD"
+                minDate="2016-05-01"
+                maxDate="2016-06-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                    dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0
+                    },
+                    dateInput: {
+                        marginLeft: 36
+                    }
+                    // ... You can check the source to find the other keys.
+                }}
+                onDateChange={(date) => {
+                    this.setState({date: date})
+                }}
+            />
+        )
+    }
+}
 
 function ValidatedTextInput(props) {
     // по name можно доставать значения input
@@ -94,7 +133,7 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
         phone: Yup.string()
             .required(T.REQUIRED),
-        temperature: Yup.number().moreThan(3,'мало').lessThan(42,'много')
+        temperature: Yup.number().moreThan(3, 'мало').lessThan(42, 'много')
             .required(T.REQUIRED),
         //todo:add sex
     });
@@ -144,9 +183,10 @@ export default class RegisterScreen extends React.Component {
 
         return (
             <SafeAreaView style={styles.container}>
+
                 <ScrollView>
                     <Formik
-                        initialValues={{l_name: ''}}
+                        initialValues={{l_name: '', date: ''}}
                         onSubmit={values => console.log(values)}
                         validationSchema={this.SignUpSchema}
                     >
@@ -181,15 +221,11 @@ export default class RegisterScreen extends React.Component {
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                     }
                                 </RadioButton.Group>
+
                                 <ValidatedTextInput name='l_name' placeholder={T.LNAME} {...props}/>
                                 <ValidatedTextInput name='f_name' placeholder={T.FNAME} {...props}/>
                                 <ValidatedTextInput name='s_name' placeholder={T.SNAME} {...props}/>
-                                <ValidatedTextInput name='dob' placeholder={T.BIRTHDAY} {...props}/>
-                                {/*гражданство*/}
-                                <PhoneInput initialCountry="ua" forwardRef='phone' name='country'/>
-                                <ValidatedTextInput name='phone' placeholder={T.PHONE} {...props}/>
-                                <ValidatedTextInput name='address' numberOfLines={3}
-                                                    placeholder={T.ADDRESS} {...props} />
+
                                 <RadioButton.Group
                                     onValueChange={props.handleChange('sex')}
                                     value={props.values['sex']}
@@ -209,9 +245,18 @@ export default class RegisterScreen extends React.Component {
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                     }
 
-                                    <ValidatedTextInput name='temperature' placeholder={T.TEMPERATURE} {...props}/>
+
                                 </RadioButton.Group>
-                                <Separator />
+
+                                {/*<ValidatedTextInput name='dob' placeholder={T.BIRTHDAY} {...props}/>*/}
+                                <ValidatedDateInput name='dob' />
+                                {/*гражданство*/}
+                                <PhoneInput initialCountry="ua" forwardRef='phone' name='country'/>
+                                <ValidatedTextInput name='phone' placeholder={T.PHONE} {...props}/>
+                                <ValidatedTextInput name='address' numberOfLines={3}
+                                                    placeholder={T.ADDRESS} {...props} />
+                                <ValidatedTextInput name='temperature' placeholder={T.TEMPERATURE} {...props}/>
+                                <Separator/>
                                 <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
 
                             </View>
@@ -225,7 +270,7 @@ export default class RegisterScreen extends React.Component {
 }
 
 function Separator() {
-  return <View style={styles.separator} />;
+    return <View style={styles.separator}/>;
 }
 
 

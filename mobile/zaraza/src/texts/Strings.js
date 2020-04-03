@@ -19,3 +19,4 @@ export const M = "М";
 export const W = "Ж";
 export const REGISTER = "Регистрация гражданина";
 export const SCREENING = "Температура гражданина";
+export const TEMPERATURE = "Температура тела";
