@@ -278,6 +278,8 @@ export default class RegisterScreen extends React.Component {
                                 <BlankSeparator/>
 
                                 {/*гражданство*/}
+                                <GooglePlacesInput />
+                                <BlankSeparator/>
 
                                 <PhoneInput
                                     initialCountry="ua"
@@ -296,7 +298,6 @@ export default class RegisterScreen extends React.Component {
                                                     placeholder={T.TEMPERATURE}
                                                     keyboardType='numeric'
                                                     {...props}/>
-                                <GooglePlacesInput />
                                 <Separator/>
                                 <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
 
