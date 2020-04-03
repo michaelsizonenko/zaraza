@@ -278,7 +278,7 @@ export default class RegisterScreen extends React.Component {
                                 <BlankSeparator/>
 
                                 {/*гражданство*/}
-                                <GooglePlacesInput />
+                                <ValidatedTextInput name='address' placeholder={T.ADDRESS} {...props}/>
                                 <BlankSeparator/>
 
                                 <PhoneInput
@@ -293,6 +293,7 @@ export default class RegisterScreen extends React.Component {
                                 />
                                 {/*<ValidatedTextInput name='address' numberOfLines={3}*/}
                                 {/*                    placeholder={T.ADDRESS} {...props} />*/}
+                                <BlankSeparator/>
 
                                 <ValidatedTextInput name='temperature'
                                                     placeholder={T.TEMPERATURE}

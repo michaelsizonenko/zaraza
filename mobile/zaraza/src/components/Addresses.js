@@ -35,7 +35,8 @@ const GooglePlacesInput = () => {
 
             styles={{
                 textInputContainer: {
-                    width: '100%'
+                    width: '100%',
+                    color: 'blue'
                 },
                 description: {
                     fontWeight: 'bold'
@@ -43,7 +44,10 @@ const GooglePlacesInput = () => {
                 predefinedPlacesDescription: {
                     color: '#1faadb'
                 },
-                padding: 0
+                container: {
+                    padding: 0,
+                    color: 'red'
+                }
             }}
 
             nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
