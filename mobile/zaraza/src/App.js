@@ -4,6 +4,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {RegisterScreenWrapper, ScreeningScreenWrapper} from "./navigation/StackWrappers";
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import * as T from './texts/Strings';
 
 
 const Drawer = createDrawerNavigator();
@@ -18,9 +19,16 @@ export default function ZarazaNavigation({navigation}) {
             <NavigationContainer>
                 <Drawer.Navigator initialRouteName="Register">
 
-                    <Drawer.Screen name="Register" component={RegisterScreenWrapper}/>
-
-                    <Drawer.Screen name="Screening" component={ScreeningScreenWrapper}/>
+                    <Drawer.Screen
+                        name="Register"
+                        component={RegisterScreenWrapper}
+                        options={{ drawerLabel: T.REGISTER }}
+                    />
+                    <Drawer.Screen
+                        name="Screening"
+                        component={ScreeningScreenWrapper}
+                        options={{ drawerLabel: T.SCREENING }}
+                    />
 
                 </Drawer.Navigator>
             </NavigationContainer>

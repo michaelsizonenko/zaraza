@@ -17,3 +17,5 @@ export const ID_CARD = "ID карточка";
 export const DRIVER_LICENSE = "Водительские права";
 export const M = "М";
 export const W = "Ж";
+export const REGISTER = "Регистрация гражданина";
+export const SCREENING = "Температура гражданина";

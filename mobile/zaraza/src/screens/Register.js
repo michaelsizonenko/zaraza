@@ -12,6 +12,7 @@ import GooglePlacesInput from '../components/Addresses';
 import ImagePicker from "react-native-image-picker";
 
 function ValidatedTextInput(props) {
+    // по name можно доставать значения input
     let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines} = {...props};
     numberOfLines = numberOfLines ? numberOfLines : 13;
 
@@ -145,7 +146,7 @@ export default class RegisterScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
-                        initialValues={{email: ''}}
+                        initialValues={{l_name: ''}}
                         onSubmit={values => console.log(values)}
                         validationSchema={this.SignUpSchema}
                     >

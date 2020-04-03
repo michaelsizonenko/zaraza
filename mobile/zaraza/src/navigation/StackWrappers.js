@@ -2,9 +2,10 @@ import { Appbar } from 'react-native-paper'
 import RegisterScreen from '../screens/Register'
 import ScreeningScreen from '../screens/Screening'
 import * as React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack';
+import * as T from '../texts/Strings';
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 export function RegisterScreenWrapper ({ navigation }) {
   return (
@@ -18,6 +19,7 @@ export function RegisterScreenWrapper ({ navigation }) {
                 icon='bars'
                 onPress={() => navigation.toggleDrawer()}
               />
+              <Appbar.Content title={T.REGISTER} />
             </Appbar.Header>
           )
         }
