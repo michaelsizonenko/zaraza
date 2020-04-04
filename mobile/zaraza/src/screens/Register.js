@@ -174,6 +174,8 @@ export default class RegisterScreen extends React.Component {
         //todo:add sex
     });
 
+    //TODO: erase image by uri  after upload
+    //todo:resize imge ?
     handleImagePress = (props)=>
 {
         const  options = {
