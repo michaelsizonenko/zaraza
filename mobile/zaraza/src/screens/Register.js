@@ -235,8 +235,8 @@ export default class RegisterScreen extends React.Component {
                     >
                         {(props) => (
                             <View style={styles.form}>
-                                <AwesomeIcon name="camera" size={30} color="#900"
-                                             onPress={this.handleImagePress.bind(self, props.values)}/>
+                                {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
+                                {/*             onPress={this.handleImagePress.bind(self, props.values)}/>*/}
                                 {/*{props.values.imageCaptured ? (<Image source={props.values.imageCaptured}></Image>) :*/}
                                 {/*    (<Icon name="camera" size={30} color="#900" onPress={console.log('makePhoto')}/>)*/}
                                 {/*}:*/}
@@ -308,7 +308,7 @@ export default class RegisterScreen extends React.Component {
                                         progress: true
                                     });
                                     try {
-                                        const result = await fetch(getWebUrl() + '/citizens', {
+                                        const result = await fetch(getWebUrl() + '/citizens/', {
                                             method: 'POST',
                                             headers: {
                                                 Accept: 'application/json',
@@ -319,6 +319,7 @@ export default class RegisterScreen extends React.Component {
                                                 secondParam: 'test2',
                                             }),
                                         });
+                                        console.log(result);
                                     } catch (e) {
                                         console.error(e);
                                     } finally {
