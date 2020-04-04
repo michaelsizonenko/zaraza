@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid, ActivityIndicator} from 'react-native';
+import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid, ActivityIndicator,Image} from 'react-native';
 import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
@@ -14,6 +14,7 @@ import DatePicker from 'react-native-datepicker';
 import Geolocation from "react-native-geolocation-service";
 import NetInfo from "@react-native-community/netinfo";
 import { isLocalhost, toggleConfig, getWebUrl } from '../config/AppConfig';
+
 
 
 class ValidatedDateInput extends React.Component {
@@ -168,51 +169,42 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
         phone: Yup.string()
             .required(T.REQUIRED),
-        temperature: Yup.number().moreThan(3, 'мало').lessThan(42, 'много')
+        temperature: Yup.number().moreThan(34, 'мало').lessThan(42, 'много')
             .required(T.REQUIRED),
         //todo:add sex
     });
 
-    handleImagePress = (values) => {
-
-        const requestCameraPermission = async () => {
-            try {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.CAMERA,
-                    {
-                        title: "Cool Photo App Camera Permission",
-                        message:
-                            "Cool Photo App needs access to your camera " +
-                            "so you can take awesome pictures.",
-                        buttonNeutral: "Ask Me Later",
-                        buttonNegative: "Cancel",
-                        buttonPositive: "OK"
-                    }
-                );
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    console.log("You can use the camera");
-                } else {
-                    console.log("Camera permission denied");
-                }
-            } catch (err) {
-                console.warn(err);
-            }
+    handleImagePress = (props)=>
+{
+        const  options = {
+            cameraType: 'back',
+            mediaType: 'photo' ,
+            maxWidth: 240,
+            maxHeight: 240,
+            quality: 0.5,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
         };
+        ImagePicker.launchCamera(options, (res) => {
+            console.log('Response = ', res);
 
-        requestCameraPermission();
-        ImagePicker.launchCamera(({}, response) => {
-
-            if (response.didCancel) {
+            if (res.didCancel) {
                 console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
+            } else if (res.error) {
+                console.log('ImagePicker Error: ', res.error);
+            } else if (res.customButton) {
+                console.log('User tapped custom button: ', res.customButton);
+                alert(res.customButton);
             } else {
-                values.image = {uri: 'data:image/jpeg;base64,' + response.data};
+                const source = {uri: res.uri};
+                console.log('response', JSON.stringify(res));
+                props.setFieldValue('image',res);
             }
         });
-    };
+    }
+
 
     render() {
 
@@ -235,11 +227,14 @@ export default class RegisterScreen extends React.Component {
                     >
                         {(props) => (
                             <View style={styles.form}>
-                                {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
-                                {/*             onPress={this.handleImagePress.bind(self, props.values)}/>*/}
-                                {/*{props.values.imageCaptured ? (<Image source={props.values.imageCaptured}></Image>) :*/}
-                                {/*    (<Icon name="camera" size={30} color="#900" onPress={console.log('makePhoto')}/>)*/}
-                                {/*}:*/}
+
+                                {props.values.image&&<Image source={props.values.image} style={{height:100}}/>}
+
+
+
+                                <AwesomeIcon name="camera" size={30} color="#900"
+                                             onPress={this.handleImagePress.bind(self, props)}/>
+
                                 <ValidatedTextInput name='doc_number' placeholder={T.DOC_NUMBER} {...props}/>
                                 <RadioButton.Group
                                     onValueChange={props.handleChange('doc_type')}
