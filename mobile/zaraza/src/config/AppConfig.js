@@ -1,6 +1,6 @@
 import config from './config';
 
-export let isLocalhost = true;
+export let isLocalhost = false;
 
 export function toggleConfig() {
     isLocalhost = !isLocalhost;
