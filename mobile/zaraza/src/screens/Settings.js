@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {View, TouchableOpacity, Text, Button} from 'react-native';
-import {getWebUrl} from "../config/AppConfig";
+import {getWebUrl, toggleConfig} from "../config/AppConfig";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 
 export default class SettingsScreen extends React.Component {
@@ -9,6 +10,7 @@ export default class SettingsScreen extends React.Component {
         super(props);
 
         this.state = {
+            webUrl: getWebUrl(),
             developerMode: false,
             counter: 0
         }
@@ -21,17 +23,27 @@ export default class SettingsScreen extends React.Component {
         })
     };
 
+    _toggleConfig = () => {
+        toggleConfig();
+        this.setState({
+            webUrl: getWebUrl()
+        });
+    };
+
     render() {
         return (
             <React.Fragment>
-                {this.state.counter > 3 && <View style={{flex: 2, background: 'red'}}>
-                    <>
-                        <Text>Development options</Text>
-                        <Text>{getWebUrl()}</Text>
-                        <Button
-                            title={"Toggle"}/>
-                    </>
-                </View>}
+                {this.state.counter > 3 &&
+                    <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
+                        <View style={{width: '80%'}}>
+                            <Text style={{textAlign: 'center', fontSize: 20, margin: 10}}>Development options</Text>
+                            <Text style={{margin: 10}}>Server host : {this.state.webUrl}</Text>
+                            <Button
+                                onPress={this._toggleConfig}
+                                title={"Toggle server"}/>
+                        </View>
+                    </SafeAreaView>
+                }
                 <TouchableOpacity style={{flex: 1}} onPress={this._onTouchScreen}>
                     {/*<Text>test</Text>*/}
                 </TouchableOpacity>
