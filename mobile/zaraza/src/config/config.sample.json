@@ -1,0 +1,19 @@
+{
+  "localhost": {
+    "webProtocol": "http",
+    "wampProtocol": "ws",
+    "server": "plugbooking",
+    "httpPort": "80",
+    "httpsPort": "443",
+    "wampPort": "9090"
+  },
+  "development": {
+    "webProtocol": "http",
+    "wampProtocol": "ws",
+    "server": "vilka-react.klarigon.com",
+    "httpPort": "7080",
+    "httpsPort": "7443",
+    "wampPort": "9090"
+  },
+  "googleMapsKey": ""
+}

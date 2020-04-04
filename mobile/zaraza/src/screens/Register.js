@@ -13,6 +13,8 @@ import ImagePicker from "react-native-image-picker";
 import DatePicker from 'react-native-datepicker';
 import Geolocation from "react-native-geolocation-service";
 import NetInfo from "@react-native-community/netinfo";
+import { isLocalhost, toggleConfig, getWebUrl } from '../config/AppConfig';
+
 
 class ValidatedDateInput extends React.Component {
     constructor(props) {
@@ -306,7 +308,7 @@ export default class RegisterScreen extends React.Component {
                                         progress: true
                                     });
                                     try {
-                                        const result = await fetch('https://covid19.bitwager.app/citizens', {
+                                        const result = await fetch(getWebUrl() + '/citizens', {
                                             method: 'POST',
                                             headers: {
                                                 Accept: 'application/json',
