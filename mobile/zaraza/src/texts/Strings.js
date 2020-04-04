@@ -1,3 +1,4 @@
+export const SETTINGS = "Настройки";
 export const ADDRESS = "Место фактического проживания";
 export const WRONG_DATE = "Неверная дата - требуется ДД.ММ.ГГГГ";
 export const PHONE = "Контактный телефон";
