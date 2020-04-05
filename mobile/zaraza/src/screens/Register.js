@@ -1,5 +1,14 @@
 import * as React from 'react';
-import {Button, SafeAreaView, ScrollView, StyleSheet, View, PermissionsAndroid, ActivityIndicator,Image} from 'react-native';
+import {
+    Button,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    View,
+    PermissionsAndroid,
+    ActivityIndicator,
+    Image
+} from 'react-native';
 import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
@@ -13,47 +22,46 @@ import ImagePicker from "react-native-image-picker";
 import DatePicker from 'react-native-datepicker';
 import Geolocation from "react-native-geolocation-service";
 import NetInfo from "@react-native-community/netinfo";
-import { isLocalhost, toggleConfig, getWebUrl } from '../config/AppConfig';
+import {isLocalhost, toggleConfig, getWebUrl} from '../config/AppConfig';
 
 
+function ValidatedDateInput(props) {
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
 
-class ValidatedDateInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {date: ""}
-    }
+    return <>
+        <DatePicker
+            style={{width: undefined}}
+            date={values[name]}
+            mode="date"
+            placeholder={placeholder}
+            format="YYYY-MM-DD"
+            minDate="1920-01-01"
+            maxDate="2020-01-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            showIcon={false}
+            customStyles={{
+                dateInput: {
+                    marginVertical: 10,
+                    height: 60,
+                    borderRadius: 3,
+                },
+                placeholderText: {
+                    fontSize: 16,
+                    color: '#333'
+                }
+                // ... You can check the source to find the other keys.
+            }}
+            onDateChange={(date) => {
+                this.setState({date: date})
+            }}
+        />
+        {touched[name] && errors[name] &&
+        <Text style={{fontSize: 10, marginTop: 10, color: 'red'}}>{errors[name]}</Text>
+        }
+    </>
 
-    render() {
-        return (
-            <DatePicker
-                style={{width: undefined}}
-                date={this.state.date}
-                mode="date"
-                placeholder={T.BIRTHDAY}
-                format="YYYY-MM-DD"
-                minDate="1920-01-01"
-                maxDate="2020-01-01"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                customStyles={{
-                    dateInput: {
-                        marginVertical: 10,
-                        height: 60,
-                        borderRadius: 3,
-                    },
-                    placeholderText: {
-                        fontSize: 16,
-                        color: '#333'
-                    }
-                    // ... You can check the source to find the other keys.
-                }}
-                onDateChange={(date) => {
-                    this.setState({date: date})
-                }}
-            />
-        )
-    }
+
 }
 
 function ValidatedTextInput(props) {
@@ -77,6 +85,26 @@ function ValidatedTextInput(props) {
         <Text style={{fontSize: 10, color: 'red'}}>{errors[name]}</Text>
         }
     </>;
+}
+
+function ValidatedPhoneInput(props) {
+
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+
+    return <>
+        <PhoneInput
+            initialCountry="ua"
+            forwardRef='phone'
+            style={styles.phoneInput}
+            onPressFlag={() => {
+            }}
+            value={values[name]}
+        />
+        {touched[name] && errors[name] &&
+        <Text style={{fontSize: 10, color: 'red'}}>{errors[name]}</Text>
+        }
+    </>
+
 }
 
 
@@ -146,41 +174,44 @@ export default class RegisterScreen extends React.Component {
     };
 
     SignUpSchema = Yup.object().shape({
-        name: Yup.string()
+        l_name: Yup.string()
             .min(2, T.TOO_SHORT)
             .max(70, T.TOO_LONG)
             .required(T.REQUIRED),
-        email: Yup.string()
-            .email(T.WRONG_EMAIL),
-        //todo: неправильно
-        documentIsPassport: Yup.boolean()
-            .required(T.DOCUMENT_TYPE_REQUIRED),
-        doc_number: Yup.string()
-            .min(8, T.TOO_SHORT)
-            .max(12, T.TOO_LONG)
+        f_name: Yup.string()
+            .min(2, T.TOO_SHORT)
+            .max(70, T.TOO_LONG)
             .required(T.REQUIRED),
-        doc_type: Yup.string()
+        s_name: Yup.string()
+            .min(2, T.TOO_SHORT)
+            .max(70, T.TOO_LONG)
             .required(T.REQUIRED),
+        // documentIsPassport: Yup.boolean()
+        //     .required(T.DOCUMENT_TYPE_REQUIRED),
+        // doc_number: Yup.string()
+        //     .min(8, T.TOO_SHORT)
+        //     .max(12, T.TOO_LONG)
+        //     .required(T.REQUIRED),
+        // doc_type: Yup.string()
+        //     .required(T.REQUIRED),
         dob: Yup.string()
-            .test("valid", T.WRONG_DATE, this.isValidDate),
-        sex: Yup.string()
+            .required(T.REQUIRED),
+        gender: Yup.string()
             .required(T.REQUIRED),
         address: Yup.string()
             .required(T.REQUIRED),
         phone: Yup.string()
             .required(T.REQUIRED),
-        temperature: Yup.number().moreThan(34, 'мало').lessThan(42, 'много')
+        temperature: Yup.number()
             .required(T.REQUIRED),
-        //todo:add sex
     });
 
     //TODO: erase image by uri  after upload
     //todo:resize imge ?
-    handleImagePress = (props)=>
-{
-        const  options = {
+    handleImagePress = (props) => {
+        const options = {
             cameraType: 'back',
-            mediaType: 'photo' ,
+            mediaType: 'photo',
             maxWidth: 240,
             maxHeight: 240,
             quality: 0.5,
@@ -202,10 +233,10 @@ export default class RegisterScreen extends React.Component {
             } else {
                 const source = {uri: res.uri};
                 console.log('response', JSON.stringify(res));
-                props.setFieldValue('image',res);
+                props.setFieldValue('image', res);
             }
         });
-    }
+    };
 
 
     render() {
@@ -223,114 +254,121 @@ export default class RegisterScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
-                        initialValues={{f_name: '', s_name: '', l_name: '', date: '', phone: '', address: ''}}
-                        onSubmit={values => console.log(values)}
+                        initialValues={{
+                            f_name: '',
+                            s_name: '',
+                            l_name: '',
+                            dob: '',
+                            phone: '',
+                            address: '',
+                            gender: '',
+                            temperature: ''
+                        }}
+                        onSubmit={async (values) => {
+                            console.log("SUBMIT");
+                            // console.log(props);
+                            // this.setState({
+                            //     progress: true
+                            // });
+                            // try {
+                            //     console.log(values)
+                            //     // const result = await fetch(getWebUrl() + '/citizens/', {
+                            //     //     method: 'POST',
+                            //     //     headers: {
+                            //     //         Accept: 'application/json',
+                            //     //         'Content-Type': 'application/json',
+                            //     //     },
+                            //     //     body: JSON.stringify({
+                            //     //         first_name: 'Михаил',
+                            //     //         second_name: 'Андреевич',
+                            //     //         last_name: 'Сизоненко',
+                            //     //         phone_number: '+380938359526',
+                            //     //         gender: 'M',
+                            //     //         birth_date: '1988-10-22',
+                            //     //         location: 'Экономический пер. 5 кв. 71',
+                            //     //     }),
+                            //     // });
+                            //     // console.log(result);
+                            // } catch (e) {
+                            //     console.error(e);
+                            // } finally {
+                            //     this.setState({
+                            //         progress: false
+                            //     });
+                            // }
+
+                        }}
                         validationSchema={this.SignUpSchema}
                     >
                         {(props) => (
                             <View style={styles.form}>
 
-                                {props.values.image&&<Image source={props.values.image} style={{height:100}}/>}
+                                <ValidatedPhoneInput name='phone' {...props} />
 
+                                {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
 
+                                {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
+                                {/*             onPress={this.handleImagePress.bind(self, props)}/>*/}
 
-                                <AwesomeIcon name="camera" size={30} color="#900"
-                                             onPress={this.handleImagePress.bind(self, props)}/>
+                                {/*<ValidatedTextInput name='doc_number' placeholder={T.DOC_NUMBER} {...props}/>*/}
 
-                                <ValidatedTextInput name='doc_number' placeholder={T.DOC_NUMBER} {...props}/>
+                                {/*<RadioButton.Group*/}
+                                {/*    onValueChange={props.handleChange('doc_type')}*/}
+                                {/*    value={props.values['doc_type']}*/}
+                                {/*    name="doc_type"*/}
+                                {/*>*/}
+                                {/*    <RadioButton.Item label={T.PASSPORT} value="passport"/>*/}
+                                {/*    <RadioButton.Item label={T.ID_CARD} value="id"/>*/}
+                                {/*    <RadioButton.Item label={T.DRIVER_LICENSE} value="driver_licence"/>*/}
+
+                                {/*    {props.touched['doc_type'] && props.errors['doc_type'] &&*/}
+                                {/*    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>*/}
+                                {/*    }*/}
+                                {/*</RadioButton.Group>*/}
+
+                                <ValidatedTextInput name='l_name'
+                                                    placeholder={T.LNAME}
+                                                    {...props}/>
+                                <ValidatedTextInput name='f_name'
+                                                    placeholder={T.FNAME}
+                                                    {...props}/>
+                                <ValidatedTextInput name='s_name'
+                                                    placeholder={T.SNAME}
+                                                    {...props}/>
+
+                                <BlankSeparator/>
                                 <RadioButton.Group
-                                    onValueChange={props.handleChange('doc_type')}
-                                    value={props.values['doc_type']}
-                                    name="doc_type"
+                                    onValueChange={props.handleChange('gender')}
+                                    value={props.values['gender']}
+                                    name="gender"
                                 >
-                                    <RadioButton.Item label={T.PASSPORT} value="passport"/>
-                                    <RadioButton.Item label={T.ID_CARD} value="id"/>
-                                    <RadioButton.Item label={T.DRIVER_LICENSE} value="driver_licence"/>
+                                    <RadioButton.Item label={T.MAN} value="M"/>
+                                    <RadioButton.Item label={T.WOMAN} value="W"/>
 
-                                    {props.touched['doc_type'] && props.errors['doc_type'] &&
-                                    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
+                                    {props.touched['gender'] && props.errors['gender'] &&
+                                    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['gender']}</Text>
                                     }
+
                                 </RadioButton.Group>
 
-                                <ValidatedTextInput name='l_name' placeholder={T.LNAME} {...props}/>
-                                <ValidatedTextInput name='f_name' placeholder={T.FNAME} {...props}/>
-                                <ValidatedTextInput name='s_name' placeholder={T.SNAME} {...props}/>
-
                                 <BlankSeparator/>
-                                <RadioButton.Group
-                                    onValueChange={props.handleChange('sex')}
-                                    value={props.values['sex']}
-                                    name="sex"
-                                >
-                                    <RadioButton.Item label={T.MAN} value="m"/>
-                                    <RadioButton.Item label={T.WOMAN} value="f"/>
-
-                                    {props.touched['sex'] && props.errors['sex'] &&
-                                    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
-                                    }
-
-                                </RadioButton.Group>
-
+                                <ValidatedDateInput name='dob'
+                                                    placeholder={T.BIRTHDAY}
+                                                    {...props}/>
                                 <BlankSeparator/>
-                                <ValidatedDateInput name='dob' {...props}/>
+                                <ValidatedTextInput name='address'
+                                                    placeholder={T.ADDRESS}
+                                                    numberOfLines={3}
+                                                    {...props}/>
                                 <BlankSeparator/>
 
-                                {/*гражданство*/}
-                                <ValidatedTextInput name='address' placeholder={T.ADDRESS} {...props}/>
-                                <BlankSeparator/>
-
-                                <PhoneInput
-                                    initialCountry="ua"
-                                    ref={ref => {
-                                        this.phone = ref;
-                                    }}
-                                    style={styles.phoneInput}
-                                    onPressFlag={() => {
-                                    }}
-                                    value={"+380"}
-                                />
-                                {/*<ValidatedTextInput name='address' numberOfLines={3}*/}
-                                {/*                    placeholder={T.ADDRESS} {...props} />*/}
-                                <BlankSeparator/>
 
                                 <ValidatedTextInput name='temperature'
                                                     placeholder={T.TEMPERATURE}
                                                     keyboardType='numeric'
                                                     {...props}/>
                                 <Separator/>
-                                <Button styles={styles.submit} onPress={async () => {
-                                    console.log("SUBMIT");
-                                    // console.log(props);
-                                    this.setState({
-                                        progress: true
-                                    });
-                                    try {
-                                        const result = await fetch(getWebUrl() + '/citizens/', {
-                                            method: 'POST',
-                                            headers: {
-                                                Accept: 'application/json',
-                                                'Content-Type': 'application/json',
-                                            },
-                                            body: JSON.stringify({
-                                                first_name: 'Михаил',
-                                                second_name: 'Андреевич',
-                                                last_name: 'Сизоненко',
-                                                phone_number: '+380938359526',
-                                                gender: 'M',
-                                                birth_date: '1988-10-22',
-                                                location: 'Экономический пер. 5 кв. 71',
-                                            }),
-                                        });
-                                        console.log(result);
-                                    } catch (e) {
-                                        console.error(e);
-                                    } finally {
-                                        this.setState({
-                                            progress: false
-                                        });
-                                    }
-
-                                }} title={T.SUBMIT}/>
+                                <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
 
                             </View>
                         )}
@@ -341,9 +379,9 @@ export default class RegisterScreen extends React.Component {
         );
 
         // return (
-            // <SafeAreaView>
-            //    <GooglePlacesInput />
-            // </SafeAreaView>
+        // <SafeAreaView>
+        //    <GooglePlacesInput />
+        // </SafeAreaView>
 
         // );
     }
@@ -369,12 +407,12 @@ const styles = StyleSheet.create({
     containerSpinner: {
         flex: 1,
         justifyContent: "center"
-      },
-      horizontal: {
+    },
+    horizontal: {
         flexDirection: "row",
         justifyContent: "space-around",
         padding: 10
-      },
+    },
     container: {
         flex: 1,
         marginTop: 10,

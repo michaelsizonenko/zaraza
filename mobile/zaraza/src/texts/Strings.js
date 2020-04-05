@@ -1,8 +1,7 @@
 export const SETTINGS = "Настройки";
 export const ADDRESS = "Место фактического проживания";
-export const WRONG_DATE = "Неверная дата - требуется ДД.ММ.ГГГГ";
 export const PHONE = "Контактный телефон";
-export const BIRTHDAY = "Дата рождения (ДД.ММ.ГГГГ)";
+export const BIRTHDAY = "Дата рождения";
 export const LNAME = "Фамилия";
 export const FNAME = "Имя";
 export const SNAME = "Отчество";
