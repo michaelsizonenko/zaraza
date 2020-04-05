@@ -61,7 +61,6 @@ class ValidatedDateInput extends React.Component {
                     // ... You can check the source to find the other keys.
                 }}
                 onDateChange={(d) => {
-                    console.log(this.state);
                     const values = this.state.values;
                     values[this.state.name] = d;
                     this.setState({
@@ -100,23 +99,37 @@ function ValidatedTextInput(props) {
     </>;
 }
 
-function ValidatedPhoneInput(props) {
+class ValidatedPhoneInput extends React.Component{
 
-    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+    constructor(props) {
+        super(props);
+        this.state = {...props};
+    }
 
-    return <>
-        <PhoneInput
-            initialCountry="ua"
-            forwardRef='phone'
-            style={styles.phoneInput}
-            onPressFlag={() => {
-            }}
-            value={values[name]}
-        />
-        {touched[name] && errors[name] &&
-        <Text style={{fontSize: 10, color: 'red'}}>{errors[name]}</Text>
-        }
-    </>
+    // let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+    render() {
+        return (<>
+            <PhoneInput
+                initialCountry="ua"
+                forwardRef='phone'
+                style={styles.phoneInput}
+                onPressFlag={() => {
+                }}
+                value={this.state.values[this.state.name]}
+                onChangePhoneNumber={(n) => {
+                    console.log("n", n);
+                    const values = this.state.values;
+                    values[this.state.name] = n;
+                    this.setState({
+                        values: values
+                    })
+                }}
+            />
+            {this.state.touched[this.state.name] && this.state.errors[this.state.name] &&
+            <Text style={{fontSize: 10, color: 'red'}}>{this.state.errors[this.state.name]}</Text>
+            }
+        </>)
+    }
 
 }
 
@@ -321,7 +334,8 @@ export default class RegisterScreen extends React.Component {
                         {(props) => (
                             <View style={styles.form}>
 
-                                <ValidatedPhoneInput name='phone' {...props} />
+                                <ValidatedPhoneInput name='phone'
+                                                     {...props} />
 
                                 {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
 
