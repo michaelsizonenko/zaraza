@@ -34,15 +34,17 @@ class ValidatedDateInput extends React.Component {
 
 
     render() {
+        //todo: start calendar from some date e.g. 1980-01-01 for convenience
         return (<>
             <DatePicker
                 style={{width: undefined}}
                 date={this.state.values[this.state.name]}
                 mode="date"
+                androidMode="spinner"
                 placeholder={this.state.placeholder}
                 format="YYYY-MM-DD"
                 minDate="1920-01-01"
-                maxDate="2020-01-01"
+                maxDate={new Date()}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
