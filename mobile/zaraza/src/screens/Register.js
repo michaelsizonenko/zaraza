@@ -199,11 +199,11 @@ export default class RegisterScreen extends React.Component {
         return result;
     };
 
-    isValidPhoneNumber = (s) => {
-        if (!s) return false;
-        if (s.length !== 13) return false;
+    isValidPhoneNumber = (n) => {
+        if (!n) return false;
+        if (n.length !== 13) return false;
         return true;
-    };
+    }
 
     SignUpSchema = Yup.object().shape({
         l_name: Yup.string()
@@ -232,7 +232,8 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
         address: Yup.string()
             .required(T.REQUIRED),
-        phone: Yup.string().test("valid", T.WRONG_PHONE_NUMBER, this.isValidPhoneNumber),
+        phone: Yup.string()
+            .test("valid", T.WRONG_PHONE_NUMBER, this.isValidPhoneNumber),
         temperature: Yup.number()
             .required(T.REQUIRED),
     });
