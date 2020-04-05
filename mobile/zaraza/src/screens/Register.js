@@ -315,8 +315,13 @@ export default class RegisterScreen extends React.Component {
                                                 'Content-Type': 'application/json',
                                             },
                                             body: JSON.stringify({
-                                                firstParam: 'test1',
-                                                secondParam: 'test2',
+                                                first_name: 'Михаил',
+                                                second_name: 'Андреевич',
+                                                last_name: 'Сизоненко',
+                                                phone_number: '+380938359526',
+                                                gender: 'M',
+                                                birth_date: '10/22/1988',
+                                                location: 'Экономический пер. 5 кв. 71',
                                             }),
                                         });
                                         console.log(result);
