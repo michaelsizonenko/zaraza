@@ -317,7 +317,7 @@ export default class RegisterScreen extends React.Component {
                                                 last_name: 'Сизоненко',
                                                 phone_number: '+380938359526',
                                                 gender: 'M',
-                                                birth_date: '10/22/1988',
+                                                birth_date: '1988-10-22',
                                                 location: 'Экономический пер. 5 кв. 71',
                                             }),
                                         });

@@ -3,10 +3,14 @@ from citizens.models import Citizen, GENDER_CHOICES
 
 
 class CitizenSerializer(serializers.Serializer):
-
-    class Meta:
-        model = Citizen
-        fields = ['first_name', 'second_name', 'last_name', 'phone_number', 'gender', 'birth_date', 'location']
+    # id = serializers.IntegerField(read_only=True)
+    first_name = serializers.CharField(required=True, allow_blank=False, max_length=100)
+    second_name = serializers.CharField(required=False, allow_blank=False, max_length=100)
+    last_name = serializers.CharField(required=True, allow_blank=False, max_length=100)
+    phone_number = serializers.CharField(required=True, allow_blank=False, max_length=128)
+    gender = serializers.ChoiceField(required=True, choices=GENDER_CHOICES)
+    birth_date = serializers.DateField(required=True)
+    location = serializers.CharField(required=True, max_length=100)
 
     def create(self, validated_data):
         """
