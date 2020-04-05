@@ -25,42 +25,53 @@ import NetInfo from "@react-native-community/netinfo";
 import {isLocalhost, toggleConfig, getWebUrl} from '../config/AppConfig';
 
 
-function ValidatedDateInput(props) {
-    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+class ValidatedDateInput extends React.Component {
 
-    return <>
-        <DatePicker
-            style={{width: undefined}}
-            date={values[name]}
-            mode="date"
-            placeholder={placeholder}
-            format="YYYY-MM-DD"
-            minDate="1920-01-01"
-            maxDate="2020-01-01"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            showIcon={false}
-            customStyles={{
-                dateInput: {
-                    marginVertical: 10,
-                    height: 60,
-                    borderRadius: 3,
-                },
-                placeholderText: {
-                    fontSize: 16,
-                    color: '#333'
-                }
-                // ... You can check the source to find the other keys.
-            }}
-            onDateChange={(date) => {
-                this.setState({date: date})
-            }}
-        />
-        {touched[name] && errors[name] &&
-        <Text style={{fontSize: 10, marginTop: 10, color: 'red'}}>{errors[name]}</Text>
-        }
-    </>
+    constructor(props) {
+        super(props);
+        this.state = {...props};
+    }
 
+
+    render() {
+        return (<>
+            <DatePicker
+                style={{width: undefined}}
+                date={this.state.values[this.state.name]}
+                mode="date"
+                placeholder={this.state.placeholder}
+                format="YYYY-MM-DD"
+                minDate="1920-01-01"
+                maxDate="2020-01-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                showIcon={false}
+                customStyles={{
+                    dateInput: {
+                        marginVertical: 10,
+                        height: 60,
+                        borderRadius: 3,
+                    },
+                    placeholderText: {
+                        fontSize: 16,
+                        color: '#333'
+                    }
+                    // ... You can check the source to find the other keys.
+                }}
+                onDateChange={(d) => {
+                    console.log(this.state);
+                    const values = this.state.values;
+                    values[this.state.name] = d;
+                    this.setState({
+                        values: values
+                    })
+                }}
+            />
+            {this.state.touched[this.state.name] && this.state.errors[this.state.name] &&
+            <Text style={{fontSize: 10, marginTop: 10, color: 'red'}}>{this.state.errors[this.state.name]}</Text>
+            }
+        </>)
+    }
 
 }
 
@@ -173,6 +184,12 @@ export default class RegisterScreen extends React.Component {
         return result;
     };
 
+    isValidPhoneNumber = (s) => {
+        if (!s) return false;
+        if (s.length !== 13) return false;
+        return true;
+    };
+
     SignUpSchema = Yup.object().shape({
         l_name: Yup.string()
             .min(2, T.TOO_SHORT)
@@ -200,8 +217,7 @@ export default class RegisterScreen extends React.Component {
             .required(T.REQUIRED),
         address: Yup.string()
             .required(T.REQUIRED),
-        phone: Yup.string()
-            .required(T.REQUIRED),
+        phone: Yup.string().test("valid", T.WRONG_PHONE_NUMBER, this.isValidPhoneNumber),
         temperature: Yup.number()
             .required(T.REQUIRED),
     });
@@ -259,13 +275,13 @@ export default class RegisterScreen extends React.Component {
                             s_name: '',
                             l_name: '',
                             dob: '',
-                            phone: '',
+                            phone: '+380',
                             address: '',
                             gender: '',
                             temperature: ''
                         }}
                         onSubmit={async (values) => {
-                            console.log("SUBMIT");
+                            console.log("SUBMIT", values);
                             // console.log(props);
                             // this.setState({
                             //     progress: true

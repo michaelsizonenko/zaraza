@@ -1,3 +1,4 @@
+export const WRONG_PHONE_NUMBER = "Неверный номер телефона !";
 export const SETTINGS = "Настройки";
 export const ADDRESS = "Место фактического проживания";
 export const PHONE = "Контактный телефон";
