@@ -10,7 +10,7 @@ class CitizenSerializer(serializers.Serializer):
     phone_number = serializers.CharField(required=True, allow_blank=False, max_length=128)
     gender = serializers.ChoiceField(required=True, choices=GENDER_CHOICES)
     birth_date = serializers.DateField(required=True)
-    location = serializers.CharField(required=True, max_length=100)
+    address = serializers.CharField(required=True, max_length=100)
 
     def create(self, validated_data):
         """
@@ -28,6 +28,6 @@ class CitizenSerializer(serializers.Serializer):
         instance.phone_number = validated_data.get('phone_number', instance.phone_number)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
-        instance.location = validated_data.get('location', instance.location)
+        instance.address = validated_data.get('address', instance.address)
         instance.save()
         return instance

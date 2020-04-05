@@ -15,7 +15,7 @@ class Citizen(models.Model):
     phone_number = PhoneNumberField(unique=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     birth_date = models.DateField()
-    location = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
 
     class Meta:
         ordering = ['created']

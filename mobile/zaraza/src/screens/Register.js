@@ -7,6 +7,7 @@ import {
     View,
     PermissionsAndroid,
     ActivityIndicator,
+    Alert,
     Image
 } from 'react-native';
 import {Formik} from 'formik';
@@ -117,7 +118,6 @@ class ValidatedPhoneInput extends React.Component{
                 }}
                 value={this.state.values[this.state.name]}
                 onChangePhoneNumber={(n) => {
-                    console.log("n", n);
                     const values = this.state.values;
                     values[this.state.name] = n;
                     this.setState({
@@ -203,18 +203,18 @@ export default class RegisterScreen extends React.Component {
         if (!n) return false;
         if (n.length !== 13) return false;
         return true;
-    }
+    };
 
     SignUpSchema = Yup.object().shape({
-        l_name: Yup.string()
+        last_name: Yup.string()
             .min(2, T.TOO_SHORT)
             .max(70, T.TOO_LONG)
             .required(T.REQUIRED),
-        f_name: Yup.string()
+        first_name: Yup.string()
             .min(2, T.TOO_SHORT)
             .max(70, T.TOO_LONG)
             .required(T.REQUIRED),
-        s_name: Yup.string()
+        second_name: Yup.string()
             .min(2, T.TOO_SHORT)
             .max(70, T.TOO_LONG)
             .required(T.REQUIRED),
@@ -226,13 +226,13 @@ export default class RegisterScreen extends React.Component {
         //     .required(T.REQUIRED),
         // doc_type: Yup.string()
         //     .required(T.REQUIRED),
-        dob: Yup.string()
+        birth_date: Yup.string()
             .required(T.REQUIRED),
         gender: Yup.string()
             .required(T.REQUIRED),
         address: Yup.string()
             .required(T.REQUIRED),
-        phone: Yup.string()
+        phone_number: Yup.string()
             .test("valid", T.WRONG_PHONE_NUMBER, this.isValidPhoneNumber),
         temperature: Yup.number()
             .required(T.REQUIRED),
@@ -287,47 +287,43 @@ export default class RegisterScreen extends React.Component {
                 <ScrollView>
                     <Formik
                         initialValues={{
-                            f_name: '',
-                            s_name: '',
-                            l_name: '',
-                            dob: '',
-                            phone: '+380',
+                            first_name: '',
+                            second_name: '',
+                            last_name: '',
+                            birth_date: '',
+                            phone_number: '+380',
                             address: '',
                             gender: '',
                             temperature: ''
                         }}
                         onSubmit={async (values) => {
                             console.log("SUBMIT", values);
-                            // console.log(props);
-                            // this.setState({
-                            //     progress: true
-                            // });
-                            // try {
-                            //     console.log(values)
-                            //     // const result = await fetch(getWebUrl() + '/citizens/', {
-                            //     //     method: 'POST',
-                            //     //     headers: {
-                            //     //         Accept: 'application/json',
-                            //     //         'Content-Type': 'application/json',
-                            //     //     },
-                            //     //     body: JSON.stringify({
-                            //     //         first_name: 'Михаил',
-                            //     //         second_name: 'Андреевич',
-                            //     //         last_name: 'Сизоненко',
-                            //     //         phone_number: '+380938359526',
-                            //     //         gender: 'M',
-                            //     //         birth_date: '1988-10-22',
-                            //     //         location: 'Экономический пер. 5 кв. 71',
-                            //     //     }),
-                            //     // });
-                            //     // console.log(result);
-                            // } catch (e) {
-                            //     console.error(e);
-                            // } finally {
-                            //     this.setState({
-                            //         progress: false
-                            //     });
-                            // }
+                            this.setState({
+                                progress: true
+                            });
+                            try {
+                                const result = await fetch(getWebUrl() + '/citizens/', {
+                                    method: 'POST',
+                                    headers: {
+                                        Accept: 'application/json',
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(values),
+                                });
+                                console.log(result);
+                                if (!result.ok) {
+                                    Alert.alert("Произошла ошибка!");
+                                    return;
+                                }
+                                Alert.alert("Гражданин зарегистрирован успешно!");
+
+                            } catch (e) {
+                                console.error(e);
+                            } finally {
+                                this.setState({
+                                    progress: false
+                                });
+                            }
 
                         }}
                         validationSchema={this.SignUpSchema}
@@ -335,7 +331,7 @@ export default class RegisterScreen extends React.Component {
                         {(props) => (
                             <View style={styles.form}>
 
-                                <ValidatedPhoneInput name='phone'
+                                <ValidatedPhoneInput name='phone_number'
                                                      {...props} />
 
                                 {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
@@ -359,13 +355,13 @@ export default class RegisterScreen extends React.Component {
                                 {/*    }*/}
                                 {/*</RadioButton.Group>*/}
 
-                                <ValidatedTextInput name='l_name'
+                                <ValidatedTextInput name='last_name'
                                                     placeholder={T.LNAME}
                                                     {...props}/>
-                                <ValidatedTextInput name='f_name'
+                                <ValidatedTextInput name='first_name'
                                                     placeholder={T.FNAME}
                                                     {...props}/>
-                                <ValidatedTextInput name='s_name'
+                                <ValidatedTextInput name='second_name'
                                                     placeholder={T.SNAME}
                                                     {...props}/>
 
@@ -385,7 +381,7 @@ export default class RegisterScreen extends React.Component {
                                 </RadioButton.Group>
 
                                 <BlankSeparator/>
-                                <ValidatedDateInput name='dob'
+                                <ValidatedDateInput name='birth_date'
                                                     placeholder={T.BIRTHDAY}
                                                     {...props}/>
                                 <BlankSeparator/>
@@ -400,6 +396,8 @@ export default class RegisterScreen extends React.Component {
                                                     placeholder={T.TEMPERATURE}
                                                     keyboardType='numeric'
                                                     {...props}/>
+                                <Separator/>
+                                <Text>{JSON.stringify(props.values)}</Text>
                                 <Separator/>
                                 <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
 
