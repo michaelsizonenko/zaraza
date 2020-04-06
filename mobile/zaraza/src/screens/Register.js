@@ -30,16 +30,18 @@ class ValidatedDateInput extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {...props};
+        this.state = {
+            placeholder: props.placeholder
+        }
+        // props.handleChange();
     }
-
 
     render() {
         //todo: start calendar from some date e.g. 1980-01-01 for convenience
         return (<>
             <DatePicker
                 style={{width: undefined}}
-                date={this.state.values[this.state.name]}
+                date={this.props.values[this.props.name]}
                 mode="date"
                 androidMode="spinner"
                 placeholder={this.state.placeholder}
@@ -62,15 +64,14 @@ class ValidatedDateInput extends React.Component {
                     // ... You can check the source to find the other keys.
                 }}
                 onDateChange={(d) => {
-                    const values = this.state.values;
-                    values[this.state.name] = d;
+                    this.props.handleDateChange(d);
                     this.setState({
-                        values: values
-                    })
+                        placeholder: d
+                    });
                 }}
             />
-            {this.state.touched[this.state.name] && this.state.errors[this.state.name] &&
-            <Text style={{fontSize: 10, marginTop: 10, color: 'red'}}>{this.state.errors[this.state.name]}</Text>
+            {this.props.touched[this.props.name] && this.props.errors[this.props.name] &&
+            <Text style={{fontSize: 10, marginTop: 10, color: 'red'}}>{this.props.errors[this.props.name]}</Text>
             }
         </>)
     }
@@ -100,36 +101,25 @@ function ValidatedTextInput(props) {
     </>;
 }
 
-class ValidatedPhoneInput extends React.Component{
+function ValidatedPhoneInput(props) {
 
-    constructor(props) {
-        super(props);
-        this.state = {...props};
-    }
-
-    // let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
-    render() {
-        return (<>
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+    return <>
             <PhoneInput
                 initialCountry="ua"
                 forwardRef='phone'
                 style={styles.phoneInput}
                 onPressFlag={() => {
                 }}
-                value={this.state.values[this.state.name]}
+                value={values[name]}
                 onChangePhoneNumber={(n) => {
-                    const values = this.state.values;
-                    values[this.state.name] = n;
-                    this.setState({
-                        values: values
-                    })
+                    values[name] = n
                 }}
             />
-            {this.state.touched[this.state.name] && this.state.errors[this.state.name] &&
-            <Text style={{fontSize: 10, color: 'red'}}>{this.state.errors[this.state.name]}</Text>
+            {touched[name] && errors[name] &&
+            <Text style={{fontSize: 10, color: 'red'}}>{errors[name]}</Text>
             }
-        </>)
-    }
+        </>
 
 }
 
@@ -383,6 +373,10 @@ export default class RegisterScreen extends React.Component {
                                 <BlankSeparator/>
                                 <ValidatedDateInput name='birth_date'
                                                     placeholder={T.BIRTHDAY}
+                                                    handleDateChange={(d) => {
+                                                        console.log('d:',d);
+                                                        props.values['birth_date'] = d
+                                                    }}
                                                     {...props}/>
                                 <BlankSeparator/>
                                 <ValidatedTextInput name='address'
@@ -397,7 +391,11 @@ export default class RegisterScreen extends React.Component {
                                                     keyboardType='numeric'
                                                     {...props}/>
                                 <Separator/>
-                                <Text>{JSON.stringify(props.values)}</Text>
+                                <Text>{"Errors : " + JSON.stringify(props.errors)}</Text>
+                                <Separator/>
+                                <Text>{"Touched : " + JSON.stringify(props.touched)}</Text>
+                                <Separator/>
+                                <Text>{"Values : " + JSON.stringify(props.values)}</Text>
                                 <Separator/>
                                 <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
 
