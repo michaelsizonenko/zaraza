@@ -3,7 +3,6 @@ import {
     Button,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
     View,
     PermissionsAndroid,
     ActivityIndicator,
@@ -14,16 +13,15 @@ import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
 import Text from 'react-native-paper/src/components/Typography/Text';
-import { L } from '../texts/Strings';
+import {L} from '../texts/Strings';
 import {RadioButton} from 'react-native-paper';
 import PhoneInput from "react-native-phone-input";
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import GooglePlacesInput from '../components/Addresses';
 import ImagePicker from "react-native-image-picker";
 import DatePicker from 'react-native-datepicker';
 import Geolocation from "react-native-geolocation-service";
-import NetInfo from "@react-native-community/netinfo";
-import { systemConfig } from '../config/AppConfig';
+import {systemConfig} from '../config/AppConfig';
+import {styles} from "../styles/Styles";
 
 
 class ValidatedDateInput extends React.Component {
@@ -33,7 +31,6 @@ class ValidatedDateInput extends React.Component {
         this.state = {
             placeholder: props.placeholder
         }
-        // props.handleChange();
     }
 
     render() {
@@ -105,22 +102,30 @@ function ValidatedPhoneInput(props) {
 
     let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
     return <>
-            <PhoneInput
-                initialCountry="ua"
-                forwardRef='phone'
-                style={styles.phoneInput}
-                onPressFlag={() => {
-                }}
-                value={values[name]}
-                onChangePhoneNumber={(n) => {
-                    values[name] = n
-                }}
-            />
-            {touched[name] && errors[name] &&
-            <Text style={{fontSize: 10, color: 'red'}}>{errors[name]}</Text>
-            }
-        </>
+        <PhoneInput
+            initialCountry="ua"
+            forwardRef='phone'
+            style={styles.phoneInput}
+            onPressFlag={() => {
+            }}
+            value={values[name]}
+            onChangePhoneNumber={(n) => {
+                values[name] = n
+            }}
+        />
+        {touched[name] && errors[name] &&
+        <Text style={{fontSize: 10, color: 'red'}}>{errors[name]}</Text>
+        }
+    </>
 
+}
+
+function Separator() {
+    return <View style={styles.separator}/>;
+}
+
+function BlankSeparator() {
+    return <View style={styles.blankSeparator}/>;
 }
 
 
@@ -130,6 +135,16 @@ export default class RegisterScreen extends React.Component {
         super(props);
         this.state = {
             progress: false
+        };
+        this.initValues = {
+            first_name: '',
+            second_name: '',
+            last_name: '',
+            birth_date: '',
+            phone_number: '+380',
+            address: '',
+            gender: '',
+            temperature: ''
         }
     }
 
@@ -162,37 +177,11 @@ export default class RegisterScreen extends React.Component {
             },
             {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
         );
-
-        // const unsubscribe = NetInfo.addEventListener(state => {
-        //     console.log("Connection type", state.type);
-        //     console.log("Is connected?", state.isConnected);
-        // });
     }
-
-    isValidDate = (s) => {
-        if (!s) return false;
-        if (s.length !== 10) return false;
-        let bits = s.split('.');
-        let y = bits[2],
-            m = bits[1],
-            d = bits[0];
-        // Assume not leap year by default (note zero index for Jan)
-        let daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-        // If evenly divisible by 4 and not evenly divisible by 100,
-        // or is evenly divisible by 400, then a leap year
-        if ((!(y % 4) && y % 100) || !(y % 400)) {
-            daysInMonth[1] = 29;
-        }
-        const result = !(/\D/.test(String(d))) && d > 0 && d <= daysInMonth[--m];
-        console.log(result);
-        return result;
-    };
 
     isValidPhoneNumber = (n) => {
         if (!n) return false;
-        if (n.length !== 13) return false;
-        return true;
+        return n.length === 13;
     };
 
     SignUpSchema = Yup.object().shape({
@@ -260,6 +249,37 @@ export default class RegisterScreen extends React.Component {
         });
     };
 
+    _onSubmit = async (values) => {
+        console.log("SUBMIT", values);
+        this.setState({
+            progress: true
+        });
+        try {
+            const result = await fetch(systemConfig.getWebUrl() + '/citizens/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            });
+            console.log(result);
+            if (!result.ok) {
+                Alert.alert(L('ERROR'));
+                return;
+            }
+            Alert.alert(L('REGISTER_SUCCESS'));
+
+        } catch (e) {
+            console.error(e);
+        } finally {
+            this.setState({
+                progress: false
+            });
+        }
+
+    };
+
 
     render() {
 
@@ -276,46 +296,8 @@ export default class RegisterScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
-                        initialValues={{
-                            first_name: '',
-                            second_name: '',
-                            last_name: '',
-                            birth_date: '',
-                            phone_number: '+380',
-                            address: '',
-                            gender: '',
-                            temperature: ''
-                        }}
-                        onSubmit={async (values) => {
-                            console.log("SUBMIT", values);
-                            this.setState({
-                                progress: true
-                            });
-                            try {
-                                const result = await fetch(systemConfig.getWebUrl() + '/citizens/', {
-                                    method: 'POST',
-                                    headers: {
-                                        Accept: 'application/json',
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify(values),
-                                });
-                                console.log(result);
-                                if (!result.ok) {
-                                    Alert.alert("Произошла ошибка!");
-                                    return;
-                                }
-                                Alert.alert("Гражданин зарегистрирован успешно!");
-
-                            } catch (e) {
-                                console.error(e);
-                            } finally {
-                                this.setState({
-                                    progress: false
-                                });
-                            }
-
-                        }}
+                        initialValues={this.initValues}
+                        onSubmit={this._onSubmit}
                         validationSchema={this.SignUpSchema}
                     >
                         {(props) => (
@@ -374,7 +356,7 @@ export default class RegisterScreen extends React.Component {
                                 <ValidatedDateInput name='birth_date'
                                                     placeholder={L('BIRTHDAY')}
                                                     handleDateChange={(d) => {
-                                                        console.log('d:',d);
+                                                        console.log('d:', d);
                                                         props.values['birth_date'] = d
                                                     }}
                                                     {...props}/>
@@ -407,68 +389,5 @@ export default class RegisterScreen extends React.Component {
             </SafeAreaView>
         );
 
-        // return (
-        // <SafeAreaView>
-        //    <GooglePlacesInput />
-        // </SafeAreaView>
-
-        // );
     }
 }
-
-function Separator() {
-    return <View style={styles.separator}/>;
-}
-
-function BlankSeparator() {
-    return <View style={styles.blankSeparator}/>;
-}
-
-
-const styles = StyleSheet.create({
-    phoneInput: {
-        borderWidth: 1,
-        borderColor: "#333",
-        borderRadius: 3,
-        paddingHorizontal: 10,
-        paddingVertical: 20,
-    },
-    containerSpinner: {
-        flex: 1,
-        justifyContent: "center"
-    },
-    horizontal: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        padding: 10
-    },
-    container: {
-        flex: 1,
-        marginTop: 10,
-        marginHorizontal: 16,
-    },
-    title: {
-        textAlign: 'center',
-        marginVertical: 8,
-        fontSize: 20,
-    },
-    form: {
-        marginBottom: 30
-    },
-    fixToText: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    submit: {
-        fontSize: 20,
-        marginVertical: 10,
-    },
-    separator: {
-        marginVertical: 15,
-        borderBottomColor: '#737373',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-    blankSeparator: {
-        marginVertical: 15,
-    },
-});

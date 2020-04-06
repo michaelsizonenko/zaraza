@@ -43,10 +43,7 @@ export function ScreeningScreenWrapper({navigation}) {
                                 icon='bars'
                                 onPress={() => navigation.toggleDrawer()}
                             />
-                            <Appbar.Action
-                                icon='chevron-circle-left'
-                                onPress={() => navigation.goBack()}
-                            />
+                            <Appbar.Content title={L('TEMPERATURE')}/>
                         </Appbar.Header>
                     )
                 }
