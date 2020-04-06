@@ -1,19 +1,42 @@
 import config from './config';
 
-export let isLocalhost = false;
 
-export function toggleConfig() {
-    console.log("Config has changed.");
-    isLocalhost = !isLocalhost;
+class ConfigController {
+
+    static _instance :ConfigController = null;
+    isLocalhost = false;
+    language = 'ua';
+
+    setLanguage = (language) => {
+        this.language = language;
+    };
+
+    getLanguage = (language) => {
+        return this.language;
+    };
+
+    constructor() {
+
+    }
+
+    static getInstance() {
+        if (ConfigController._instance == null) {
+            ConfigController._instance = new ConfigController();
+        }
+
+        return this._instance;
+    }
+
+    getWebUrl = () => {
+        console.log("Get web URL. Is localhost : ", this.isLocalhost);
+        let configuration = this.isLocalhost?config.localhost:config.development;
+        return `${configuration.webProtocol}://${configuration.server}:${configuration.httpPort}`;
+    };
+
+    toggleConfig = () => {
+        console.log("Config has changed.");
+        this.isLocalhost = !this.isLocalhost;
+    };
 }
 
-export function getWebUrl () {
-    console.log("Get web URL. Is localhost : ", isLocalhost);
-    let configuration = isLocalhost?config.localhost:config.development;
-    return `${configuration.webProtocol}://${configuration.server}:${configuration.httpPort}`;
-}
-
-export function getWampUrl () {
-    let configuration = isLocalhost?config.localhost:config.development;
-    return `${configuration.wampProtocol}://${configuration.server}:${configuration.httpPort}`;
-}
+export const systemConfig = ConfigController.getInstance();

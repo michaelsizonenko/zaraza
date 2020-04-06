@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {View, TouchableOpacity, Text, Button} from 'react-native';
-import {getWebUrl, toggleConfig} from "../config/AppConfig";
+import {systemConfig} from "../config/AppConfig";
 import {SafeAreaView} from "react-native-safe-area-context";
 import { RadioButton } from "react-native-paper";
-import { L, setLanguage } from "../texts/Strings";
+import { L } from "../texts/Strings";
 
 export default class SettingsScreen extends React.Component {
 
@@ -11,7 +11,7 @@ export default class SettingsScreen extends React.Component {
         super(props);
 
         this.state = {
-            webUrl: getWebUrl(),
+            webUrl: systemConfig.getWebUrl(),
             developerMode: false,
             counter: 0,
             language: 'ua'
@@ -26,9 +26,9 @@ export default class SettingsScreen extends React.Component {
     };
 
     _toggleConfig = () => {
-        toggleConfig();
+        systemConfig.toggleConfig();
         this.setState({
-            webUrl: getWebUrl()
+            webUrl: systemConfig.getWebUrl()
         });
     };
 
@@ -50,7 +50,7 @@ export default class SettingsScreen extends React.Component {
                     <Text style={{textAlign: 'center', fontSize: 20}}>{L("INTERFACE")} :</Text>
                     <RadioButton.Group
                         onValueChange={language => {
-                            setLanguage(language);
+                            systemConfig.setLanguage(language);
                             this.setState({language});
                         }}
                         value={this.state.language}

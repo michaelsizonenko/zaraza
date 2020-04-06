@@ -1,8 +1,4 @@
-let language = 'ua';
-
-export function setLanguage(val){
-    language = val;
-}
+import {systemConfig} from "../config/AppConfig";
 
 const strings = {
     "INTERFACE": {
@@ -133,7 +129,7 @@ const strings = {
 };
 
 export const L = (value) => {
-    return strings[value][language];
+    return strings[value][systemConfig.getLanguage()];
 };
 
 export const WRONG_PHONE_NUMBER = "Неверный номер телефона !";

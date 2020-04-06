@@ -23,7 +23,7 @@ import ImagePicker from "react-native-image-picker";
 import DatePicker from 'react-native-datepicker';
 import Geolocation from "react-native-geolocation-service";
 import NetInfo from "@react-native-community/netinfo";
-import {isLocalhost, toggleConfig, getWebUrl} from '../config/AppConfig';
+import { systemConfig } from '../config/AppConfig';
 
 
 class ValidatedDateInput extends React.Component {
@@ -292,7 +292,7 @@ export default class RegisterScreen extends React.Component {
                                 progress: true
                             });
                             try {
-                                const result = await fetch(getWebUrl() + '/citizens/', {
+                                const result = await fetch(systemConfig.getWebUrl() + '/citizens/', {
                                     method: 'POST',
                                     headers: {
                                         Accept: 'application/json',
@@ -324,26 +324,26 @@ export default class RegisterScreen extends React.Component {
                                 <ValidatedPhoneInput name='phone_number'
                                                      {...props} />
 
-                                {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
+                                {props.values.image && <Image source={props.values.image} style={{height: 100}}/>}
 
-                                {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
-                                {/*             onPress={this.handleImagePress.bind(self, props)}/>*/}
+                                <AwesomeIcon name="camera" size={30} color="#900"
+                                             onPress={this.handleImagePress.bind(self, props)}/>
 
-                                {/*<ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>*/}
+                                <ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>
 
-                                {/*<RadioButton.Group*/}
-                                {/*    onValueChange={props.handleChange('doc_type')}*/}
-                                {/*    value={props.values['doc_type']}*/}
-                                {/*    name="doc_type"*/}
-                                {/*>*/}
-                                {/*    <RadioButton.Item label={L('PASSPORT')} value="passport"/>*/}
-                                {/*    <RadioButton.Item label={L('ID_CARD')} value="id"/>*/}
-                                {/*    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>*/}
+                                <RadioButton.Group
+                                    onValueChange={props.handleChange('doc_type')}
+                                    value={props.values['doc_type']}
+                                    name="doc_type"
+                                >
+                                    <RadioButton.Item label={L('PASSPORT')} value="passport"/>
+                                    <RadioButton.Item label={L('ID_CARD')} value="id"/>
+                                    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>
 
-                                {/*    {props.touched['doc_type'] && props.errors['doc_type'] &&*/}
-                                {/*    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>*/}
-                                {/*    }*/}
-                                {/*</RadioButton.Group>*/}
+                                    {props.touched['doc_type'] && props.errors['doc_type'] &&
+                                    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
+                                    }
+                                </RadioButton.Group>
 
                                 <ValidatedTextInput name='last_name'
                                                     placeholder={L('LNAME')}
