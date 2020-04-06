@@ -14,7 +14,7 @@ import {Formik} from 'formik';
 import TextInput from 'react-native-paper/src/components/TextInput/TextInput';
 import * as Yup from 'yup';
 import Text from 'react-native-paper/src/components/Typography/Text';
-import * as T from '../texts/Strings';
+import { L } from '../texts/Strings';
 import {RadioButton} from 'react-native-paper';
 import PhoneInput from "react-native-phone-input";
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -197,35 +197,35 @@ export default class RegisterScreen extends React.Component {
 
     SignUpSchema = Yup.object().shape({
         last_name: Yup.string()
-            .min(2, T.TOO_SHORT)
-            .max(70, T.TOO_LONG)
-            .required(T.REQUIRED),
+            .min(2, L('TOO_SHORT'))
+            .max(70, L('TOO_LONG'))
+            .required(L('REQUIRED')),
         first_name: Yup.string()
-            .min(2, T.TOO_SHORT)
-            .max(70, T.TOO_LONG)
-            .required(T.REQUIRED),
+            .min(2, L('TOO_SHORT'))
+            .max(70, L('TOO_LONG'))
+            .required(L('REQUIRED')),
         second_name: Yup.string()
-            .min(2, T.TOO_SHORT)
-            .max(70, T.TOO_LONG)
-            .required(T.REQUIRED),
+            .min(2, L('TOO_SHORT'))
+            .max(70, L('TOO_LONG'))
+            .required(L('REQUIRED')),
         // documentIsPassport: Yup.boolean()
-        //     .required(T.DOCUMENT_TYPE_REQUIRED),
+        //     .required(L('DOCUMENT_TYPE_REQUIRED')),
         // doc_number: Yup.string()
-        //     .min(8, T.TOO_SHORT)
-        //     .max(12, T.TOO_LONG)
-        //     .required(T.REQUIRED),
+        //     .min(8, L('TOO_SHORT'))
+        //     .max(12, L('TOO_LONG'))
+        //     .required(L('REQUIRED')),
         // doc_type: Yup.string()
-        //     .required(T.REQUIRED),
+        //     .required(L('REQUIRED')),
         birth_date: Yup.string()
-            .required(T.REQUIRED),
+            .required(L('REQUIRED')),
         gender: Yup.string()
-            .required(T.REQUIRED),
+            .required(L('REQUIRED')),
         address: Yup.string()
-            .required(T.REQUIRED),
+            .required(L('REQUIRED')),
         phone_number: Yup.string()
-            .test("valid", T.WRONG_PHONE_NUMBER, this.isValidPhoneNumber),
+            .test("valid", L('WRONG_PHONE_NUMBER'), this.isValidPhoneNumber),
         temperature: Yup.number()
-            .required(T.REQUIRED),
+            .required(L('REQUIRED')),
     });
 
     //TODO: erase image by uri  after upload
@@ -329,16 +329,16 @@ export default class RegisterScreen extends React.Component {
                                 {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
                                 {/*             onPress={this.handleImagePress.bind(self, props)}/>*/}
 
-                                {/*<ValidatedTextInput name='doc_number' placeholder={T.DOC_NUMBER} {...props}/>*/}
+                                {/*<ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>*/}
 
                                 {/*<RadioButton.Group*/}
                                 {/*    onValueChange={props.handleChange('doc_type')}*/}
                                 {/*    value={props.values['doc_type']}*/}
                                 {/*    name="doc_type"*/}
                                 {/*>*/}
-                                {/*    <RadioButton.Item label={T.PASSPORT} value="passport"/>*/}
-                                {/*    <RadioButton.Item label={T.ID_CARD} value="id"/>*/}
-                                {/*    <RadioButton.Item label={T.DRIVER_LICENSE} value="driver_licence"/>*/}
+                                {/*    <RadioButton.Item label={L('PASSPORT')} value="passport"/>*/}
+                                {/*    <RadioButton.Item label={L('ID_CARD')} value="id"/>*/}
+                                {/*    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>*/}
 
                                 {/*    {props.touched['doc_type'] && props.errors['doc_type'] &&*/}
                                 {/*    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>*/}
@@ -346,13 +346,13 @@ export default class RegisterScreen extends React.Component {
                                 {/*</RadioButton.Group>*/}
 
                                 <ValidatedTextInput name='last_name'
-                                                    placeholder={T.LNAME}
+                                                    placeholder={L('LNAME')}
                                                     {...props}/>
                                 <ValidatedTextInput name='first_name'
-                                                    placeholder={T.FNAME}
+                                                    placeholder={L('FNAME')}
                                                     {...props}/>
                                 <ValidatedTextInput name='second_name'
-                                                    placeholder={T.SNAME}
+                                                    placeholder={L('SNAME')}
                                                     {...props}/>
 
                                 <BlankSeparator/>
@@ -361,8 +361,8 @@ export default class RegisterScreen extends React.Component {
                                     value={props.values['gender']}
                                     name="gender"
                                 >
-                                    <RadioButton.Item label={T.MAN} value="M"/>
-                                    <RadioButton.Item label={T.WOMAN} value="W"/>
+                                    <RadioButton.Item label={L('MAN')} value="M"/>
+                                    <RadioButton.Item label={L('WOMAN')} value="W"/>
 
                                     {props.touched['gender'] && props.errors['gender'] &&
                                     <Text style={{fontSize: 10, color: 'red'}}>{props.errors['gender']}</Text>
@@ -372,7 +372,7 @@ export default class RegisterScreen extends React.Component {
 
                                 <BlankSeparator/>
                                 <ValidatedDateInput name='birth_date'
-                                                    placeholder={T.BIRTHDAY}
+                                                    placeholder={L('BIRTHDAY')}
                                                     handleDateChange={(d) => {
                                                         console.log('d:',d);
                                                         props.values['birth_date'] = d
@@ -380,14 +380,14 @@ export default class RegisterScreen extends React.Component {
                                                     {...props}/>
                                 <BlankSeparator/>
                                 <ValidatedTextInput name='address'
-                                                    placeholder={T.ADDRESS}
+                                                    placeholder={L('ADDRESS')}
                                                     numberOfLines={3}
                                                     {...props}/>
                                 <BlankSeparator/>
 
 
                                 <ValidatedTextInput name='temperature'
-                                                    placeholder={T.TEMPERATURE}
+                                                    placeholder={L('TEMPERATURE')}
                                                     keyboardType='numeric'
                                                     {...props}/>
                                 <Separator/>
@@ -397,7 +397,7 @@ export default class RegisterScreen extends React.Component {
                                 {/*<Separator/>*/}
                                 {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
                                 {/*<Separator/>*/}
-                                <Button styles={styles.submit} onPress={props.handleSubmit} title={T.SUBMIT}/>
+                                <Button styles={styles.submit} onPress={props.handleSubmit} title={L('SUBMIT')}/>
 
                             </View>
                         )}
