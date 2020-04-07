@@ -1,8 +1,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from citizens.models import Citizen
-from citizens.serializers import CitizenSerializer
+from citizens.models import Citizen, Temperature
+from citizens.serializers import CitizenSerializer, TemperatureSerializer
 
 
 @csrf_exempt
@@ -51,5 +51,26 @@ def citizen_detail(request, pk):
     if request.method == 'DELETE':
         citizen.delete()
         return HttpResponse(status=204)
+
+    raise Exception("Unexpected method")
+
+
+@csrf_exempt
+def temperature_list(request):
+    """
+    List all temperature rows, or create a new temperature row
+    """
+    if request.method == 'GET':
+        temperature = Temperature.objects.all()
+        serializer = TemperatureSerializer(temperature, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    if request.method == 'POST':
+        data = JSONParser.parse(request)
+        serializer = TemperatureSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 
     raise Exception("Unexpected method")

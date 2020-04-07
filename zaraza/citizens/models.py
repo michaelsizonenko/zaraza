@@ -27,7 +27,7 @@ class Citizen(models.Model):
 class Temperature(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
-    user = models.ForeignKey(Citizen, on_delete=models.PROTECT)
+    citizen = models.ForeignKey(Citizen, on_delete=models.PROTECT)
     temperature = models.FloatField(validators=[MinValueValidator(34.0), MaxValueValidator(42.0)])
     supervisor = models.ForeignKey(User, on_delete=models.PROTECT)
 

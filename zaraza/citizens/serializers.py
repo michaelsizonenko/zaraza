@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from citizens.models import Citizen, GENDER_CHOICES
+from citizens.models import Temperature
 
 
 class CitizenSerializer(serializers.Serializer):
@@ -11,6 +12,7 @@ class CitizenSerializer(serializers.Serializer):
     gender = serializers.ChoiceField(required=True, choices=GENDER_CHOICES)
     birth_date = serializers.DateField(required=True)
     address = serializers.CharField(required=True, max_length=100)
+    creator = serializers.RelatedField(source='user', read_only=True)
 
     def create(self, validated_data):
         """
@@ -29,5 +31,27 @@ class CitizenSerializer(serializers.Serializer):
         instance.gender = validated_data.get('gender', instance.gender)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.address = validated_data.get('address', instance.address)
+        instance.save()
+        return instance
+
+
+class TemperatureSerializer(serializers.Serializer):
+    user = serializers.RelatedField(source='citizen', read_only=True)
+    temperature = serializers.FloatField(min_value=34.0, max_value=42.0)
+    supervisor = serializers.RelatedField(source='user', read_only=True)
+
+    def create(self, validated_data):
+        """
+        Create and return a new `Temperature` instance, given the validated data.
+        """
+        return Temperature.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing `Temperature` instance, given the validated data.
+        """
+        instance.citizen = validated_data.get('citizen', instance.citizen)
+        instance.temperature = validated_data.get('temperature', instance.temperature)
+        instance.supervisor = validated_data.get('supervisor', instance.supervisor)
         instance.save()
         return instance
