@@ -5,4 +5,5 @@ urlpatterns = [
     path('citizens/', views.citizen_list),
     path('citizens/<int:pk>/', views.citizen_detail),
     path('temperature/', views.citizen_list),
+    path('send-verification-code/', views.send_verification_code)
 ]

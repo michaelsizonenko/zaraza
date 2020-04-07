@@ -8,7 +8,7 @@ import {View} from "react-native";
 
 export function ValidatedPhoneInput(props) {
 
-    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType, disabled} = {...props};
     return <>
         <PhoneInput
             initialCountry="ua"
@@ -16,6 +16,7 @@ export function ValidatedPhoneInput(props) {
             style={styles.phoneInput}
             onPressFlag={() => {
             }}
+            disabled={disabled}
             value={values[name]}
             onChangePhoneNumber={(n) => {
                 values[name] = n;
@@ -82,13 +83,13 @@ export class ValidatedDateInput extends React.Component {
 
 export function ValidatedTextInput(props) {
     // по name можно доставать значения input
-    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType, callback} = {...props};
     numberOfLines = numberOfLines ? numberOfLines : 13;
     keyboardType = keyboardType ? keyboardType : 'default';
 
     return <>
         <TextInput
-            onChangeText={handleChange(name)}
+            onChangeText={() => {handleChange(name); callback && callback(values[name])}}
             value={values[name]}
             onBlur={setFieldTouched.bind(this, name)}
             placeholder={placeholder}
