@@ -81,4 +81,5 @@ def send_verification_code(request):
 
     if request.method == 'POST':
         breakpoint()
+        # todo: continue here
         data = JSONParser().parse(request)
