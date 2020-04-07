@@ -215,7 +215,6 @@ export default class RegisterScreen extends React.Component {
                                     <ValidatedPhoneInput name='phone_number'
                                                          handleNumberChange={(n) => {
                                                              if (this.isValidPhoneNumber(n)) {
-
                                                                  Keyboard.dismiss();
                                                                  this.setState({
                                                                      isValidPhoneNumber: this.isValidPhoneNumber(n)
@@ -225,23 +224,50 @@ export default class RegisterScreen extends React.Component {
                                                          disabled={this.state.isVerificationSent}
                                                          {...props} />
 
-                                    <Button style={styles.formButton}
+                                    <View style={styles.formButtonWrapper}>
+                                        <Button
                                             disabled={!this.state.isValidPhoneNumber || this.state.isVerificationSent}
                                             title={L("VERIFY_PHONE")}
-                                            onPress={() => {
+                                            onPress={async () => {
+                                                console.log(props.values['phone_number']);
                                                 this.setState({
                                                     isVerificationSent: true
-                                                })
+                                                });
+                                                try {
+                                                    const result = await fetch(systemConfig.getWebUrl() + '/send-verification-code/', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            Accept: 'application/json',
+                                                            'Content-Type': 'application/json',
+                                                        },
+                                                        body: JSON.stringify({
+                                                            phone_number: props.values['phone_number']
+                                                        }),
+                                                    });
+                                                    console.log(result);
+                                                    if (!result.ok) {
+                                                        Alert.alert(L('ERROR'));
+                                                        return;
+                                                    }
+
+                                                } catch (e) {
+                                                    console.error(e);
+                                                }
                                             }}
-                                    />
+                                        />
+                                    </View>
                                     {this.state.isVerificationSent &&
                                     <>
                                         <ValidatedTextInput name='confirmation_message'
                                                             placeholder={L('CONFIRMATION_SMS')}
+                                                            callback={(value) => {
+
+                                                            }}
                                                             {...props}/>
-                                        <Button style={styles.formButton}
-                                                disabled={true}
-                                                title={L("NEXT")}/>
+                                        <View style={styles.formButtonWrapper}>
+                                            <Button disabled={true}
+                                                    title={L("NEXT")}/>
+                                        </View>
                                     </>
                                     }
 

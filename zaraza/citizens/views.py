@@ -80,5 +80,5 @@ def temperature_list(request):
 def send_verification_code(request):
 
     if request.method == 'POST':
-        data = JSONParser().parse(request)
         breakpoint()
+        data = JSONParser().parse(request)
