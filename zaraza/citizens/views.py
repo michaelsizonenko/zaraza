@@ -66,7 +66,7 @@ def temperature_list(request):
         return JsonResponse(serializer.data, safe=False)
 
     if request.method == 'POST':
-        data = JSONParser.parse(request)
+        data = JSONParser().parse(request)
         serializer = TemperatureSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -74,3 +74,11 @@ def temperature_list(request):
         return JsonResponse(serializer.errors, status=400)
 
     raise Exception("Unexpected method")
+
+
+@csrf_exempt
+def send_verification_code(request):
+
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        breakpoint()

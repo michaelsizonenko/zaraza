@@ -7,6 +7,7 @@ import {
     PermissionsAndroid,
     ActivityIndicator,
     Alert,
+    Keyboard,
     Image
 } from 'react-native';
 import {Formik} from 'formik';
@@ -37,6 +38,7 @@ export default class RegisterScreen extends React.Component {
         this.state = {
             progress: false,
             isValidPhoneNumber: false,
+            isVerificationSent: false,
             step: this.steps[0]
         };
         this.initValues = {
@@ -212,28 +214,37 @@ export default class RegisterScreen extends React.Component {
                                     <Text style={styles.description}>{L('STEP1DESC')}</Text>
                                     <ValidatedPhoneInput name='phone_number'
                                                          handleNumberChange={(n) => {
-                                                             this.setState({
-                                                                 isValidPhoneNumber: this.isValidPhoneNumber(n)
-                                                             });
+                                                             if (this.isValidPhoneNumber(n)) {
+
+                                                                 Keyboard.dismiss();
+                                                                 this.setState({
+                                                                     isValidPhoneNumber: this.isValidPhoneNumber(n)
+                                                                 });
+                                                             }
                                                          }}
+                                                         disabled={this.state.isVerificationSent}
                                                          {...props} />
 
                                     <Button style={styles.formButton}
-                                            disabled={!this.state.isValidPhoneNumber}
+                                            disabled={!this.state.isValidPhoneNumber || this.state.isVerificationSent}
                                             title={L("VERIFY_PHONE")}
+                                            onPress={() => {
+                                                this.setState({
+                                                    isVerificationSent: true
+                                                })
+                                            }}
                                     />
-                                    <ValidatedTextInput name='confirmation_message'
-                                                        placeholder={L('CONFIRMATION_SMS')}
-                                                        {...props}/>
-                                    <Button style={styles.formButton}
-                                            disabled={true}
-                                            title={L("NEXT")}/>
-                                    <Text>{"Errors : " + JSON.stringify(props.errors)}</Text>
-                                    <Separator/>
-                                    <Text>{"Touched : " + JSON.stringify(props.touched)}</Text>
-                                    <Separator/>
-                                    <Text>{"Values : " + JSON.stringify(props.values)}</Text>
-                                    <Separator/>
+                                    {this.state.isVerificationSent &&
+                                    <>
+                                        <ValidatedTextInput name='confirmation_message'
+                                                            placeholder={L('CONFIRMATION_SMS')}
+                                                            {...props}/>
+                                        <Button style={styles.formButton}
+                                                disabled={true}
+                                                title={L("NEXT")}/>
+                                    </>
+                                    }
+
                                 </View>
                                 }
 

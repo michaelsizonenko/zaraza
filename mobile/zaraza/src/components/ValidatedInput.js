@@ -8,7 +8,7 @@ import {View} from "react-native";
 
 export function ValidatedPhoneInput(props) {
 
-    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType} = {...props};
+    let {name, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType, disabled} = {...props};
     return <>
         <PhoneInput
             initialCountry="ua"
@@ -16,6 +16,7 @@ export function ValidatedPhoneInput(props) {
             style={styles.phoneInput}
             onPressFlag={() => {
             }}
+            disabled={disabled}
             value={values[name]}
             onChangePhoneNumber={(n) => {
                 values[name] = n;
