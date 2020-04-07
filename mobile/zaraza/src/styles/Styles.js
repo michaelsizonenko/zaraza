@@ -23,6 +23,12 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         marginHorizontal: 16,
     },
+    formContainer: {
+        flex: 1,
+        marginTop: 10,
+        marginHorizontal: 16,
+
+    },
     title: {
         textAlign: 'center',
         marginVertical: 8,
@@ -47,4 +53,16 @@ export const styles = StyleSheet.create({
     blankSeparator: {
         marginVertical: 15,
     },
+    header: {
+        fontSize: 25,
+        marginVertical: 5
+    },
+    description: {
+        fontSize: 15,
+        marginVertical: 5
+    },
+    formButton: {
+        margin: 10,
+        padding: 10
+    }
 });

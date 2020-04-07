@@ -19,15 +19,25 @@ import ImagePicker from "react-native-image-picker";
 import Geolocation from "react-native-geolocation-service";
 import {systemConfig} from '../config/AppConfig';
 import {styles} from "../styles/Styles";
-import {ValidatedPhoneInput, ValidatedTextInput, ValidatedDateInput, Separator, BlankSeparator} from '../components/ValidatedInput';
+import {
+    ValidatedPhoneInput,
+    ValidatedTextInput,
+    ValidatedDateInput,
+    Separator,
+    BlankSeparator
+} from '../components/ValidatedInput';
 
 
 export default class RegisterScreen extends React.Component {
 
+
     constructor(props) {
         super(props);
+        this.steps = ["PHONE", "PERSONAL_DATA", "DOCUMENT", "TEMPERATURE"];
         this.state = {
-            progress: false
+            progress: false,
+            isValidPhoneNumber: false,
+            step: this.steps[0]
         };
         this.initValues = {
             first_name: '',
@@ -196,84 +206,119 @@ export default class RegisterScreen extends React.Component {
                         {(props) => (
                             <View style={styles.form}>
 
-                                <ValidatedPhoneInput name='phone_number'
-                                                     {...props} />
+                                {this.state.step === this.steps[0] &&
+                                <View style={styles.formContainer}>
+                                    <Text style={styles.header}>{L('STEP1TITLE')}</Text>
+                                    <Text style={styles.description}>{L('STEP1DESC')}</Text>
+                                    <ValidatedPhoneInput name='phone_number'
+                                                         handleNumberChange={(n) => {
+                                                             this.setState({
+                                                                 isValidPhoneNumber: this.isValidPhoneNumber(n)
+                                                             });
+                                                         }}
+                                                         {...props} />
 
-                                {props.values.image && <Image source={props.values.image} style={{height: 100}}/>}
+                                    <Button style={styles.formButton}
+                                            disabled={!this.state.isValidPhoneNumber}
+                                            title={L("VERIFY_PHONE")}
+                                    />
+                                    <ValidatedTextInput name='confirmation_message'
+                                                        placeholder={L('CONFIRMATION_SMS')}
+                                                        {...props}/>
+                                    <Button style={styles.formButton}
+                                            disabled={true}
+                                            title={L("NEXT")}/>
+                                    <Text>{"Errors : " + JSON.stringify(props.errors)}</Text>
+                                    <Separator/>
+                                    <Text>{"Touched : " + JSON.stringify(props.touched)}</Text>
+                                    <Separator/>
+                                    <Text>{"Values : " + JSON.stringify(props.values)}</Text>
+                                    <Separator/>
+                                </View>
+                                }
 
-                                <AwesomeIcon name="camera" size={30} color="#900"
-                                             onPress={this.handleImagePress.bind(self, props)}/>
+                                {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
 
-                                <ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>
+                                {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
+                                {/*             onPress={this.handleImagePress.bind(self, props)}/>*/}
 
-                                <RadioButton.Group
-                                    onValueChange={props.handleChange('doc_type')}
-                                    value={props.values['doc_type']}
-                                    name="doc_type"
-                                >
-                                    <RadioButton.Item label={L('PASSPORT')} value="passport"/>
-                                    <RadioButton.Item label={L('ID_CARD')} value="id"/>
-                                    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>
+                                {/*<ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>*/}
 
-                                    {props.touched['doc_type'] && props.errors['doc_type'] &&
-                                    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
-                                    }
-                                </RadioButton.Group>
+                                {/*<RadioButton.Group*/}
+                                {/*    onValueChange={props.handleChange('doc_type')}*/}
+                                {/*    value={props.values['doc_type']}*/}
+                                {/*    name="doc_type"*/}
+                                {/*>*/}
+                                {/*    <RadioButton.Item label={L('PASSPORT')} value="passport"/>*/}
+                                {/*    <RadioButton.Item label={L('ID_CARD')} value="id"/>*/}
+                                {/*    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>*/}
 
-                                <ValidatedTextInput name='last_name'
-                                                    placeholder={L('LNAME')}
-                                                    {...props}/>
-                                <ValidatedTextInput name='first_name'
-                                                    placeholder={L('FNAME')}
-                                                    {...props}/>
-                                <ValidatedTextInput name='second_name'
-                                                    placeholder={L('SNAME')}
-                                                    {...props}/>
+                                {/*    {props.touched['doc_type'] && props.errors['doc_type'] &&*/}
+                                {/*    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>*/}
+                                {/*    }*/}
+                                {/*</RadioButton.Group>*/}
 
-                                <BlankSeparator/>
-                                <RadioButton.Group
-                                    onValueChange={props.handleChange('gender')}
-                                    value={props.values['gender']}
-                                    name="gender"
-                                >
-                                    <RadioButton.Item label={L('MAN')} value="M"/>
-                                    <RadioButton.Item label={L('WOMAN')} value="W"/>
+                                {this.state.step === this.steps[1] &&
+                                <>
+                                    <ValidatedTextInput name='last_name'
+                                                        placeholder={L('LNAME')}
+                                                        {...props}/>
+                                    <ValidatedTextInput name='first_name'
+                                                        placeholder={L('FNAME')}
+                                                        {...props}/>
+                                    <ValidatedTextInput name='second_name'
+                                                        placeholder={L('SNAME')}
+                                                        {...props}/>
 
-                                    {props.touched['gender'] && props.errors['gender'] &&
-                                    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['gender']}</Text>
-                                    }
+                                    <BlankSeparator/>
+                                    <RadioButton.Group
+                                        onValueChange={props.handleChange('gender')}
+                                        valuee={props.values['gender']}
+                                        name="gender"
+                                    >
+                                        <RadioButton.Item label={L('MAN')} value="M"/>
+                                        <RadioButton.Item label={L('WOMAN')} value="W"/>
 
-                                </RadioButton.Group>
+                                        {props.touched['gender'] && props.errors['gender'] &&
+                                        <Text style={{fontSize: 10, color: 'red'}}>{props.errors['gender']}</Text>
+                                        }
 
-                                <BlankSeparator/>
-                                <ValidatedDateInput name='birth_date'
-                                                    placeholder={L('BIRTHDAY')}
-                                                    handleDateChange={(d) => {
-                                                        console.log('d:', d);
-                                                        props.values['birth_date'] = d
-                                                    }}
-                                                    {...props}/>
-                                <BlankSeparator/>
-                                <ValidatedTextInput name='address'
-                                                    placeholder={L('ADDRESS')}
-                                                    numberOfLines={3}
-                                                    {...props}/>
-                                <BlankSeparator/>
+                                    </RadioButton.Group>
+
+                                    <BlankSeparator/>
+                                    <ValidatedDateInput name='birth_date'
+                                                        placeholder={L('BIRTHDAY')}
+                                                        handleDateChange={(d) => {
+                                                            console.log('d:', d);
+                                                            props.values['birth_date'] = d
+                                                        }}
+                                                        {...props}/>
+                                    <BlankSeparator/>
+                                    <ValidatedTextInput name='address'
+                                                        placeholder={L('ADDRESS')}
+                                                        numberOfLines={3}
+                                                        {...props}/>
+                                    <BlankSeparator/>
+                                </>
+                                }
 
 
-                                <ValidatedTextInput name='temperature'
-                                                    placeholder={L('TEMPERATURE')}
-                                                    keyboardType='numeric'
-                                                    {...props}/>
-                                <Separator/>
-                                {/*<Text>{"Errors : " + JSON.stringify(props.errors)}</Text>*/}
-                                {/*<Separator/>*/}
-                                {/*<Text>{"Touched : " + JSON.stringify(props.touched)}</Text>*/}
-                                {/*<Separator/>*/}
-                                {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
-                                {/*<Separator/>*/}
-                                <Button styles={styles.submit} onPress={props.handleSubmit} title={L('SUBMIT')}/>
+                                {this.state.step === this.steps[3] &&
+                                <>
+                                    <ValidatedTextInput name='temperature'
+                                                        placeholder={L('TEMPERATURE')}
+                                                        keyboardType='numeric'
+                                                        {...props}/>
 
+                                    <Separator/>
+                                    {/*<Text>{"Errors : " + JSON.stringify(props.errors)}</Text>*/}
+                                    {/*<Separator/>*/}
+                                    {/*<Text>{"Touched : " + JSON.stringify(props.touched)}</Text>*/}
+                                    {/*<Separator/>*/}
+                                    {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
+                                    {/*<Separator/>*/}
+                                    <Button styles={styles.submit} onPress={props.handleSubmit} title={L('SUBMIT')}/>
+                                </>}
                             </View>
                         )}
                     </Formik>

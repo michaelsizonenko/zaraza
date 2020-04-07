@@ -4,9 +4,14 @@ import {Formik} from "formik";
 import {styles} from '../styles/Styles';
 import {ValidatedPhoneInput, ValidatedTextInput, Separator, BlankSeparator} from '../components/ValidatedInput';
 import {L} from "../texts/Strings";
+import * as Yup from "yup";
 
 
 export default class ScreeningScreen extends React.Component {
+
+    ScreeningSchema = Yup.object().shape({
+
+    });
 
     render() {
         return (

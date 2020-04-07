@@ -135,6 +135,31 @@ const strings = {
         en: "Citizen has been registered successfully!",
         ru: "Гражданин зарегистрирован успешно!",
         ua: "Громадянин зареєстрований успішно!"
+    },
+    CONFIRMATION_SMS: {
+        en: "SMS confirmation",
+        ru: "СМС подтверждение",
+        ua: "СМС підтвердження"
+    },
+    VERIFY_PHONE: {
+        en: "Send SMS confirmation",
+        ru: "Отправить СМС подтверждение",
+        ua: "Відправити СМС підтвердження"
+    },
+    STEP1TITLE: {
+        en: "Step 1 :",
+        ru: "Шаг 1 :",
+        ua: "Крок 1 :",
+    },
+    STEP1DESC: {
+        en: "Description",
+        ru: "Description",
+        ua: "Для початку реєстрації введіть, будь ласка, действующий номер телефону громадянина.",
+    },
+    NEXT: {
+        en: "Next",
+        ru: "Далее",
+        ua: "Далее"
     }
 };
 

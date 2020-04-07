@@ -18,7 +18,8 @@ export function ValidatedPhoneInput(props) {
             }}
             value={values[name]}
             onChangePhoneNumber={(n) => {
-                values[name] = n
+                values[name] = n;
+                props.handleNumberChange(n);
             }}
         />
         {touched[name] && errors[name] &&
