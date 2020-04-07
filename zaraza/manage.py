@@ -2,7 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+from psycopg2cffi import compat
+compat.register()
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'zaraza.settings')
