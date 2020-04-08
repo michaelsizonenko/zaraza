@@ -193,6 +193,10 @@ export default class RegisterScreen extends React.Component {
         return this.state.verificationCode && (this.state.verificationCode.toString() === text)
     };
 
+    isSecondStepReady = (values) => {
+        return values.first_name && values.second_name && values.last_name && values.birth_date && values.gender && values.address;
+    };
+
 
     render() {
 
@@ -325,7 +329,7 @@ export default class RegisterScreen extends React.Component {
                                     <BlankSeparator/>
                                     <RadioButton.Group
                                         onValueChange={props.handleChange('gender')}
-                                        valuee={props.values['gender']}
+                                        value={props.values['gender']}
                                         name="gender"
                                     >
                                         <RadioButton.Item label={L('MAN')} value="M"/>
@@ -352,7 +356,7 @@ export default class RegisterScreen extends React.Component {
                                                         {...props}/>
                                     <BlankSeparator/>
                                     <View style={styles.formButtonWrapper}>
-                                        <Button disabled={false}
+                                        <Button disabled={!this.isSecondStepReady(props.values)}
                                                 onPress={() => {
                                                     this.setState({
                                                         step: this.steps[2]
