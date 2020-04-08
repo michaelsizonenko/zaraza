@@ -8,7 +8,8 @@ import {
     ActivityIndicator,
     Alert,
     Keyboard,
-    Image
+    Image,
+    TextInput
 } from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -39,7 +40,10 @@ export default class RegisterScreen extends React.Component {
             progress: false,
             isValidPhoneNumber: false,
             isVerificationSent: false,
-            step: this.steps[0]
+            verificationCodeHasEntered: false,
+            step: this.steps[0],
+            verificationCode: '',
+            inputCode: ''
         };
         this.initValues = {
             first_name: '',
@@ -185,6 +189,10 @@ export default class RegisterScreen extends React.Component {
 
     };
 
+    isCorrectVerificationCode = (text) => {
+        return this.state.verificationCode && (this.state.verificationCode.toString() === text)
+    };
+
 
     render() {
 
@@ -244,28 +252,49 @@ export default class RegisterScreen extends React.Component {
                                                             phone_number: props.values['phone_number']
                                                         }),
                                                     });
-                                                    console.log(result);
-                                                    if (!result.ok) {
-                                                        Alert.alert(L('ERROR'));
+                                                    if (result.ok) {
+                                                        const response = await result.json();
+                                                        this.setState({
+                                                            verificationCode: String(response.verification_code).padStart(5, '0')
+                                                        });
                                                         return;
                                                     }
-
+                                                    throw new Error(result.status);
                                                 } catch (e) {
-                                                    console.error(e);
+                                                    Alert.alert(L('ERROR'));
+                                                    this.setState({
+                                                        isVerificationSent: false
+                                                    });
+                                                    console.log(e);
                                                 }
                                             }}
                                         />
                                     </View>
                                     {this.state.isVerificationSent &&
                                     <>
-                                        <ValidatedTextInput name='confirmation_message'
-                                                            placeholder={L('CONFIRMATION_SMS')}
-                                                            callback={(value) => {
-
-                                                            }}
-                                                            {...props}/>
+                                        <TextInput
+                                            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                                            onChangeText={text => {
+                                                if (this.isCorrectVerificationCode(text)){
+                                                    console.log('Set input as disabled');
+                                                    Keyboard.dismiss();
+                                                    this.setState({
+                                                        inputCode: text,
+                                                        verificationCodeHasEntered: true
+                                                    });
+                                                    return
+                                                }
+                                                this.setState({
+                                                    inputCode: text
+                                                })
+                                            }}
+                                            placeholder={L('CONFIRMATION_SMS')}
+                                            keyboardType='numeric'
+                                            editable={!this.state.verificationCodeHasEntered}
+                                            value={this.state.inputCode}
+                                        />
                                         <View style={styles.formButtonWrapper}>
-                                            <Button disabled={true}
+                                            <Button disabled={!this.state.verificationCodeHasEntered}
                                                     title={L("NEXT")}/>
                                         </View>
                                     </>

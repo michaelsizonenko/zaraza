@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from citizens.models import Citizen, GENDER_CHOICES
-from citizens.models import Temperature
+from citizens.models import Citizen, GENDER_CHOICES, Temperature, VerificationPhoneNumberRequest
 
 
 class CitizenSerializer(serializers.Serializer):
@@ -55,3 +54,14 @@ class TemperatureSerializer(serializers.Serializer):
         instance.supervisor = validated_data.get('supervisor', instance.supervisor)
         instance.save()
         return instance
+
+
+class VerificationPhoneNumberRequestSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(required=True, allow_blank=False, max_length=128)
+    verification_code = serializers.IntegerField(required=True)
+
+    def update(self, instance, validated_data):
+        raise Exception("Forbidden method !")
+
+    def create(self, validated_data):
+        return VerificationPhoneNumberRequest.objects.create(**validated_data)

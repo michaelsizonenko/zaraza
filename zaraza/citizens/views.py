@@ -2,7 +2,9 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from citizens.models import Citizen, Temperature
-from citizens.serializers import CitizenSerializer, TemperatureSerializer
+from citizens.phone_verification_controller import PhoneVerificationController
+from citizens.serializers import CitizenSerializer, TemperatureSerializer, VerificationPhoneNumberRequestSerializer
+from citizens.utils import validate_phone_number
 
 
 @csrf_exempt
@@ -80,6 +82,14 @@ def temperature_list(request):
 def send_verification_code(request):
 
     if request.method == 'POST':
-        breakpoint()
-        # todo: continue here
         data = JSONParser().parse(request)
+        valid_phone_number = validate_phone_number(data['phone_number'])
+        verification_controller = PhoneVerificationController.get_instance()
+        data['verification_code'] = verification_controller.send_verification_message(valid_phone_number)
+        serializer = VerificationPhoneNumberRequestSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=500)
+
+    raise Exception("Unexpected method")

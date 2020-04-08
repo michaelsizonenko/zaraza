@@ -33,3 +33,13 @@ class Temperature(models.Model):
 
     class Meta:
         ordering = ['created']
+
+
+class VerificationPhoneNumberRequest(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+
+    phone_number = PhoneNumberField()
+    verification_code = models.PositiveSmallIntegerField()
+
+    class Meta:
+        ordering = ['created']
