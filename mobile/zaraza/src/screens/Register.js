@@ -275,7 +275,7 @@ export default class RegisterScreen extends React.Component {
                                         <TextInput
                                             style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                                             onChangeText={text => {
-                                                if (this.isCorrectVerificationCode(text)){
+                                                if (this.isCorrectVerificationCode(text)) {
                                                     console.log('Correct verification code has been entered!');
                                                     Keyboard.dismiss();
                                                     this.setState({
@@ -308,29 +308,10 @@ export default class RegisterScreen extends React.Component {
                                 </View>
                                 }
 
-                                {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
-
-                                {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
-                                {/*             onPress={this.handleImagePress.bind(self, props)}/>*/}
-
-                                {/*<ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>*/}
-
-                                {/*<RadioButton.Group*/}
-                                {/*    onValueChange={props.handleChange('doc_type')}*/}
-                                {/*    value={props.values['doc_type']}*/}
-                                {/*    name="doc_type"*/}
-                                {/*>*/}
-                                {/*    <RadioButton.Item label={L('PASSPORT')} value="passport"/>*/}
-                                {/*    <RadioButton.Item label={L('ID_CARD')} value="id"/>*/}
-                                {/*    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>*/}
-
-                                {/*    {props.touched['doc_type'] && props.errors['doc_type'] &&*/}
-                                {/*    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>*/}
-                                {/*    }*/}
-                                {/*</RadioButton.Group>*/}
-
                                 {this.state.step === this.steps[1] &&
-                                <>
+                                <View style={styles.formContainer}>
+                                    <Text style={styles.header}>{L('STEP2TITLE')}</Text>
+                                    <Text style={styles.description}>{L('STEP2DESC')}</Text>
                                     <ValidatedTextInput name='last_name'
                                                         placeholder={L('LNAME')}
                                                         {...props}/>
@@ -370,12 +351,55 @@ export default class RegisterScreen extends React.Component {
                                                         numberOfLines={3}
                                                         {...props}/>
                                     <BlankSeparator/>
-                                </>
+                                    <View style={styles.formButtonWrapper}>
+                                        <Button disabled={false}
+                                                onPress={() => {
+                                                    this.setState({
+                                                        step: this.steps[2]
+                                                    })
+                                                }}
+                                                title={L("NEXT")}/>
+                                    </View>
+                                </View>
+                                }
+
+                                {this.state.step === this.steps[2] &&
+                                <View>
+                                    {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
+
+                                    {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
+                                    {/*             onPress={this.handleImagePress.bind(self, props)}/>*/}
+
+                                    {/*<ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>*/}
+
+                                    {/*<RadioButton.Group*/}
+                                    {/*    onValueChange={props.handleChange('doc_type')}*/}
+                                    {/*    value={props.values['doc_type']}*/}
+                                    {/*    name="doc_type"*/}
+                                    {/*>*/}
+                                    {/*    <RadioButton.Item label={L('PASSPORT')} value="passport"/>*/}
+                                    {/*    <RadioButton.Item label={L('ID_CARD')} value="id"/>*/}
+                                    {/*    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>*/}
+
+                                    {/*    {props.touched['doc_type'] && props.errors['doc_type'] &&*/}
+                                    {/*    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>*/}
+                                    {/*    }*/}
+                                    {/*</RadioButton.Group>*/}
+                                    <View style={styles.formButtonWrapper}>
+                                        <Button disabled={false}
+                                                onPress={() => {
+                                                    this.setState({
+                                                        step: this.steps[3]
+                                                    })
+                                                }}
+                                                title={L("NEXT")}/>
+                                    </View>
+                                </View>
                                 }
 
 
                                 {this.state.step === this.steps[3] &&
-                                <>
+                                <View>
                                     <ValidatedTextInput name='temperature'
                                                         placeholder={L('TEMPERATURE')}
                                                         keyboardType='numeric'
@@ -389,7 +413,7 @@ export default class RegisterScreen extends React.Component {
                                     {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
                                     {/*<Separator/>*/}
                                     <Button styles={styles.submit} onPress={props.handleSubmit} title={L('SUBMIT')}/>
-                                </>}
+                                </View>}
                             </View>
                         )}
                     </Formik>
