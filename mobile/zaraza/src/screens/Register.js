@@ -276,7 +276,7 @@ export default class RegisterScreen extends React.Component {
                                             style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                                             onChangeText={text => {
                                                 if (this.isCorrectVerificationCode(text)){
-                                                    console.log('Set input as disabled');
+                                                    console.log('Correct verification code has been entered!');
                                                     Keyboard.dismiss();
                                                     this.setState({
                                                         inputCode: text,
@@ -295,6 +295,11 @@ export default class RegisterScreen extends React.Component {
                                         />
                                         <View style={styles.formButtonWrapper}>
                                             <Button disabled={!this.state.verificationCodeHasEntered}
+                                                    onPress={() => {
+                                                        this.setState({
+                                                            step: this.steps[1]
+                                                        })
+                                                    }}
                                                     title={L("NEXT")}/>
                                         </View>
                                     </>
