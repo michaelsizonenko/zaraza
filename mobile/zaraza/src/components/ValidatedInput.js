@@ -89,7 +89,7 @@ export function ValidatedTextInput(props) {
 
     return <>
         <TextInput
-            onChangeText={() => {handleChange(name); callback && callback(values[name])}}
+            onChangeText={handleChange(name)}
             value={values[name]}
             onBlur={setFieldTouched.bind(this, name)}
             placeholder={placeholder}
