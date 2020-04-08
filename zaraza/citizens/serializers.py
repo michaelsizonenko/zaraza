@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from citizens.models import Citizen, GENDER_CHOICES, Temperature, VerificationPhoneNumberRequest
+from citizens.models import Citizen, GENDER_CHOICES, DOCTYPE_CHOICES, Temperature, VerificationPhoneNumberRequest
 
 
 class CitizenSerializer(serializers.Serializer):
@@ -9,6 +9,8 @@ class CitizenSerializer(serializers.Serializer):
     last_name = serializers.CharField(required=True, allow_blank=False, max_length=100)
     phone_number = serializers.CharField(required=True, allow_blank=False, max_length=128)
     gender = serializers.ChoiceField(required=True, choices=GENDER_CHOICES)
+    doc_type = serializers.ChoiceField(required=True, choices=DOCTYPE_CHOICES)
+    document = serializers.CharField(required=True)
     birth_date = serializers.DateField(required=True)
     address = serializers.CharField(required=True, max_length=100)
     creator = serializers.RelatedField(source='user', read_only=True)
@@ -28,6 +30,8 @@ class CitizenSerializer(serializers.Serializer):
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.phone_number = validated_data.get('phone_number', instance.phone_number)
         instance.gender = validated_data.get('gender', instance.gender)
+        instance.doc_type = validated_data.get('doc_type', instance.doc_type)
+        instance.document = validated_data.get('document', instance.document)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.address = validated_data.get('address', instance.address)
         instance.save()

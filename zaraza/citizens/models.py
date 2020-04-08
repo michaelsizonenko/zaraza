@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 
 GENDER_CHOICES = (('M', 'Man'), ('W', 'Woman'))
+DOCTYPE_CHOICES = (('P', 'Passport'), ('C', "ID card"), ('D', 'Driver licence'))
 
 
 class Citizen(models.Model):
@@ -16,6 +17,8 @@ class Citizen(models.Model):
     last_name = models.CharField(max_length=100)
     phone_number = PhoneNumberField(unique=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    doc_type = models.CharField(max_length=1, choices=DOCTYPE_CHOICES)
+    document = models.CharField(max_length=16)
     birth_date = models.DateField()
     address = models.CharField(max_length=100)
     creator = models.ForeignKey(User, on_delete=models.PROTECT)
