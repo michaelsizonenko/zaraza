@@ -197,6 +197,9 @@ export default class RegisterScreen extends React.Component {
         return values.first_name && values.second_name && values.last_name && values.birth_date && values.gender && values.address;
     };
 
+    isThirdStepReady = (values) => {
+        return values.image && values.doc_type && values.doc_number;
+    };
 
     render() {
 
@@ -368,29 +371,37 @@ export default class RegisterScreen extends React.Component {
                                 }
 
                                 {this.state.step === this.steps[2] &&
-                                <View>
-                                    {/*{props.values.image && <Image source={props.values.image} style={{height: 100}}/>}*/}
+                                <View style={styles.formContainer}  >
+                                    <Text style={styles.header}>{L('STEP3TITLE')}</Text>
+                                    <Text style={styles.description}>{L('STEP3DESC')}</Text>
+                                    {props.values.image && <Image
+                                        source={props.values.image}
+                                        style={{height: 200, width: '100%'}}
+                                    />}
 
-                                    {/*<AwesomeIcon name="camera" size={30} color="#900"*/}
-                                    {/*             onPress={this.handleImagePress.bind(self, props)}/>*/}
+                                    <View style={{alignItems: 'center'}}>
+                                        <AwesomeIcon name="camera"
+                                                 size={50}
+                                                 color="#900"
+                                                 onPress={this.handleImagePress.bind(self, props)}/>
+                                    </View>
 
-                                    {/*<ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>*/}
+                                    <RadioButton.Group
+                                        onValueChange={props.handleChange('doc_type')}
+                                        value={props.values['doc_type']}
+                                        name="doc_type"
+                                    >
+                                        <RadioButton.Item label={L('PASSPORT')} value="passport"/>
+                                        <RadioButton.Item label={L('ID_CARD')} value="id"/>
+                                        <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>
 
-                                    {/*<RadioButton.Group*/}
-                                    {/*    onValueChange={props.handleChange('doc_type')}*/}
-                                    {/*    value={props.values['doc_type']}*/}
-                                    {/*    name="doc_type"*/}
-                                    {/*>*/}
-                                    {/*    <RadioButton.Item label={L('PASSPORT')} value="passport"/>*/}
-                                    {/*    <RadioButton.Item label={L('ID_CARD')} value="id"/>*/}
-                                    {/*    <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>*/}
-
-                                    {/*    {props.touched['doc_type'] && props.errors['doc_type'] &&*/}
-                                    {/*    <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>*/}
-                                    {/*    }*/}
-                                    {/*</RadioButton.Group>*/}
+                                        {props.touched['doc_type'] && props.errors['doc_type'] &&
+                                        <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
+                                        }
+                                    </RadioButton.Group>
+                                    <ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>
                                     <View style={styles.formButtonWrapper}>
-                                        <Button disabled={false}
+                                        <Button disabled={!this.isThirdStepReady(props.values)}
                                                 onPress={() => {
                                                     this.setState({
                                                         step: this.steps[3]
@@ -400,7 +411,6 @@ export default class RegisterScreen extends React.Component {
                                     </View>
                                 </View>
                                 }
-
 
                                 {this.state.step === this.steps[3] &&
                                 <View>
@@ -416,7 +426,10 @@ export default class RegisterScreen extends React.Component {
                                     {/*<Separator/>*/}
                                     {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
                                     {/*<Separator/>*/}
-                                    <Button styles={styles.submit} onPress={props.handleSubmit} title={L('SUBMIT')}/>
+                                    <Button styles={styles.submit}
+                                            onPress={props.handleSubmit}
+                                            disabled={false}
+                                            title={L('SUBMIT')}/>
                                 </View>}
                             </View>
                         )}
