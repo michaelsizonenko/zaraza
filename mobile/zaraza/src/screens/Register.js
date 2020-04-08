@@ -238,7 +238,6 @@ export default class RegisterScreen extends React.Component {
                                                          }}
                                                          disabled={this.state.isVerificationSent}
                                                          {...props} />
-
                                     <View style={styles.formButtonWrapper}>
                                         <Button
                                             disabled={!this.state.isValidPhoneNumber || this.state.isVerificationSent}
@@ -279,6 +278,8 @@ export default class RegisterScreen extends React.Component {
                                     </View>
                                     {this.state.isVerificationSent &&
                                     <>
+                                        {/*TEST OUTPUT REMOVE BEFORE DEMO*/}
+                                        <Text>SMS are off during development. Enter the code : {this.state.verificationCode}</Text>
                                         <TextInput
                                             style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                                             onChangeText={text => {
