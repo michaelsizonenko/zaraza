@@ -82,7 +82,9 @@ export const styles = StyleSheet.create({
         "width": "80%",
     },
     searchButton:{
-
+        borderWidth: 1,
+        width: 55,
+        height: 55
     }
 
 
