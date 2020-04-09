@@ -31,10 +31,10 @@
   "Step 1 :": "Крок 1 :",
   "Please enter a valid citizen's phone number": "Please enter a valid citizen's phone number",
   "Step 2 :": "Крок 2 :",
-  "Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address.": "Для продовження реєстрації, будь ласка,  додайте персональні дані громадянина: ПІБ, стать, дату народження та адресу фактичного проживання.",
+  "Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address": "Для продовження реєстрації, будь ласка,  додайте персональні дані громадянина: ПІБ, стать, дату народження та адресу фактичного проживання.",
   "Step 3 :": "Крок 3 :",
-  "To continue registration, add series and number of  identity document, take a photo of the citizen.": "Для продовження реєстрації додайте серію та номер документу громадянина, сфотографуйте громадянина.",
+  "To continue registration, add series and number of  identity document, take a photo of the citizen": "Для продовження реєстрації додайте серію та номер документу громадянина, сфотографуйте громадянина.",
   "Step 4 :": "Крок 4 :",
-  "Please add citizen temperature information.": "Будь ласка, додайте інформацію про температуру громадянина.",
+  "Please add citizen temperature information": "Будь ласка, додайте інформацію про температуру громадянина.",
   "Next": "Далі"
 }

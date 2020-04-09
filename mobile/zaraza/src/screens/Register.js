@@ -319,7 +319,7 @@ export default class RegisterScreen extends React.Component {
                                 {this.state.step === this.steps[1] &&
                                 <View style={styles.formContainer}>
                                     <Text style={styles.header}>{translate("Step 2 :")}</Text>
-                                    <Text style={styles.description}>{translate("Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address.")}</Text>
+                                    <Text style={styles.description}>{translate("Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address")}</Text>
                                     <ValidatedTextInput name='last_name'
                                                         placeholder={translate("Last name")}
                                                         {...props}/>
@@ -374,7 +374,7 @@ export default class RegisterScreen extends React.Component {
                                 {this.state.step === this.steps[2] &&
                                 <View style={styles.formContainer}  >
                                     <Text style={styles.header}>{translate("Step 3 :")}</Text>
-                                    <Text style={styles.description}>{translate("To continue registration, add series and number of  identity document, take a photo of the citizen.")}</Text>
+                                    <Text style={styles.description}>{translate("To continue registration, add series and number of  identity document, take a photo of the citizen")}</Text>
                                     {props.values.image && <Image
                                         source={props.values.image}
                                         style={{height: 200, width: '100%'}}
@@ -414,7 +414,9 @@ export default class RegisterScreen extends React.Component {
                                 }
 
                                 {this.state.step === this.steps[3] &&
-                                <View>
+                                <View style={styles.formContainer} >
+                                    <Text style={styles.header}>{translate("Step 4 :")}</Text>
+                                    <Text style={styles.description}>{translate("Please add citizen temperature information")}</Text>
                                     <ValidatedTextInput name='temperature'
                                                         placeholder={translate("Citizen's temperature")}
                                                         keyboardType='numeric'
