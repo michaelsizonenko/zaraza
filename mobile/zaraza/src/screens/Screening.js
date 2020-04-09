@@ -18,14 +18,13 @@ export default class ScreeningScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
-                        initialValues={{'phone_number': '+380'}}
                         onSubmit={this._onSubmit}
                         validationSchema={this.ScreeningSchema}
                     >
                         {(props) => (
                             <View style={styles.form}>
 
-                                <ValidatedPhoneInput name='phone_number'
+                                <ValidatedPhoneInput name='query'
                                                      {...props} />
 
                                 <Text style={{margin: 10, fontSize: 18}}>Знайдено :</Text>
