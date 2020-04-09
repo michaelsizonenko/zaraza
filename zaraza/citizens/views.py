@@ -29,58 +29,18 @@ def citizen_list(request):
 
 
 @csrf_exempt
-def citizen_by_phone(request, phone_number):
-    try:
-        citizen = Citizen.objects.get(phone_number=phone_number)
-    except Citizen.DoesNotExist:
-        return HttpResponse(status=404)
-
-    if request.method == 'GET':
-        serializer = CitizenSerializer(citizen)
-        return JsonResponse(serializer.data)
-
-    raise Exception("Unexpected method")
-
-
-@csrf_exempt
-def citizen_by_document(request, document):
-    try:
-        citizen = Citizen.objects.get(document=document)
-    except Citizen.DoesNotExist:
-        return HttpResponse(status=404)
-
-    if request.method == 'GET':
-        serializer = CitizenSerializer(citizen)
-        return JsonResponse(serializer.data)
-
-    raise Exception("Unexpected method")
-
-
-@csrf_exempt
-def citizen_detail(request, pk):
+def citizen_detail(request, query):
     """
     Retrieve, update or delete a citizen
     """
     try:
-        citizen = Citizen.objects.get(pk=pk)
+        citizen = Citizen.objects.get(pk=query)
     except Citizen.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
         serializer = CitizenSerializer(citizen)
         return JsonResponse(serializer.data)
-
-    if request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = CitizenSerializer(citizen, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-
-    if request.method == 'DELETE':
-        citizen.delete()
-        return HttpResponse(status=204)
 
     raise Exception("Unexpected method")
 
