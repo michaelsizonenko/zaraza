@@ -4,7 +4,7 @@ import ScreeningScreen from '../screens/Screening'
 import SettingsScreen from "../screens/Settings";
 import * as React from 'react'
 import {createStackNavigator} from '@react-navigation/stack';
-import { L } from '../texts/Strings';
+import { translate } from "../config/AppConfig";
 
 const Stack = createStackNavigator();
 
@@ -20,7 +20,7 @@ export function RegisterScreenWrapper({navigation}) {
                                 icon='bars'
                                 onPress={() => navigation.toggleDrawer()}
                             />
-                            <Appbar.Content title={L('REGISTER')}/>
+                            <Appbar.Content title={translate("Sign up citizen")}/>
                         </Appbar.Header>
                     )
                 }
@@ -43,7 +43,7 @@ export function ScreeningScreenWrapper({navigation}) {
                                 icon='bars'
                                 onPress={() => navigation.toggleDrawer()}
                             />
-                            <Appbar.Content title={L('TEMPERATURE')}/>
+                            <Appbar.Content title={translate("Citizen's temperature")}/>
                         </Appbar.Header>
                     )
                 }
@@ -66,7 +66,7 @@ export function SettingsScreenWrapper({navigation}) {
                                 icon='bars'
                                 onPress={() => navigation.toggleDrawer()}
                             />
-                            <Appbar.Content title={L('SETTINGS')}/>
+                            <Appbar.Content title={translate('Settings')}/>
                         </Appbar.Header>
                     )
                 }

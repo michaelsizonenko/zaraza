@@ -3,8 +3,8 @@ import {Button, SafeAreaView, ScrollView, View, Text} from 'react-native';
 import {Formik} from "formik";
 import {styles} from '../styles/Styles';
 import {ValidatedPhoneInput, ValidatedTextInput, Separator, BlankSeparator} from '../components/ValidatedInput';
-import {L} from "../texts/Strings";
 import * as Yup from "yup";
+import { translate } from "../config/AppConfig";
 
 
 export default class ScreeningScreen extends React.Component {
@@ -32,7 +32,7 @@ export default class ScreeningScreen extends React.Component {
                                 <Text style={{margin: 10}}>Іскендерова Ірина</Text>
 
                                 <ValidatedTextInput name='temperature'
-                                                    placeholder={L('TEMPERATURE')}
+                                                    placeholder={translate('TEMPERATURE')}
                                                     keyboardType='numeric'
                                                     {...props}/>
                                 <Separator/>
@@ -42,7 +42,7 @@ export default class ScreeningScreen extends React.Component {
                                 {/*<Separator/>*/}
                                 {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
                                 {/*<Separator/>*/}
-                                <Button styles={styles.submit} onPress={props.handleSubmit} title={L('SUBMIT')}/>
+                                <Button styles={styles.submit} onPress={props.handleSubmit} title={translate('Submit')}/>
                             </View>
                         )}
                     </Formik>

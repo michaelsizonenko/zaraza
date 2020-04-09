@@ -1,26 +1,6 @@
 import {systemConfig} from "../config/AppConfig";
 
 const strings = {
-    "INTERFACE": {
-        en: "Application language",
-        ru: "Язык приложения",
-        ua: "Мова аплікації"
-    },
-    "SETTINGS": {
-        en: "Settings",
-        ru: "Настройки",
-        ua: "Налаштування"
-    },
-    "REGISTER": {
-        en: "Sign up citizen",
-        ru: "Регистрация гражданина",
-        ua: "Реєстрація громадянина"
-    },
-    "SCREENING": {
-        en: "Citizen's temperature",
-        ru: "Температура гражданина",
-        ua: "Температура громадянина"
-    },
     WRONG_PHONE_NUMBER: {
         en: "Wrong phone number",
         ru: "Неверный номер телефона !",
@@ -32,7 +12,7 @@ const strings = {
         ua: "Місце фактичного мешкання"
     },
     BIRTHDAY: {
-        en: "Birth day",
+        en: "Birth date",
         ru: "Дата рождения",
         ua: "Дата народження"
     },
@@ -152,7 +132,7 @@ const strings = {
         ua: "Крок 1 :",
     },
     STEP1DESC: {
-        en: "Description",
+        en: "Please enter a valid citizen's phone number",
         ru: "Description",
         ua: "Для початку реєстрації введіть, будь ласка, діючий номер телефону громадянина.",
     },
@@ -162,9 +142,9 @@ const strings = {
         ua: "Крок 2 :",
     },
     STEP2DESC: {
-        en: "Description",
+        en: "Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address.",
         ru: "Description",
-        ua: "Для продовження реєстрації введіть, будь ласка, персональні дані громадянина. ПІБ, стать, дату народження та адресу фактичного проживання.",
+        ua: "Для продовження реєстрації, будь ласка,  додайте персональні дані громадянина: ПІБ, стать, дату народження та адресу фактичного проживання.",
     },
     STEP3TITLE: {
         en: "Step 3 :",
@@ -172,9 +152,9 @@ const strings = {
         ua: "Крок 3 :",
     },
     STEP3DESC: {
-        en: "Description",
+        en: "To continue registration, add series and number of  identity document, take a photo of the citizen.",
         ru: "Description",
-        ua: "Для продовження реєстрації введіть, будь ласка, серію та номер документу громадянина та сфотографуйте громадянина.",
+        ua: "Для продовження реєстрації додайте серію та номер документу громадянина, сфотографуйте громадянина.",
     },
     STEP4TITLE: {
         en: "Step 4 :",
@@ -182,9 +162,9 @@ const strings = {
         ua: "Крок 4 :",
     },
     STEP4DESC: {
-        en: "Description",
+        en: "Please add citizen temperature information.",
         ru: "Description",
-        ua: "На останок виміряйте температуру громадянина да занесіть у форму.",
+        ua: "Будь ласка, додайте інформацію про температуру громадянина.",
     },
     NEXT: {
         en: "Next",

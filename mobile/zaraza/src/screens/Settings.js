@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Text, Button} from 'react-native';
 import {systemConfig} from "../config/AppConfig";
 import {SafeAreaView} from "react-native-safe-area-context";
 import { RadioButton } from "react-native-paper";
-import { L } from "../texts/Strings";
+import { translate} from "../config/AppConfig";
 
 export default class SettingsScreen extends React.Component {
 
@@ -46,20 +46,6 @@ export default class SettingsScreen extends React.Component {
                     </View>
                 </SafeAreaView>
                 }
-                <View>
-                    <Text style={{textAlign: 'center', fontSize: 20}}>{L("INTERFACE")} :</Text>
-                    <RadioButton.Group
-                        onValueChange={language => {
-                            systemConfig.setLanguage(language);
-                            this.setState({language});
-                        }}
-                        value={this.state.language}
-                    >
-                            <RadioButton.Item label={"Українська"} value="ua"/>
-                            <RadioButton.Item label={"Русский"} value="ru"/>
-                            <RadioButton.Item label={"English"} value="en"/>
-                    </RadioButton.Group>
-                </View>
                 <TouchableOpacity style={{flex: 1}} onPress={this._onTouchScreen}>
                     {/*<Text>test</Text>*/}
                 </TouchableOpacity>

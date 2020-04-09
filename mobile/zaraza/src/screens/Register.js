@@ -14,7 +14,6 @@ import {
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import Text from 'react-native-paper/src/components/Typography/Text';
-import {L} from '../texts/Strings';
 import {RadioButton} from 'react-native-paper';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from "react-native-image-picker";
@@ -28,6 +27,7 @@ import {
     Separator,
     BlankSeparator
 } from '../components/ValidatedInput';
+import {translate} from "../config/AppConfig";
 
 
 export default class RegisterScreen extends React.Component {
@@ -95,35 +95,35 @@ export default class RegisterScreen extends React.Component {
 
     SignUpSchema = Yup.object().shape({
         last_name: Yup.string()
-            .min(2, L('TOO_SHORT'))
-            .max(70, L('TOO_LONG'))
-            .required(L('REQUIRED')),
+            .min(2, translate('Too short!'))
+            .max(70, translate('Too long!'))
+            .required(translate('Required field')),
         first_name: Yup.string()
-            .min(2, L('TOO_SHORT'))
-            .max(70, L('TOO_LONG'))
-            .required(L('REQUIRED')),
+            .min(2, translate('Too short!'))
+            .max(70, translate('Too long!'))
+            .required(translate('Required field')),
         second_name: Yup.string()
-            .min(2, L('TOO_SHORT'))
-            .max(70, L('TOO_LONG'))
-            .required(L('REQUIRED')),
+            .min(2, translate('Too short!'))
+            .max(70, translate('Too long!'))
+            .required(translate('Required field')),
         // documentIsPassport: Yup.boolean()
-        //     .required(L('DOCUMENT_TYPE_REQUIRED')),
+        //     .required(translate("Choose document type")),
         // doc_number: Yup.string()
-        //     .min(8, L('TOO_SHORT'))
-        //     .max(12, L('TOO_LONG'))
-        //     .required(L('REQUIRED')),
+        //     .min(8, translate('Too short!'))
+        //     .max(12, translate('Too long!'))
+        //     .required(translate('Required field')),
         // doc_type: Yup.string()
-        //     .required(L('REQUIRED')),
+        //     .required(translate('Required field')),
         birth_date: Yup.string()
-            .required(L('REQUIRED')),
+            .required(translate('Required field')),
         gender: Yup.string()
-            .required(L('REQUIRED')),
+            .required(translate('Required field')),
         address: Yup.string()
-            .required(L('REQUIRED')),
+            .required(translate('Required field')),
         phone_number: Yup.string()
-            .test("valid", L('WRONG_PHONE_NUMBER'), this.isValidPhoneNumber),
+            .test("valid", translate("Wrong phone number"), this.isValidPhoneNumber),
         temperature: Yup.number()
-            .required(L('REQUIRED')),
+            .required(translate('Required field')),
     });
 
     //TODO: erase image by uri  after upload
@@ -174,10 +174,10 @@ export default class RegisterScreen extends React.Component {
             });
             console.log(result);
             if (!result.ok) {
-                Alert.alert(L('ERROR'));
+                Alert.alert(translate("Error occurred!"));
                 return;
             }
-            Alert.alert(L('REGISTER_SUCCESS'));
+            Alert.alert(translate("Citizen has been registered successfully!"));
 
         } catch (e) {
             console.error(e);
@@ -225,8 +225,8 @@ export default class RegisterScreen extends React.Component {
 
                                 {this.state.step === this.steps[0] &&
                                 <View style={styles.formContainer}>
-                                    <Text style={styles.header}>{L('STEP1TITLE')}</Text>
-                                    <Text style={styles.description}>{L('STEP1DESC')}</Text>
+                                    <Text style={styles.header}>{translate("Step 1 :")}</Text>
+                                    <Text style={styles.description}>{translate("Please enter a valid citizen's phone number")}</Text>
                                     <ValidatedPhoneInput name='phone_number'
                                                          handleNumberChange={(n) => {
                                                              if (this.isValidPhoneNumber(n)) {
@@ -241,7 +241,7 @@ export default class RegisterScreen extends React.Component {
                                     <View style={styles.formButtonWrapper}>
                                         <Button
                                             disabled={!this.state.isValidPhoneNumber || this.state.isVerificationSent}
-                                            title={L("VERIFY_PHONE")}
+                                            title={translate("Send SMS confirmation")}
                                             onPress={async () => {
                                                 console.log(props.values['phone_number']);
                                                 this.setState({
@@ -267,7 +267,7 @@ export default class RegisterScreen extends React.Component {
                                                     }
                                                     throw new Error(result.status);
                                                 } catch (e) {
-                                                    Alert.alert(L('ERROR'));
+                                                    Alert.alert(translate("Error occurred!"));
                                                     this.setState({
                                                         isVerificationSent: false
                                                     });
@@ -296,7 +296,7 @@ export default class RegisterScreen extends React.Component {
                                                     inputCode: text
                                                 })
                                             }}
-                                            placeholder={L('CONFIRMATION_SMS')}
+                                            placeholder={translate("SMS confirmation")}
                                             keyboardType='numeric'
                                             editable={!this.state.verificationCodeHasEntered}
                                             value={this.state.inputCode}
@@ -308,7 +308,7 @@ export default class RegisterScreen extends React.Component {
                                                             step: this.steps[1]
                                                         })
                                                     }}
-                                                    title={L("NEXT")}/>
+                                                    title={translate("Next")}/>
                                         </View>
                                     </>
                                     }
@@ -318,16 +318,16 @@ export default class RegisterScreen extends React.Component {
 
                                 {this.state.step === this.steps[1] &&
                                 <View style={styles.formContainer}>
-                                    <Text style={styles.header}>{L('STEP2TITLE')}</Text>
-                                    <Text style={styles.description}>{L('STEP2DESC')}</Text>
+                                    <Text style={styles.header}>{translate("Step 2 :")}</Text>
+                                    <Text style={styles.description}>{translate("Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address.")}</Text>
                                     <ValidatedTextInput name='last_name'
-                                                        placeholder={L('LNAME')}
+                                                        placeholder={translate("Last name")}
                                                         {...props}/>
                                     <ValidatedTextInput name='first_name'
-                                                        placeholder={L('FNAME')}
+                                                        placeholder={translate("First name")}
                                                         {...props}/>
                                     <ValidatedTextInput name='second_name'
-                                                        placeholder={L('SNAME')}
+                                                        placeholder={translate("Second name")}
                                                         {...props}/>
 
                                     <BlankSeparator/>
@@ -336,8 +336,8 @@ export default class RegisterScreen extends React.Component {
                                         value={props.values['gender']}
                                         name="gender"
                                     >
-                                        <RadioButton.Item label={L('MAN')} value="M"/>
-                                        <RadioButton.Item label={L('WOMAN')} value="W"/>
+                                        <RadioButton.Item label={translate('Man')} value="M"/>
+                                        <RadioButton.Item label={translate('Woman')} value="W"/>
 
                                         {props.touched['gender'] && props.errors['gender'] &&
                                         <Text style={{fontSize: 10, color: 'red'}}>{props.errors['gender']}</Text>
@@ -347,7 +347,7 @@ export default class RegisterScreen extends React.Component {
 
                                     <BlankSeparator/>
                                     <ValidatedDateInput name='birth_date'
-                                                        placeholder={L('BIRTHDAY')}
+                                                        placeholder={translate("Birth date")}
                                                         handleDateChange={(d) => {
                                                             console.log('d:', d);
                                                             props.values['birth_date'] = d
@@ -355,7 +355,7 @@ export default class RegisterScreen extends React.Component {
                                                         {...props}/>
                                     <BlankSeparator/>
                                     <ValidatedTextInput name='address'
-                                                        placeholder={L('ADDRESS')}
+                                                        placeholder={translate("Place of actual residence")}
                                                         numberOfLines={3}
                                                         {...props}/>
                                     <BlankSeparator/>
@@ -366,15 +366,15 @@ export default class RegisterScreen extends React.Component {
                                                         step: this.steps[2]
                                                     })
                                                 }}
-                                                title={L("NEXT")}/>
+                                                title={translate("Next")}/>
                                     </View>
                                 </View>
                                 }
 
                                 {this.state.step === this.steps[2] &&
                                 <View style={styles.formContainer}  >
-                                    <Text style={styles.header}>{L('STEP3TITLE')}</Text>
-                                    <Text style={styles.description}>{L('STEP3DESC')}</Text>
+                                    <Text style={styles.header}>{translate("Step 3 :")}</Text>
+                                    <Text style={styles.description}>{translate("To continue registration, add series and number of  identity document, take a photo of the citizen.")}</Text>
                                     {props.values.image && <Image
                                         source={props.values.image}
                                         style={{height: 200, width: '100%'}}
@@ -392,15 +392,15 @@ export default class RegisterScreen extends React.Component {
                                         value={props.values['doc_type']}
                                         name="doc_type"
                                     >
-                                        <RadioButton.Item label={L('PASSPORT')} value="passport"/>
-                                        <RadioButton.Item label={L('ID_CARD')} value="id"/>
-                                        <RadioButton.Item label={L('DRIVER_LICENSE')} value="driver_licence"/>
+                                        <RadioButton.Item label={translate("Passport (old version)")} value="passport"/>
+                                        <RadioButton.Item label={translate("ID card")} value="id"/>
+                                        <RadioButton.Item label={translate("Driver license")} value="driver_licence"/>
 
                                         {props.touched['doc_type'] && props.errors['doc_type'] &&
                                         <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                         }
                                     </RadioButton.Group>
-                                    <ValidatedTextInput name='doc_number' placeholder={L('DOC_NUMBER')} {...props}/>
+                                    <ValidatedTextInput name='doc_number' placeholder={translate("Document number")} {...props}/>
                                     <View style={styles.formButtonWrapper}>
                                         <Button disabled={!this.isThirdStepReady(props.values)}
                                                 onPress={() => {
@@ -408,7 +408,7 @@ export default class RegisterScreen extends React.Component {
                                                         step: this.steps[3]
                                                     })
                                                 }}
-                                                title={L("NEXT")}/>
+                                                title={translate("Next")}/>
                                     </View>
                                 </View>
                                 }
@@ -416,7 +416,7 @@ export default class RegisterScreen extends React.Component {
                                 {this.state.step === this.steps[3] &&
                                 <View>
                                     <ValidatedTextInput name='temperature'
-                                                        placeholder={L('TEMPERATURE')}
+                                                        placeholder={translate("Citizen's temperature")}
                                                         keyboardType='numeric'
                                                         {...props}/>
 
@@ -430,7 +430,7 @@ export default class RegisterScreen extends React.Component {
                                     <Button styles={styles.submit}
                                             onPress={props.handleSubmit}
                                             disabled={false}
-                                            title={L('SUBMIT')}/>
+                                            title={translate("Submit")}/>
                                 </View>}
                             </View>
                         )}
