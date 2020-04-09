@@ -32,7 +32,7 @@ function SearchItem(props) {
             {person.showTemperature && (
                 <>
                     <ValidatedTextInput name='temperature'
-                                        placeholder={translate('Citizen\'s temperature')} {...props}/>
+                                        placeholder={translate("Citizen's temperature")} {...props}/>
                     <IconButton name='submit' onPress={this.submitTemperature.bind(this, person)}/>
                 </>)}
         </Formik>);
