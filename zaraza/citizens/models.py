@@ -21,7 +21,7 @@ class Citizen(models.Model):
     document = models.CharField(max_length=16)
     birth_date = models.DateField()
     address = models.CharField(max_length=100)
-    creator = models.ForeignKey(User, on_delete=models.PROTECT)
+    # creator = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['created']
