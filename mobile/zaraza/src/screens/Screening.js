@@ -4,9 +4,9 @@ import {Formik} from 'formik'
 import {styles} from '../styles/Styles'
 import {ValidatedTextInput} from '../components/ValidatedInput'
 import * as Yup from 'yup'
-import {translate} from '../config/AppConfig'
+import { setI18nConfig, translate } from '../config/AppConfig'
 import {IconButton} from 'react-native-paper'
-
+setI18nConfig(); // set initial config
 
 function SearchItem(props) {
     let person = props.person;
@@ -42,7 +42,7 @@ function SearchItem(props) {
 function SearchResult(props) {
 
     if (!props.searchItems) {
-        return <Text>{translate("Run search to see locate citizen")}</Text>;
+        return <Text>{translate("Run search to locate citizen")}</Text>;
     }
 
     return (
