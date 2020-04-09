@@ -5,6 +5,7 @@ import {styles} from '../styles/Styles';
 import {ValidatedPhoneInput, ValidatedTextInput, Separator, BlankSeparator} from '../components/ValidatedInput';
 import * as Yup from "yup";
 import { translate } from "../config/AppConfig";
+import { IconButton } from 'react-native-paper'
 
 
 export default class ScreeningScreen extends React.Component {
@@ -18,21 +19,22 @@ export default class ScreeningScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
+                        initialValues={{}}
                         onSubmit={this._onSubmit}
                         validationSchema={this.ScreeningSchema}
                     >
                         {(props) => (
                             <View style={styles.form}>
+                                <View style={[styles.horizontal,styles.row]}>
+                                <ValidatedTextInput name='query'
+                                                     {...props}  style={styles.searchQuery}/>
 
-                                <ValidatedPhoneInput name='query'
-                                                     {...props} />
-
-                                <Text style={{margin: 10, fontSize: 18}}>Знайдено :</Text>
-                                <Text style={{margin: 10}}>Іскендерова Ірина</Text>
+                                <IconButton icon='search' style={styles.searchButton}/>
+                                </View>
 
                                 <ValidatedTextInput name='temperature'
                                                     placeholder={translate('TEMPERATURE')}
-                                                    keyboardType='numeric'
+
                                                     {...props}/>
                                 <Separator/>
                                 {/*<Text>{"Errors : " + JSON.stringify(props.errors)}</Text>*/}

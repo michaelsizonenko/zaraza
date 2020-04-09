@@ -1,6 +1,7 @@
 import {StyleSheet} from "react-native";
 
 
+
 export const styles = StyleSheet.create({
     phoneInput: {
         borderWidth: 1,
@@ -64,5 +65,25 @@ export const styles = StyleSheet.create({
     formButtonWrapper: {
         margin: 10,
         padding: 10,
+    },
+    searchContainer:{
+
+        flexDirection:'row'
+    },
+
+    row: {
+        flexDirection: 'row',
+
+        justifyContent: 'flex-start',
+
+    },
+    searchQuery:{
+
+        "width": "80%",
+    },
+    searchButton:{
+
     }
+
+
 });
