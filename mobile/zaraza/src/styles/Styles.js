@@ -35,6 +35,11 @@ export const styles = StyleSheet.create({
         marginVertical: 8,
         fontSize: 20,
     },
+    subTitle: {
+        textAlign: 'center',
+        marginVertical: 3,
+        fontSize: 17,
+    },
     form: {
         marginBottom: 30
     },
@@ -55,6 +60,8 @@ export const styles = StyleSheet.create({
         marginVertical: 15,
     },
     header: {
+        fontWeight: 'bold',
+        textAlign: 'center',
         fontSize: 25,
         marginVertical: 5
     },

@@ -11,6 +11,7 @@
   "First name": "First name",
   "Second name": "Second name",
   "Submit": "Submit",
+  "Success!": "Success!",
   "Too short!": "Too short!",
   "Too long!": "Too long!",
   "Document number": "Document number",
@@ -36,5 +37,6 @@
   "To continue registration, add series and number of  identity document, take a photo of the citizen": "To continue registration, add series and number of  identity document, take a photo of the citizen.",
   "Step 4 :": "Step 4 :",
   "Please add citizen temperature information": "Please add citizen temperature information.",
-  "Next": "Next"
+  "Next": "Next",
+  "This is weird! Please make a screen shot and send it to us": "This is weird! Please make a screen shot and send it to us."
 }
