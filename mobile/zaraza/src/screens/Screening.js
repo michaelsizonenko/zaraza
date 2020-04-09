@@ -42,7 +42,7 @@ function SearchItem(props) {
 function SearchResult(props) {
 
     if (!props.searchItems) {
-        return <Text>{translate("Run search to see locate citizen...")}</Text>;
+        return <Text>{translate("Run search to see locate citizen")}</Text>;
     }
 
     return (
