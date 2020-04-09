@@ -108,7 +108,7 @@ export default class RegisterScreen extends React.Component {
             .required(translate('Required field')),
         // documentIsPassport: Yup.boolean()
         //     .required(translate("Choose document type")),
-        // doc_number: Yup.string()
+        // document: Yup.string()
         //     .min(8, translate('Too short!'))
         //     .max(12, translate('Too long!'))
         //     .required(translate('Required field')),
@@ -164,6 +164,7 @@ export default class RegisterScreen extends React.Component {
             progress: true
         });
         try {
+            delete values.image;
             const result = await fetch(systemConfig.getWebUrl() + '/citizens/', {
                 method: 'POST',
                 headers: {
@@ -182,8 +183,15 @@ export default class RegisterScreen extends React.Component {
         } catch (e) {
             console.error(e);
         } finally {
+            values = this.initValues;
             this.setState({
-                progress: false
+                progress: false,
+                isValidPhoneNumber: false,
+                isVerificationSent: false,
+                verificationCodeHasEntered: false,
+                step: this.steps[0],
+                verificationCode: '',
+                inputCode: ''
             });
         }
 
@@ -198,7 +206,7 @@ export default class RegisterScreen extends React.Component {
     };
 
     isThirdStepReady = (values) => {
-        return values.image && values.doc_type && values.doc_number;
+        return values.image && values.doc_type && values.document;
     };
 
     render() {
@@ -392,15 +400,15 @@ export default class RegisterScreen extends React.Component {
                                         value={props.values['doc_type']}
                                         name="doc_type"
                                     >
-                                        <RadioButton.Item label={translate("Passport (old version)")} value="passport"/>
-                                        <RadioButton.Item label={translate("ID card")} value="id"/>
-                                        <RadioButton.Item label={translate("Driver license")} value="driver_licence"/>
+                                        <RadioButton.Item label={translate("Passport (old version)")} value="P"/>
+                                        <RadioButton.Item label={translate("ID card")} value="C"/>
+                                        <RadioButton.Item label={translate("Driver license")} value="D"/>
 
                                         {props.touched['doc_type'] && props.errors['doc_type'] &&
                                         <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                         }
                                     </RadioButton.Group>
-                                    <ValidatedTextInput name='doc_number' placeholder={translate("Document number")} {...props}/>
+                                    <ValidatedTextInput name='document' placeholder={translate("Document number")} {...props}/>
                                     <View style={styles.formButtonWrapper}>
                                         <Button disabled={!this.isThirdStepReady(props.values)}
                                                 onPress={() => {
