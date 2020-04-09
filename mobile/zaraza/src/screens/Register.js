@@ -37,6 +37,9 @@ export default class RegisterScreen extends React.Component {
         super(props);
         this.steps = ["PHONE", "PERSONAL_DATA", "DOCUMENT", "TEMPERATURE"];
         this.state = {
+            finished: true,
+            success: true,
+            errorMessage: "",
             progress: false,
             isValidPhoneNumber: false,
             isVerificationSent: false,
@@ -51,6 +54,9 @@ export default class RegisterScreen extends React.Component {
             last_name: '',
             birth_date: '',
             phone_number: '+380',
+            doc_type: '',
+            document: '',
+            image: {},
             address: '',
             gender: '',
             temperature: ''
@@ -158,7 +164,7 @@ export default class RegisterScreen extends React.Component {
         });
     };
 
-    _onSubmit = async (values) => {
+    _onSubmit = async (values, {setSubmitting, setErrors, setStatus, resetForm}) => {
         console.log("SUBMIT", values);
         this.setState({
             progress: true
@@ -174,16 +180,28 @@ export default class RegisterScreen extends React.Component {
                 body: JSON.stringify(values),
             });
             console.log(result);
-            if (!result.ok) {
-                Alert.alert(translate("Error occurred!"));
+            if (result.ok) {
+                this.setState({
+                    finished: true,
+                    success: true
+                })
                 return;
             }
-            Alert.alert(translate("Citizen has been registered successfully!"));
 
+            this.setState({
+                finished: true,
+                success: false,
+                errorMessage: result.status
+            })
         } catch (e) {
             console.error(e);
+            this.setState({
+                finished: true,
+                success: false,
+                errorMessage: e.errorMessage
+            })
         } finally {
-            values = this.initValues;
+            resetForm({});
             this.setState({
                 progress: false,
                 isValidPhoneNumber: false,
@@ -219,8 +237,28 @@ export default class RegisterScreen extends React.Component {
             )
         }
 
-        return (
+        if (this.state.finished && this.state.success) {
+            return (
+                <SafeAreaView style={styles.container}>
+                    <Text style={styles.header}>{translate("Success!")}</Text>
+                    <Text style={styles.title}>{translate("Citizen has been registered successfully!")}</Text>
+                    <Button title={"Новая регистрация"}/>
+                    <Button title={"Перейти в поиск"}/>
+                </SafeAreaView>
+            )
+        }
 
+        if (this.state.finished && !this.state.success) {
+            return (
+                <SafeAreaView style={styles.container}>
+                    <Text style={styles.header}>{translate("Error occurred!")}</Text>
+                    <Text style={styles.title}>{translate("This is weird! Please make a screen shot and send it to us")}</Text>
+                    <Text>{this.state.errorMessage}</Text>
+                </SafeAreaView>
+            )
+        }
+
+        return (
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
@@ -234,7 +272,9 @@ export default class RegisterScreen extends React.Component {
                                 {this.state.step === this.steps[0] &&
                                 <View style={styles.formContainer}>
                                     <Text style={styles.header}>{translate("Step 1 :")}</Text>
-                                    <Text style={styles.description}>{translate("Please enter a valid citizen's phone number")}</Text>
+                                    <Text
+                                        style={styles.description}>{translate("Please enter a valid citizen's phone number")}</Text>
+                                    {/*todo: find a way to clear phone input inner state*/}
                                     <ValidatedPhoneInput name='phone_number'
                                                          handleNumberChange={(n) => {
                                                              if (this.isValidPhoneNumber(n)) {
@@ -287,7 +327,8 @@ export default class RegisterScreen extends React.Component {
                                     {this.state.isVerificationSent &&
                                     <>
                                         {/*TEST OUTPUT REMOVE BEFORE DEMO*/}
-                                        <Text>SMS are off during development. Enter the code : {this.state.verificationCode}</Text>
+                                        <Text>SMS are off during development. Enter the code
+                                            : {this.state.verificationCode}</Text>
                                         <TextInput
                                             style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                                             onChangeText={text => {
@@ -320,14 +361,20 @@ export default class RegisterScreen extends React.Component {
                                         </View>
                                     </>
                                     }
-
+                                    <Text>{"Errors : " + JSON.stringify(props.errors)}</Text>
+                                    <Separator/>
+                                    <Text>{"Touched : " + JSON.stringify(props.touched)}</Text>
+                                    <Separator/>
+                                    <Text>{"Values : " + JSON.stringify(props.values)}</Text>
+                                    <Separator/>
                                 </View>
                                 }
 
                                 {this.state.step === this.steps[1] &&
                                 <View style={styles.formContainer}>
                                     <Text style={styles.header}>{translate("Step 2 :")}</Text>
-                                    <Text style={styles.description}>{translate("Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address")}</Text>
+                                    <Text
+                                        style={styles.description}>{translate("Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address")}</Text>
                                     <ValidatedTextInput name='last_name'
                                                         placeholder={translate("Last name")}
                                                         {...props}/>
@@ -380,9 +427,10 @@ export default class RegisterScreen extends React.Component {
                                 }
 
                                 {this.state.step === this.steps[2] &&
-                                <View style={styles.formContainer}  >
+                                <View style={styles.formContainer}>
                                     <Text style={styles.header}>{translate("Step 3 :")}</Text>
-                                    <Text style={styles.description}>{translate("To continue registration, add series and number of  identity document, take a photo of the citizen")}</Text>
+                                    <Text
+                                        style={styles.description}>{translate("To continue registration, add series and number of  identity document, take a photo of the citizen")}</Text>
                                     {props.values.image && <Image
                                         source={props.values.image}
                                         style={{height: 200, width: '100%'}}
@@ -390,9 +438,9 @@ export default class RegisterScreen extends React.Component {
 
                                     <View style={{alignItems: 'center'}}>
                                         <AwesomeIcon name="camera"
-                                                 size={50}
-                                                 color="#900"
-                                                 onPress={this.handleImagePress.bind(self, props)}/>
+                                                     size={50}
+                                                     color="#900"
+                                                     onPress={this.handleImagePress.bind(self, props)}/>
                                     </View>
 
                                     <RadioButton.Group
@@ -408,7 +456,8 @@ export default class RegisterScreen extends React.Component {
                                         <Text style={{fontSize: 10, color: 'red'}}>{props.errors['doc_type']}</Text>
                                         }
                                     </RadioButton.Group>
-                                    <ValidatedTextInput name='document' placeholder={translate("Document number")} {...props}/>
+                                    <ValidatedTextInput name='document'
+                                                        placeholder={translate("Document number")} {...props}/>
                                     <View style={styles.formButtonWrapper}>
                                         <Button disabled={!this.isThirdStepReady(props.values)}
                                                 onPress={() => {
@@ -422,21 +471,16 @@ export default class RegisterScreen extends React.Component {
                                 }
 
                                 {this.state.step === this.steps[3] &&
-                                <View style={styles.formContainer} >
+                                <View style={styles.formContainer}>
                                     <Text style={styles.header}>{translate("Step 4 :")}</Text>
-                                    <Text style={styles.description}>{translate("Please add citizen temperature information")}</Text>
+                                    <Text
+                                        style={styles.description}>{translate("Please add citizen temperature information")}</Text>
                                     <ValidatedTextInput name='temperature'
                                                         placeholder={translate("Citizen's temperature")}
                                                         keyboardType='numeric'
                                                         {...props}/>
 
                                     <Separator/>
-                                    {/*<Text>{"Errors : " + JSON.stringify(props.errors)}</Text>*/}
-                                    {/*<Separator/>*/}
-                                    {/*<Text>{"Touched : " + JSON.stringify(props.touched)}</Text>*/}
-                                    {/*<Separator/>*/}
-                                    {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
-                                    {/*<Separator/>*/}
                                     <Button styles={styles.submit}
                                             onPress={props.handleSubmit}
                                             disabled={false}

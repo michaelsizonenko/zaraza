@@ -11,6 +11,7 @@
   "First name": "Имя",
   "Second name": "Отчество",
   "Submit": "Отправить",
+  "Success!": "Успех!",
   "Too short!": "Слишком короткое!",
   "Too long!": "Слишком длинное!",
   "Document number": "№ Документа",
@@ -36,5 +37,6 @@
   "To continue registration, add series and number of  identity document, take a photo of the citizen": "Для продолжения регистрации добавьте серию и номер документа гражданина, сфотографируйте гражданина.",
   "Step 4 :": "Шаг 4 :",
   "Please add citizen temperature information": "Пожалуйста, добавьте информацию про температуру гражданина.",
-  "Next": "Далее"
+  "Next": "Далее",
+  "This is weird! Please make a screen shot and send it to us": "Это дичь! Пожалуйста сделайте скриншот и отправьте нам."
 }
