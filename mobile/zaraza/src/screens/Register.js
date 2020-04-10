@@ -296,13 +296,12 @@ export default class RegisterScreen extends React.Component {
                     >
                         {(props) => (
                             <View style={styles.form}>
-
+                                {/*todo: add reset button to all steps*/}
                                 {this.state.step === this.steps[0] &&
                                 <View style={styles.formContainer}>
                                     <Text style={styles.header}>{translate("Step 1 :")}</Text>
                                     <Text
                                         style={styles.description}>{translate("Please enter a valid citizen's phone number")}</Text>
-                                    {/*todo: find a way to clear phone input inner state*/}
                                     <ValidatedPhoneInput name='phone_number'
                                                          handleNumberChange={(n) => {
                                                              if (this.isValidPhoneNumber(n)) {
@@ -389,12 +388,6 @@ export default class RegisterScreen extends React.Component {
                                         </View>
                                     </>
                                     }
-                                    <Text>{"Errors : " + JSON.stringify(props.errors)}</Text>
-                                    <Separator/>
-                                    <Text>{"Touched : " + JSON.stringify(props.touched)}</Text>
-                                    <Separator/>
-                                    <Text>{"Values : " + JSON.stringify(props.values)}</Text>
-                                    <Separator/>
                                 </View>
                                 }
 
