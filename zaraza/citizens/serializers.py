@@ -49,9 +49,9 @@ class CitizenSerializer(serializers.Serializer):
 
 
 class TemperatureSerializer(serializers.Serializer):
-    user = serializers.RelatedField(source='citizen', read_only=True)
+    citizen = serializers.RelatedField(source='citizen', read_only=True)
     temperature = serializers.FloatField(min_value=34.0, max_value=42.0)
-    supervisor = serializers.RelatedField(source='user', read_only=True)
+    # supervisor = serializers.RelatedField(source='user', read_only=True)
 
     def create(self, validated_data):
         """
@@ -65,7 +65,7 @@ class TemperatureSerializer(serializers.Serializer):
         """
         instance.citizen = validated_data.get('citizen', instance.citizen)
         instance.temperature = validated_data.get('temperature', instance.temperature)
-        instance.supervisor = validated_data.get('supervisor', instance.supervisor)
+        # instance.supervisor = validated_data.get('supervisor', instance.supervisor)
         instance.save()
         return instance
 

@@ -57,7 +57,8 @@ def temperature_list(request):
 
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        serializer = TemperatureSerializer(data=data)
+        citizen = Citizen.objects.get(hash=data['hash'])
+        serializer = TemperatureSerializer(data={'citizen': citizen, 'temperature': data['temperature']})
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
