@@ -2,8 +2,8 @@ import * as React from 'react';
 import {View, TouchableOpacity, Text, Button} from 'react-native';
 import {systemConfig} from "../config/AppConfig";
 import {SafeAreaView} from "react-native-safe-area-context";
-import { RadioButton } from "react-native-paper";
-import { translate} from "../config/AppConfig";
+import {styles} from "../styles/Styles";
+import {translate} from "../config/AppConfig";
 
 export default class SettingsScreen extends React.Component {
 
@@ -47,7 +47,7 @@ export default class SettingsScreen extends React.Component {
                 </SafeAreaView>
                 }
                 <TouchableOpacity style={{flex: 1}} onPress={this._onTouchScreen}>
-                    {/*<Text>test</Text>*/}
+                    <Text style={styles.title}>{translate("Nothing yet Keep for updates")}</Text>
                 </TouchableOpacity>
             </React.Fragment>
         );

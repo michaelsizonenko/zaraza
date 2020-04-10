@@ -47,6 +47,7 @@ def citizen_detail(request):
             return HttpResponse(status=404)
     raise Exception("Unexpected method")
 
+
 @csrf_exempt
 def temperature_list(request):
     """

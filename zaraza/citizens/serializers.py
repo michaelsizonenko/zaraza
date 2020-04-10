@@ -36,12 +36,12 @@ class CitizenSerializer(serializers.Serializer):
         """
         Update and return an existing `Citizen` instance, given the validated data.
         """
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.second_name = validated_data.get('second_name', instance.second_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.first_name = validated_data.get('first_name', instance.first_name).strip()
+        instance.second_name = validated_data.get('second_name', instance.second_name).strip()
+        instance.last_name = validated_data.get('last_name', instance.last_name).strip()
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number).strip()
         instance.gender = validated_data.get('gender', instance.gender)
-        instance.doc_type = validated_data.get('doc_type', instance.doc_type)
+        instance.doc_type = validated_data.get('doc_type', instance.doc_type).strip()
         instance.document = validated_data.get('document', instance.document)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.address = validated_data.get('address', instance.address)
