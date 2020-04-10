@@ -7,7 +7,8 @@ import * as Yup from 'yup'
 import {setI18nConfig, systemConfig, translate} from '../config/AppConfig'
 import {IconButton} from 'react-native-paper'
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import {SearchCard} from '../components/SearchCard'
+import {SearchCard }from '../components/SearchCard'
+import * as SearchService from '../services/SearchService'
 
 setI18nConfig() // set initial config
 
