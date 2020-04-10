@@ -28,7 +28,6 @@ class CitizenSerializer(serializers.Serializer):
         copied_data = copy.deepcopy(validated_data)
         copied_data['birth_date'] = str(copied_data['birth_date'])
         del copied_data['image']
-        validated_data['full_data'] = json.dumps(copied_data, ensure_ascii=False)
         validated_data['hash'] = make_password(copied_data, SALT)
         return Citizen.objects.create(**validated_data)
 
@@ -45,7 +44,6 @@ class CitizenSerializer(serializers.Serializer):
         instance.document = validated_data.get('document', instance.document)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.address = validated_data.get('address', instance.address)
-        instance.full_data = json.dumps(validated_data)
         instance.save()
         return instance
 
