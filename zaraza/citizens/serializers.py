@@ -49,8 +49,9 @@ class CitizenSerializer(serializers.Serializer):
 
 
 class TemperatureSerializer(serializers.Serializer):
+    created = serializers.DateField(read_only=True)
     citizen = serializers.RelatedField(source='citizen', read_only=True)
-    temperature = serializers.FloatField(min_value=34.0, max_value=42.0)
+    temperature = serializers.FloatField(min_value=34.0, max_value=42.0, read_only=True)
     # supervisor = serializers.RelatedField(source='user', read_only=True)
 
     def create(self, validated_data):
@@ -63,11 +64,7 @@ class TemperatureSerializer(serializers.Serializer):
         """
         Update and return an existing `Temperature` instance, given the validated data.
         """
-        instance.citizen = validated_data.get('citizen', instance.citizen)
-        instance.temperature = validated_data.get('temperature', instance.temperature)
-        # instance.supervisor = validated_data.get('supervisor', instance.supervisor)
-        instance.save()
-        return instance
+        raise Exception("Unacceptable operation !")
 
 
 class VerificationPhoneNumberRequestSerializer(serializers.Serializer):
