@@ -2,6 +2,8 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from zaraza.settings import SALT
 
 
 GENDER_CHOICES = (('M', 'Man'), ('W', 'Woman'))
@@ -22,6 +24,7 @@ class Citizen(models.Model):
     birth_date = models.DateField()
     address = models.CharField(max_length=100)
     full_data = models.TextField(max_length=1024)
+    hash = models.CharField(max_length=256, unique=True, default=make_password(full_data, SALT))
     # creator = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:

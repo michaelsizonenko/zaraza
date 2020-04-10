@@ -1,7 +1,9 @@
 import json
 import copy
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from citizens.models import Citizen, GENDER_CHOICES, DOCTYPE_CHOICES, Temperature, VerificationPhoneNumberRequest
+from zaraza.settings import SALT
 
 
 class CitizenSerializer(serializers.Serializer):
@@ -15,6 +17,7 @@ class CitizenSerializer(serializers.Serializer):
     document = serializers.CharField(required=True)
     birth_date = serializers.DateField(required=True)
     address = serializers.CharField(required=True, max_length=100)
+    hash = serializers.CharField(max_length=256, read_only=True)
     # creator = serializers.RelatedField(source='user', read_only=True)
 
     def create(self, validated_data):
@@ -24,6 +27,7 @@ class CitizenSerializer(serializers.Serializer):
         copied_data = copy.deepcopy(validated_data)
         copied_data['birth_date'] = str(copied_data['birth_date'])
         validated_data['full_data'] = json.dumps(copied_data, ensure_ascii=False)
+        validated_data['hash'] = make_password(copied_data, SALT)
         return Citizen.objects.create(**validated_data)
 
     def update(self, instance, validated_data):

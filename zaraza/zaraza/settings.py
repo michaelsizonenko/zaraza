@@ -146,3 +146,5 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+SALT = "Slava urkaine!"
