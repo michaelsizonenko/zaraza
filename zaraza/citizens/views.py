@@ -29,18 +29,19 @@ def citizen_list(request):
 
 
 @csrf_exempt
-def citizen_detail(request, query):
+def citizen_detail(request):
     """
     Retrieve, update or delete a citizen
     """
     if request.method == 'GET':
         try:
+            query=request.GET.get('q', '')
             citizens = Citizen.objects.get(full_text__search=query)
             serializer = TemperatureSerializer(citizens, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:
             return HttpResponse(status=404)
-
+    raise Exception("Unexpected method")
 
 @csrf_exempt
 def temperature_list(request):
