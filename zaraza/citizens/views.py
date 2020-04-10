@@ -34,7 +34,7 @@ def citizen_detail(request, query):
     Retrieve, update or delete a citizen
     """
     try:
-        citizen = Citizen.objects.get(pk=query)
+        citizen = Citizen.objects.get(full_text__search=query)
     except Citizen.DoesNotExist:
         return HttpResponse(status=404)
 
