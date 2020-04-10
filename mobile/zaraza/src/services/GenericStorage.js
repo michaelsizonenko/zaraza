@@ -1,4 +1,4 @@
-import { AsyncStorage } from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const cache={};
 export async function save(field,data){
@@ -12,6 +12,9 @@ export async function load(field,default_value){
 
   const  _store=(x)=>{
     const value=JSON.parse(x);
+    if (value==null){
+      value=default_value;
+    }
     cache[field]=value;
     return value;
   }
