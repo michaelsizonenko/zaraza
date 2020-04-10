@@ -36,8 +36,8 @@ export default class ZarazaNavigation extends React.Component {
                     icon: props => <AwesomeIcon {...props} />,
                 }}>
                 <NavigationContainer>
+                    {/*<Drawer.Navigator initialRouteName="Register">*/}
                     <Drawer.Navigator initialRouteName="Register">
-
                         <Drawer.Screen
                             name="Register"
                             component={RegisterScreenWrapper}

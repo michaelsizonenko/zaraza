@@ -33,16 +33,13 @@ def citizen_detail(request, query):
     """
     Retrieve, update or delete a citizen
     """
-    try:
-        citizen = Citizen.objects.get(pk=query)
-    except Citizen.DoesNotExist:
-        return HttpResponse(status=404)
-
     if request.method == 'GET':
-        serializer = CitizenSerializer(citizen)
-        return JsonResponse(serializer.data)
-
-    raise Exception("Unexpected method")
+        try:
+            citizens = Citizen.objects.get(full_text__search=query)
+            serializer = TemperatureSerializer(citizens, many=True)
+            return JsonResponse(serializer.data, safe=False)
+        except Citizen.DoesNotExist:
+            return HttpResponse(status=404)
 
 
 @csrf_exempt

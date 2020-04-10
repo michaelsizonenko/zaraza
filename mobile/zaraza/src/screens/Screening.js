@@ -7,75 +7,15 @@ import * as Yup from 'yup'
 import { setI18nConfig, systemConfig, translate } from '../config/AppConfig'
 import { IconButton } from 'react-native-paper'
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import {SearchCard }from '../components/SearchCard'
 
 setI18nConfig() // set initial config
 
-
-function PhotoLoader(properties) {
-
-  const getPhoto = async()=>
-  {
-    properties.setFieldValue('image', 'loading');
-    properties.setFieldValue('image', await SearchService.getImage(properties.hash))
-
-  }
-const  {values}={...properties};
-
-  if (!values.image)
-    return  <AwesomeIcon name='camera' onPress={getPhoto}/>
-
-
-  if (values.image='loading')
-    return (<View style={[styles.containerSpinner, styles.horizontal]}>
-      <ActivityIndicator size="large" color="#0000ff"/>
-    </View>);
-
-  return <Image source={{uri: `data:image/jpeg;base64,${values.image}`}}/>
-
-}
 
 function signalChange (props) {
   props.setFiledValue('change',!props.values.change);
 }
 
-function SearchItem (higher_props) {
-  let person = higher_props.person
-  const toggleTemperature = (higher_props,person) => {
-    person.showTemperature = !person.showTemperature
-    signalChange(higher_props)
-  }
-  const postTemperature = () => {
-  }
-
-  return (
-
-    <Formik
-      initialValues={{opened:false}}
-      style={styles.searchItemContainer}
-      onSubmit={postTemperature} initialValues={{ id: person.id }}>
-      {(props)=>(
-        <View>
-          <PhotoLoader  hash={person.hash}{...props}/>
-          <Text>{person.first_name}  </Text>
-          <Text>{person.second_name} </Text>
-          <Text>{person.last_name}   </Text>
-          <Text>{person.phone_number}</Text>
-          <Text>{person.gender}      </Text>
-          <Text>{person.doc_type}    </Text>
-          <Text>{person.document}    </Text>
-          <Text>{person.birth_date}  </Text>
-          <Text>{person.address}     </Text>
-          <IconButton icon='thermometer' onPress={()=>{props.setFieldValue('opened',!props.values.opened)}}/>
-          {props.values.opened && (
-            <>
-              <ValidatedTextInput name='temperature'
-                                  placeholder={translate('Citizen\'s temperature')} {...higher_props}/>
-              <IconButton icon='submit' onPress={x=>x}/>
-            </>)}
-        </View>)}
-    </Formik>)
-
-}
 
 function SearchResult (props) {
 
@@ -87,7 +27,7 @@ function SearchResult (props) {
     <FlatList
       scrollEnabled={false}
       data={props.values.searchItems}
-      renderItem={({ item }) => <SearchItem person={item}{...props}/>}
+      renderItem={({ item }) => <SearchCard person={item}{...props}/>}
       keyExtractor={item => item.hash}
     />)
 }
@@ -97,33 +37,34 @@ export default class ScreeningScreen extends React.Component {
   ScreeningSchema = Yup.object().shape({})
 
   search = async (props, query) => {
-
-    let data = [
-      {
-        'hash': '1988-10-22',
-        'address': 'Эк пер 5 кв 71',
-        'birth_date': '1988-10-22',
-        'doc_type': 'P',
-        'document': 'Км12344',
-        'first_name': 'Михаил',
-        'gender': 'M',
-        'last_name': 'Сизоненко',
-        'phone_number': '+380938359526',
-        'second_name': 'Андреевич',
-      },
-      {
-        'hash': '1990-10-24',
-        'address': 'Эк пер 7 кв 71',
-        'birth_date': '1990-10-24',
-        'doc_type': 'P',
-        'document': 'Ук578877',
-        'first_name': 'Ирина',
-        'gender': 'W',
-        'last_name': 'Искендерова',
-        'phone_number': '+380930127846',
-        'second_name': 'Арифовна',
-      },
-    ]
+    //
+    // let data = [
+    //   {
+    //     'hash': '1988-10-22',
+    //     'address': 'Эк пер 5 кв 71',
+    //     'birth_date': '1988-10-22',
+    //     'doc_type': 'P',
+    //     'document': 'Км12344',
+    //     'first_name': 'Михаил',
+    //     'gender': 'M',
+    //     'last_name': 'Сизоненко',
+    //     'phone_number': '+380938359526',
+    //     'second_name': 'Андреевич',
+    //   },
+    //   {
+    //     'hash': '1990-10-24',
+    //     'address': 'Эк пер 7 кв 71',
+    //     'birth_date': '1990-10-24',
+    //     'doc_type': 'P',
+    //     'document': 'Ук578877',
+    //     'first_name': 'Ирина',
+    //     'gender': 'W',
+    //     'last_name': 'Искендерова',
+    //     'phone_number': '+380930127846',
+    //     'second_name': 'Арифовна',
+    //   },
+    // ]
+    const  data=await SearchService.search(props.values.query)
     props.setFieldValue('searchItems', data)
 
   }
@@ -148,14 +89,6 @@ export default class ScreeningScreen extends React.Component {
                 <SearchResult {...props}/>
 
 
-                {/*<Text>{"Errors : " + JSON.stringify(props.errors)}</Text>*/}
-                {/*<Separator/>*/}
-                {/*<Text>{"Touched : " + JSON.stringify(props.touched)}</Text>*/}
-                {/*<Separator/>*/}
-                {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
-                {/*<Separator/>*/}
-                <Button styles={styles.submit} onPress={props.handleSubmit}
-                        title={translate('Submit')}/>
               </View>
             )}
           </Formik>
