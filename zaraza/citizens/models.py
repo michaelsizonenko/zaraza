@@ -36,7 +36,7 @@ class Temperature(models.Model):
 
     citizen = models.ForeignKey(Citizen, on_delete=models.PROTECT)
     temperature = models.FloatField(validators=[MinValueValidator(34.0), MaxValueValidator(42.0)])
-    supervisor = models.ForeignKey(User, on_delete=models.PROTECT)
+    # supervisor = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['created']

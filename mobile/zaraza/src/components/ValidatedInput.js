@@ -19,7 +19,7 @@ export function ValidatedPhoneInput(props) {
             disabled={disabled}
             value={values[name]}
             onChangePhoneNumber={(n) => {
-                values[name] = n;
+                handleChange(name)(n);
                 props.handleNumberChange(n);
             }}
         />
