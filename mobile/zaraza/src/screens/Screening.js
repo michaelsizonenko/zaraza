@@ -37,33 +37,34 @@ export default class ScreeningScreen extends React.Component {
   ScreeningSchema = Yup.object().shape({})
 
   search = async (props, query) => {
-
-    let data = [
-      {
-        'hash': '1988-10-22',
-        'address': 'Эк пер 5 кв 71',
-        'birth_date': '1988-10-22',
-        'doc_type': 'P',
-        'document': 'Км12344',
-        'first_name': 'Михаил',
-        'gender': 'M',
-        'last_name': 'Сизоненко',
-        'phone_number': '+380938359526',
-        'second_name': 'Андреевич',
-      },
-      {
-        'hash': '1990-10-24',
-        'address': 'Эк пер 7 кв 71',
-        'birth_date': '1990-10-24',
-        'doc_type': 'P',
-        'document': 'Ук578877',
-        'first_name': 'Ирина',
-        'gender': 'W',
-        'last_name': 'Искендерова',
-        'phone_number': '+380930127846',
-        'second_name': 'Арифовна',
-      },
-    ]
+    //
+    // let data = [
+    //   {
+    //     'hash': '1988-10-22',
+    //     'address': 'Эк пер 5 кв 71',
+    //     'birth_date': '1988-10-22',
+    //     'doc_type': 'P',
+    //     'document': 'Км12344',
+    //     'first_name': 'Михаил',
+    //     'gender': 'M',
+    //     'last_name': 'Сизоненко',
+    //     'phone_number': '+380938359526',
+    //     'second_name': 'Андреевич',
+    //   },
+    //   {
+    //     'hash': '1990-10-24',
+    //     'address': 'Эк пер 7 кв 71',
+    //     'birth_date': '1990-10-24',
+    //     'doc_type': 'P',
+    //     'document': 'Ук578877',
+    //     'first_name': 'Ирина',
+    //     'gender': 'W',
+    //     'last_name': 'Искендерова',
+    //     'phone_number': '+380930127846',
+    //     'second_name': 'Арифовна',
+    //   },
+    // ]
+    const  data=await SearchService.search(props.values.query)
     props.setFieldValue('searchItems', data)
 
   }

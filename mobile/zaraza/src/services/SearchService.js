@@ -29,10 +29,20 @@ export async function  setTemperature(hash, temperature) {
 
 
 export async function  getImage(hash, temperature) {
-  console.log("web::setTemperature:", { hash, temperature });
-  return sendRequest(ystemConfig.getWebUrl() + '/temperature/', { hash: hash, temperature: temperature })
+  console.log("web::getImage:", { hash, temperature });
+  return sendRequest(ystemConfig.getWebUrl() + '/temperature/', { hash,  temperature })
     .then(x => {
-      console.log("web::setTemperature returned:", x);
+      console.log("web::getImage returned:", x);
+      return x
+    });
+}
+
+
+export async function  search(query) {
+  console.log("web::search:", { hash, temperature });
+  return sendRequest(ystemConfig.getWebUrl() + '/temperature/', { query })
+    .then(x => {
+      console.log("web::search:", x);
       return x
     });
 }
