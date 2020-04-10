@@ -2,6 +2,7 @@ import json
 import copy
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+from django.contrib.postgres.search import SearchVector
 from citizens.models import Citizen, GENDER_CHOICES, DOCTYPE_CHOICES, Temperature, VerificationPhoneNumberRequest
 from zaraza.settings import SALT
 
@@ -29,7 +30,11 @@ class CitizenSerializer(serializers.Serializer):
         copied_data['birth_date'] = str(copied_data['birth_date'])
         del copied_data['image']
         validated_data['hash'] = make_password(copied_data, SALT)
-        return Citizen.objects.create(**validated_data)
+        instance = Citizen.objects.create(**validated_data)
+        instance.search_vector = SearchVector('first_name', 'second_name', 'last_name', 'phone_number',
+                                              'birth_date', 'address', 'document')
+        instance.save()
+        return instance
 
     def update(self, instance, validated_data):
         """
