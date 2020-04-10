@@ -39,8 +39,11 @@ def citizen_detail(request):
     if request.method == 'GET':
         try:
             query=request.GET.get('query', '').split()
-            searchVector=functools.reduce(lambda result,word : result & SearchQuery(word));
-            citizens = Citizen.objects.filter('')
+            if len(query)==0:
+                return HttpResponse(status=404)
+
+            searchVector=functools.reduce(lambda result,word : result & SearchQuery(word),query,SearchQuery(''))
+            citizens = Citizen.objects.filter(search_vector=searchVector)
             serializer = TemperatureSerializer(citizens, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:
