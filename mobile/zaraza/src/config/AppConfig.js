@@ -34,9 +34,8 @@ export const setI18nConfig = () => {
 };
 
 class ConfigController {
-
     static _instance :ConfigController = null;
-    isLocalhost = false;
+    isLocalhost = true;
     language = 'ua';
 
     setLanguage = (language) => {
