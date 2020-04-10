@@ -38,11 +38,11 @@ def citizen_detail(request):
     """
     if request.method == 'GET':
         try:
-            query=request.GET.get('query', '').split()
-            if len(query)==0:
+            query = request.GET.get('query', '').split()
+            if len(query) == 0:
                 return HttpResponse(status=404)
 
-            searchVector=functools.reduce(lambda result,word : result & SearchQuery(word),query,SearchQuery(''))
+            searchVector = functools.reduce(lambda result, word: result & SearchQuery(word), query, SearchQuery(''))
             citizens = Citizen.objects.filter(search_vector=searchVector)
             serializer = TemperatureSerializer(citizens, many=True)
             return JsonResponse(serializer.data, safe=False)
@@ -75,7 +75,6 @@ def temperature_list(request):
 
 @csrf_exempt
 def send_verification_code(request):
-
     if request.method == 'POST':
         data = JSONParser().parse(request)
         valid_phone_number = validate_phone_number(data['phone_number'])

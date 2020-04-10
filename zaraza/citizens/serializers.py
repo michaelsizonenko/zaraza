@@ -26,6 +26,7 @@ class CitizenSerializer(serializers.Serializer):
         """
         Create and return a new `Citizen` instance, given the validated data.
         """
+        # todo: trim all text fields
         copied_data = copy.deepcopy(validated_data)
         copied_data['birth_date'] = str(copied_data['birth_date'])
         del copied_data['image']
