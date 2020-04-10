@@ -461,7 +461,7 @@ export default class RegisterScreen extends React.Component {
                                         style={styles.description}>{translate("To continue registration, add series and number of  identity document, take a photo of the citizen")}</Text>
                                     {props.values.image && <Image
                                         source={props.values.image}
-                                        style={{height: 200, width: '100%'}}
+                                        style={{width: '100%', marginVertical: 5}}
                                     />}
 
                                     <View style={{alignItems: 'center'}}>
