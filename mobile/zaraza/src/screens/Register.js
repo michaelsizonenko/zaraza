@@ -37,8 +37,8 @@ export default class RegisterScreen extends React.Component {
         super(props);
         this.steps = ["PHONE", "PERSONAL_DATA", "DOCUMENT", "TEMPERATURE"];
         this.state = {
-            finished: true,
-            success: true,
+            finished: false,
+            success: false,
             errorMessage: "",
             progress: false,
             isValidPhoneNumber: false,

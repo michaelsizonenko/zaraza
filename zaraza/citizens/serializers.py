@@ -1,3 +1,4 @@
+import json
 from rest_framework import serializers
 from citizens.models import Citizen, GENDER_CHOICES, DOCTYPE_CHOICES, Temperature, VerificationPhoneNumberRequest
 
@@ -13,12 +14,14 @@ class CitizenSerializer(serializers.Serializer):
     document = serializers.CharField(required=True)
     birth_date = serializers.DateField(required=True)
     address = serializers.CharField(required=True, max_length=100)
-    creator = serializers.RelatedField(source='user', read_only=True)
+    full_data = serializers.CharField(required=True, max_length=1024)
+    # creator = serializers.RelatedField(source='user', read_only=True)
 
     def create(self, validated_data):
         """
         Create and return a new `Citizen` instance, given the validated data.
         """
+        validated_data['full_data'] = json.dumps(validated_data)
         return Citizen.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -34,6 +37,7 @@ class CitizenSerializer(serializers.Serializer):
         instance.document = validated_data.get('document', instance.document)
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.address = validated_data.get('address', instance.address)
+        instance.full_data = json.dumps(validated_data)
         instance.save()
         return instance
 
