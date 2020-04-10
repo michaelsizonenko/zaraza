@@ -7,75 +7,15 @@ import * as Yup from 'yup'
 import { setI18nConfig, systemConfig, translate } from '../config/AppConfig'
 import { IconButton } from 'react-native-paper'
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import {SearchCard }from '../components/SearchCard'
 
 setI18nConfig() // set initial config
 
-
-function PhotoLoader(properties) {
-
-  const getPhoto = async()=>
-  {
-    properties.setFieldValue('image', 'loading');
-    properties.setFieldValue('image', await SearchService.getImage(properties.hash))
-
-  }
-const  {values}={...properties};
-
-  if (!values.image)
-    return  <AwesomeIcon name='camera' onPress={getPhoto}/>
-
-
-  if (values.image='loading')
-    return (<View style={[styles.containerSpinner, styles.horizontal]}>
-      <ActivityIndicator size="large" color="#0000ff"/>
-    </View>);
-
-  return <Image source={{uri: `data:image/jpeg;base64,${values.image}`}}/>
-
-}
 
 function signalChange (props) {
   props.setFiledValue('change',!props.values.change);
 }
 
-function SearchItem (higher_props) {
-  let person = higher_props.person
-  const toggleTemperature = (higher_props,person) => {
-    person.showTemperature = !person.showTemperature
-    signalChange(higher_props)
-  }
-  const postTemperature = () => {
-  }
-
-  return (
-
-    <Formik
-      initialValues={{opened:false}}
-      style={styles.searchItemContainer}
-      onSubmit={postTemperature} initialValues={{ id: person.id }}>
-      {(props)=>(
-        <View>
-          <PhotoLoader  hash={person.hash}{...props}/>
-          <Text>{person.first_name}  </Text>
-          <Text>{person.second_name} </Text>
-          <Text>{person.last_name}   </Text>
-          <Text>{person.phone_number}</Text>
-          <Text>{person.gender}      </Text>
-          <Text>{person.doc_type}    </Text>
-          <Text>{person.document}    </Text>
-          <Text>{person.birth_date}  </Text>
-          <Text>{person.address}     </Text>
-          <IconButton icon='thermometer' onPress={()=>{props.setFieldValue('opened',!props.values.opened)}}/>
-          {props.values.opened && (
-            <>
-              <ValidatedTextInput name='temperature'
-                                  placeholder={translate('Citizen\'s temperature')} {...higher_props}/>
-              <IconButton icon='submit' onPress={x=>x}/>
-            </>)}
-        </View>)}
-    </Formik>)
-
-}
 
 function SearchResult (props) {
 
@@ -87,7 +27,7 @@ function SearchResult (props) {
     <FlatList
       scrollEnabled={false}
       data={props.values.searchItems}
-      renderItem={({ item }) => <SearchItem person={item}{...props}/>}
+      renderItem={({ item }) => <SearchCard person={item}{...props}/>}
       keyExtractor={item => item.hash}
     />)
 }

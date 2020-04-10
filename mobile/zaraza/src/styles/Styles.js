@@ -92,6 +92,9 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         width: 55,
         height: 55
+    },
+    searchItemContainer:{
+        marginBottom: 5
     }
 
 
