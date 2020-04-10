@@ -242,8 +242,24 @@ export default class RegisterScreen extends React.Component {
                 <SafeAreaView style={styles.container}>
                     <Text style={styles.header}>{translate("Success!")}</Text>
                     <Text style={styles.title}>{translate("Citizen has been registered successfully!")}</Text>
-                    <Button title={"Новая регистрация"}/>
-                    <Button title={"Перейти в поиск"}/>
+                    <View style={styles.formButtonWrapper}>
+                        <Button
+                            title={translate("Start a new registration")}
+                            onPress={() => {
+                                this.setState({
+                                    finished: false,
+                                    success: false,
+                                    errorMessage: ""
+                                })
+                            }}
+                        />
+                    </View>
+                    <View style={styles.formButtonWrapper}>
+                        <Button
+                            title={translate("Start a search")}
+                            onPress={() => this.props.navigation.navigate('Screening')}
+                        />
+                    </View>
                 </SafeAreaView>
             )
         }
@@ -254,6 +270,18 @@ export default class RegisterScreen extends React.Component {
                     <Text style={styles.header}>{translate("Error occurred!")}</Text>
                     <Text style={styles.title}>{translate("This is weird! Please make a screen shot and send it to us")}</Text>
                     <Text>{this.state.errorMessage}</Text>
+                    <View style={styles.formButtonWrapper}>
+                        <Button
+                            title={translate("Start a new registration")}
+                            onPress={() => {
+                                this.setState({
+                                    finished: false,
+                                    success: false,
+                                    errorMessage: ""
+                                })
+                            }}
+                        />
+                    </View>
                 </SafeAreaView>
             )
         }
