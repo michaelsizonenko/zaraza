@@ -1,3 +1,6 @@
+import functools
+
+from django.contrib.postgres.search import SearchQuery
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
@@ -35,8 +38,9 @@ def citizen_detail(request):
     """
     if request.method == 'GET':
         try:
-            query=request.GET.get('q', '')
-            citizens = Citizen.objects.get(full_text__search=query)
+            query=request.GET.get('query', '').split()
+            searchVector=functools.reduce(lambda result,word : result & SearchQuery(word));
+            citizens = Citizen.objects.filter('')
             serializer = TemperatureSerializer(citizens, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:

@@ -1,3 +1,4 @@
+from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -23,8 +24,8 @@ class Citizen(models.Model):
     document = models.CharField(max_length=16)
     birth_date = models.DateField()
     address = models.CharField(max_length=100)
-    full_data = models.TextField(max_length=1024)
-    hash = models.CharField(max_length=256, unique=True, default=make_password(full_data, SALT))
+    search_vector = SearchVectorField(null=True)
+    hash = models.CharField(max_length=256, unique=True, default=make_password(str(document)+str(phone_number), SALT))
     image = models.CharField(max_length=4096)
     # creator = models.ForeignKey(User, on_delete=models.PROTECT)
 
