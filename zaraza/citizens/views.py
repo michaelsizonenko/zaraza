@@ -20,7 +20,6 @@ def citizen_list(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = CitizenSerializer(data=data)
-        breakpoint()
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
