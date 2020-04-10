@@ -61,11 +61,6 @@ export const SearchCard = (properties) => {
     const postTemperature = () => {
     }
 
-    async function sendTemperature(props) {
-        const result = await SearchService.setTemperature(props.peson.hash, props.values.temperature)
-        //TODO:show something;
-    }
-
     return (
 
         <Formik
@@ -81,7 +76,7 @@ export const SearchCard = (properties) => {
                         style={{margin: 10}}
                         title={`${person.last_name},${person.birth_date}`}
                         subtitle={`${person.first_name} ${person.second_name}`}
-                        left={(props) => <Avatar.Icon {...props} icon={person.gender == 'M' ? 'male' : 'female'}/>}
+                        left={(props) => <Avatar.Icon {...props} icon={person.gender === 'M' ? 'male' : 'female'}/>}
                         right={(icon_props) => (
                             <IconButton
 
@@ -111,7 +106,10 @@ export const SearchCard = (properties) => {
                                     <Button
                                         disabled={!isValidTemperature(props.values['temperature'])}
                                         title={translate("Submit temperature")}
-                                        onPress={sendTemperature(props)}
+                                        onPress={async () => {
+                                            const result = await SearchService.setTemperature(person.hash, props.values.temperature)
+                                            console.log(result);
+                                        }}
                                     />
                                 </View>
                             </>)}

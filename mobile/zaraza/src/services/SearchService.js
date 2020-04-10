@@ -4,7 +4,7 @@ import { systemConfig } from '../config/AppConfig'
 
 function postRequest (url, data) {
   return fetch(url, {
-    method: method, // 'GET', 'PUT', 'DELETE', etc.
+    method: 'POST', // 'GET', 'PUT', 'DELETE', etc.
     body: JSON.stringify(data), // Coordinate the body type with 'Content-Type'
     headers: new Headers({
       'Content-Type': 'application/json',
