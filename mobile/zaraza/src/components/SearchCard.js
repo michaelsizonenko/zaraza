@@ -14,9 +14,7 @@ const docs = {
     'D': "Driver license",
 }
 
-
 function PhotoLoader(properties) {
-
     const values = properties.values;
     const getPhoto = async () => {
         values.setFieldValue('image', 'loading');
@@ -57,12 +55,9 @@ export const SearchCard = (properties) => {
         signalChange(higher_props)
     }
 
-
-    const postTemperature = () => {
-    }
+    const postTemperature = () => {}
 
     return (
-
         <Formik
             initialValues={{opened: false, shown: false}}
             style={styles.searchItemContainer}
@@ -125,14 +120,3 @@ export const SearchCard = (properties) => {
 
 
 };
-
-
-const MyComponent = (properties) => (
-    <Card.Title
-        title="Card Title"
-        subtitle="Card Subtitle"
-        left={(props) => <Avatar.Icon {...props} icon="folder"/>}
-        right={(props) => <IconButton {...props} icon="more-vert" onPress={() => {
-        }}/>}
-    />
-);
