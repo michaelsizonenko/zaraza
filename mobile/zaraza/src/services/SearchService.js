@@ -20,7 +20,7 @@ function  postRequest(url, data) {
 
 export async function  setTemperature(hash, temperature) {
   console.log("web::setTemperature:", { hash, temperature });
-  return postRequest(ystemConfig.getWebUrl() + '/temperature/', { hash: hash, temperature: temperature })
+  return postRequest(sytemConfig.getWebUrl() + '/temperature/', { hash: hash, temperature: temperature })
     .then(x => {
       console.log("web::setTemperature returned:", x);
       return x
@@ -30,7 +30,7 @@ export async function  setTemperature(hash, temperature) {
 
 export async function  getImage(hash, temperature) {
   console.log("web::getImage:", { hash, temperature });
-  return sendRequest(ystemConfig.getWebUrl() + '/temperature/', { hash,  temperature })
+  return sendRequest(sytemConfig.getWebUrl() + '/temperature/', { hash,  temperature })
     .then(x => {
       console.log("web::getImage returned:", x);
       return x
@@ -40,7 +40,7 @@ export async function  getImage(hash, temperature) {
 
 export async function  search(query) {
   console.log("web::search:", { hash, temperature });
-  return sendRequest(ystemConfig.getWebUrl() + '/temperature/', { query })
+  return sendRequest(sytemConfig.getWebUrl() + '/citizen_detail/', { query })
     .then(x => {
       console.log("web::search:", x);
       return x
