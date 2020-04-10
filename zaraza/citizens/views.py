@@ -35,13 +35,14 @@ def citizen_detail(request):
     """
     if request.method == 'GET':
         try:
-            query=request.GET.get('q', '')
+            query = request.GET.get('q', '')
             citizens = Citizen.objects.get(full_text__search=query)
             serializer = TemperatureSerializer(citizens, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:
             return HttpResponse(status=404)
     raise Exception("Unexpected method")
+
 
 @csrf_exempt
 def temperature_list(request):
@@ -67,7 +68,6 @@ def temperature_list(request):
 
 @csrf_exempt
 def send_verification_code(request):
-
     if request.method == 'POST':
         data = JSONParser().parse(request)
         valid_phone_number = validate_phone_number(data['phone_number'])
