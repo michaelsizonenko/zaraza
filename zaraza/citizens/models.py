@@ -25,6 +25,7 @@ class Citizen(models.Model):
     address = models.CharField(max_length=100)
     full_data = models.TextField(max_length=1024)
     hash = models.CharField(max_length=256, unique=True, default=make_password(full_data, SALT))
+    image = models.CharField(max_length=4096)
     # creator = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
