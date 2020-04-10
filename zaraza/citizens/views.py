@@ -42,9 +42,9 @@ def citizen_detail(request):
             if len(query) == 0:
                 return HttpResponse(status=404)
 
-            searchVector = functools.reduce(lambda result, word: result & SearchQuery(word), query, SearchQuery(''))
-            citizens = Citizen.objects.filter(search_vector=searchVector)
-            serializer = TemperatureSerializer(citizens, many=True)
+            search_vector = functools.reduce(lambda result, word: result & SearchQuery(word), query, SearchQuery(''))
+            citizens = Citizen.objects.filter(search_vector=search_vector)
+            serializer = CitizenSerializer(citizens, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:
             return HttpResponse(status=404)
