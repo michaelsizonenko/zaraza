@@ -23,7 +23,7 @@ class CitizenSerializer(serializers.Serializer):
         """
         copied_data = copy.deepcopy(validated_data)
         copied_data['birth_date'] = str(copied_data['birth_date'])
-        validated_data['full_data'] = json.dumps(copied_data)
+        validated_data['full_data'] = json.dumps(copied_data, ensure_ascii=False)
         return Citizen.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
