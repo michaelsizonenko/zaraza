@@ -170,7 +170,7 @@ export default class RegisterScreen extends React.Component {
             progress: true
         });
         try {
-            delete values.image;
+            values.image = values.image.data;
             const result = await fetch(systemConfig.getWebUrl() + '/citizens/', {
                 method: 'POST',
                 headers: {
