@@ -1,19 +1,6 @@
 import { systemConfig } from '../config/AppConfig'
 
 
-async function  setTemperature(hash, temperature){
-  console.log("getImage", values);
-    const result = await fetch(systemConfig.getWebUrl() + '/temperature/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: {hash:hash,temperature:temperature},
-    });
-    console.log(result);
-    return result;
-};
 
 function sendRequest (url, data,method='GET') {
   return fetch(url, {
@@ -41,7 +28,7 @@ export async function  setTemperature(hash, temperature) {
 }
 
 
-export async function  setTemperature(hash, temperature) {
+export async function  getImage(hash, temperature) {
   console.log("web::setTemperature:", { hash, temperature });
   return sendRequest(ystemConfig.getWebUrl() + '/temperature/', { hash: hash, temperature: temperature })
     .then(x => {

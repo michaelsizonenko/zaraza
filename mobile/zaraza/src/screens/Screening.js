@@ -88,14 +88,6 @@ export default class ScreeningScreen extends React.Component {
                 <SearchResult {...props}/>
 
 
-                {/*<Text>{"Errors : " + JSON.stringify(props.errors)}</Text>*/}
-                {/*<Separator/>*/}
-                {/*<Text>{"Touched : " + JSON.stringify(props.touched)}</Text>*/}
-                {/*<Separator/>*/}
-                {/*<Text>{"Values : " + JSON.stringify(props.values)}</Text>*/}
-                {/*<Separator/>*/}
-                <Button styles={styles.submit} onPress={props.handleSubmit}
-                        title={translate('Submit')}/>
               </View>
             )}
           </Formik>

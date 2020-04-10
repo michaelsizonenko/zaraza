@@ -6,6 +6,7 @@ import {  systemConfig, translate } from '../config/AppConfig'
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import { ActivityIndicator, View } from 'react-native'
 import * as SearchService from '../services/SearchService'
+import {ValidatedTextInput} from './ValidatedInput'
 
 const  docs={
   'P':  "Passport (old version)",
@@ -82,6 +83,10 @@ export const SearchCard = (properties) => {
   const postTemperature = () => {
   }
 
+  async function sendTemperature (props) {
+    const result=await SearchService.setTemperature(props.peson.hash,props.values.temperature)
+    //TODO:show something;
+  }
 
   return(
 
@@ -116,7 +121,13 @@ console.log(props);
 
    </Card.Content>
      <PhotoLoader  hash={person.hash}{...props}/>
-
+     {props.values.opened && (
+      <>
+        <ValidatedTextInput name='temperature'
+                            placeholder={translate('Citizen\'s temperature')}
+                            {...props}/>
+        <IconButton icon='check-square' onPress={sendTemperature(props)}/>
+      </>)}
       <Card.Actions>
         <IconButton icon='thermometer' onPress={()=>{props.setFieldValue('opened',!props.values.opened)}}/>
       </Card.Actions>

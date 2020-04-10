@@ -37,7 +37,7 @@ export default class ZarazaNavigation extends React.Component {
                 }}>
                 <NavigationContainer>
                     {/*<Drawer.Navigator initialRouteName="Register">*/}
-                    <Drawer.Navigator initialRouteName="Screening">
+                    <Drawer.Navigator initialRouteName="Register">
                         <Drawer.Screen
                             name="Register"
                             component={RegisterScreenWrapper}
