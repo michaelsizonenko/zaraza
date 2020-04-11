@@ -6,7 +6,6 @@ from django.contrib.postgres.indexes import GinIndex
 from django.contrib.auth.hashers import make_password
 from zaraza.settings import SALT
 
-
 GENDER_CHOICES = (('M', 'Man'), ('W', 'Woman'))
 DOCTYPE_CHOICES = (('P', 'Passport'), ('C', "ID card"), ('D', 'Driver licence'))
 
@@ -24,16 +23,18 @@ class Citizen(models.Model):
     document = models.CharField(max_length=16)
     birth_date = models.DateField()
     address = models.CharField(max_length=100)
-    full_text=models.CharField(max_length=130, default="")
-    hash = models.CharField(max_length=256, unique=True, default=make_password(str(document)+str(phone_number), SALT))
+    full_text = models.CharField(max_length=130, default="")
+    hash = models.CharField(max_length=256, unique=True, default=make_password(str(document) + str(phone_number), SALT))
     image = models.CharField(max_length=4096)
+
     # creator = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['created']
+
     def save(self, *args, **kwargs):
-            self.full_text = self.document +' ' +self.phone_number
-            super(Citizen, self).save(*args, **kwargs)
+        self.full_text = "{document} {phone_number}".format(document=self.document, phone_number=self.phone_number)
+        super(Citizen, self).save(*args, **kwargs)
 
 
 class Temperature(models.Model):
@@ -41,6 +42,7 @@ class Temperature(models.Model):
 
     citizen = models.ForeignKey(Citizen, related_name='temperature_history', on_delete=models.PROTECT)
     temperature = models.FloatField(validators=[MinValueValidator(34.0), MaxValueValidator(42.0)])
+
     # supervisor = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
