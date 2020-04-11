@@ -24,13 +24,16 @@ class Citizen(models.Model):
     document = models.CharField(max_length=16)
     birth_date = models.DateField()
     address = models.CharField(max_length=100)
-    full_text=models.CharField(max_length=130, default=str(document)+"" + str(phone_number))
+    full_text=models.CharField(max_length=130, default="")
     hash = models.CharField(max_length=256, unique=True, default=make_password(str(document)+str(phone_number), SALT))
     image = models.CharField(max_length=4096)
     # creator = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['created']
+    def save(self, *args, **kwargs):
+            self.full_text = self.document +' ' +self.phone_number
+            super(Citizen, self).save(*args, **kwargs)
 
 
 class Temperature(models.Model):
