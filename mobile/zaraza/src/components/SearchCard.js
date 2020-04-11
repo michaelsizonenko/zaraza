@@ -7,12 +7,20 @@ import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import { ActivityIndicator, View, Button, Alert } from 'react-native'
 import * as SearchService from '../services/SearchService'
 import { ValidatedTextInput } from './ValidatedInput'
+import * as Yup from 'yup'
 
 const docs = {
   'P': 'Passport (old version)',
   'C': 'ID card',
   'D': 'Driver license',
 }
+
+const cardValidation =  Yup.object().shape({
+  temperature: Yup.number()
+    .min(34.2,translate(  "Too low"))
+    .max(42.0,translate("Too high"))
+    .required(translate('Required field'))
+});
 
 const isValidTemperature = (t) => {
   if (!t) {
@@ -39,6 +47,7 @@ export const SearchCard = (properties) => {
       initialValues={{ opened: false, shown: false }}
       style={styles.searchItemContainer}
       onSubmit={postTemperature}
+      validationSchema={cardValidation}
     >
       {(props) => {
         console.log(props)

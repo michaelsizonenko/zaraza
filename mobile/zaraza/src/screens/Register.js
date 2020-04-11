@@ -112,12 +112,10 @@ export default class RegisterScreen extends React.Component {
             .min(2, translate('Too short!'))
             .max(70, translate('Too long!'))
             .required(translate('Required field')),
-        // documentIsPassport: Yup.boolean()
-        //     .required(translate("Choose document type")),
-        // document: Yup.string()
-        //     .min(8, translate('Too short!'))
-        //     .max(12, translate('Too long!'))
-        //     .required(translate('Required field')),
+        document: Yup.string()
+            .min(8, translate('Too short!'))
+            .max(12, translate('Too long!'))
+            .required(translate('Required field')),
         // doc_type: Yup.string()
         //     .required(translate('Required field')),
         birth_date: Yup.string()
@@ -129,7 +127,9 @@ export default class RegisterScreen extends React.Component {
         phone_number: Yup.string()
             .test("valid", translate("Wrong phone number"), this.isValidPhoneNumber),
         temperature: Yup.number()
-            .required(translate('Required field')),
+          .min(34.2,translate(  "Too low"))
+          .max(42.0,translate("Too high"))
+          .required(translate('Required field'))
     });
 
     //TODO: erase image by uri  after upload
