@@ -24,6 +24,7 @@ class Like(Lookup):
         params = lhs_params + rhs_params
         return 'LOWER(%s) LIKE LOWER(%s)' % (lhs, rhs), params
 
+
 @csrf_exempt
 def citizen_list(request):
     """
@@ -56,9 +57,8 @@ def citizen_detail(request):
             if len(query) == 0:
                 return HttpResponse(status=404)
 
-
             list_of_lookups = [Citizen.objects.filter(full_text__like=f"%{str.strip()}%") for str in query]
-            combined = functools.reduce(operator.and_,list_of_lookups)
+            combined = functools.reduce(operator.and_, list_of_lookups)
             serializer = CitizenSerializer(combined, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:
