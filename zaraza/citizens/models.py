@@ -32,7 +32,7 @@ class Citizen(models.Model):
     class Meta:
         ordering = ['created']
     def save(self, *args, **kwargs):
-            self.full_text = self.document +' ' +self.phone_number
+            self.full_text = self.document +' ' +self.phone_number +' '+ self.last_name
             super(Citizen, self).save(*args, **kwargs)
 
 
