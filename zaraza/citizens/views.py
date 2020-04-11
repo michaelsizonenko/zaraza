@@ -56,15 +56,20 @@ def temperature_list(request):
     """
     List all temperature rows, or create a new temperature row
     """
-    if request.method == 'GET':
-        temperature = Temperature.objects.all()
-        serializer = TemperatureSerializer(temperature, many=True)
-        return JsonResponse(serializer.data, safe=False)
+    # if request.method == 'GET':
+    #     temperature = Temperature.objects.all()
+    #     serializer = TemperatureSerializer(temperature, many=True)
+    #     return JsonResponse(serializer.data, safe=False)
 
     if request.method == 'POST':
         data = JSONParser().parse(request)
         citizen = Citizen.objects.get(hash=data['hash'])
-        serializer = TemperatureSerializer(data={'citizen': citizen, 'temperature': data['temperature']})
+        data = {
+            'temperature': data['temperature'],
+            'citizen': citizen,
+            'citizen_id': citizen.id
+        }
+        serializer = TemperatureSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)

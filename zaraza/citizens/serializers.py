@@ -8,7 +8,6 @@ from zaraza.settings import SALT
 
 
 class CitizenSerializer(serializers.Serializer):
-    # id = serializers.IntegerField(read_only=True)
     first_name = serializers.CharField(required=True, allow_blank=False, max_length=100)
     second_name = serializers.CharField(required=False, allow_blank=False, max_length=100)
     last_name = serializers.CharField(required=True, allow_blank=False, max_length=100)
@@ -20,7 +19,7 @@ class CitizenSerializer(serializers.Serializer):
     address = serializers.CharField(required=True, max_length=100)
     hash = serializers.CharField(max_length=256, read_only=True)
     image = serializers.CharField(max_length=4096)
-    # creator = serializers.RelatedField(source='user', read_only=True)
+    # creator = serializers.RelatedField(source='user')
 
     def create(self, validated_data):
         """
@@ -58,9 +57,8 @@ class CitizenSerializer(serializers.Serializer):
 
 
 class TemperatureSerializer(serializers.Serializer):
-    created = serializers.DateField(read_only=True)
-    # todo continue here... specify related field
-    citizen = serializers.PrimaryKeyRelatedField(many=False)
+    citizen = CitizenSerializer(many=False, read_only=True)
+    citizen_id = serializers.IntegerField(write_only=True)
     temperature = serializers.FloatField(min_value=34.0, max_value=42.0, required=True)
     # supervisor = serializers.RelatedField(source='user', read_only=True)
 
