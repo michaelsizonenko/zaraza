@@ -40,15 +40,11 @@ export default class ScreeningScreen extends React.Component {
     search = async (props) => {
         if (!props.values.query) return;
         const data = await SearchService.search(props.values.query);
-        console.log(data);
         props.setFieldValue('searchItems', data);
     }
 
     clear = (props) => {
-        console.log(props);
         props.resetForm({});
-        // props.setFieldValue('searchItems', []);
-        // props.setFieldValue('values.query', "");
     }
 
     render() {
