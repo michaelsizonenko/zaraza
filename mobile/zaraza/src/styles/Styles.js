@@ -35,10 +35,10 @@ export const styles = StyleSheet.create({
         marginVertical: 8,
         fontSize: 20,
     },
-    subTitle: {
+    subtitle: {
         textAlign: 'center',
         marginVertical: 3,
-        fontSize: 17,
+        fontSize: 15,
     },
     form: {
         marginBottom: 30
@@ -90,8 +90,16 @@ export const styles = StyleSheet.create({
     },
     searchButton:{
         borderWidth: 1,
-        width: 55,
-        height: 55
+
+        width: 56,
+        height: 56
+    },
+    cancelButton: {
+        position: 'relative',
+        left: -2*56-20,
+        width: 56,
+        height: 56,
+        zIndex: 100
     },
     searchItemContainer:{
         marginBottom: 5

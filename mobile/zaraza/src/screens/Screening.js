@@ -21,7 +21,7 @@ function signalChange(props) {
 function SearchResult(props) {
 
     if (!props.values.searchItems) {
-        return <Text>{translate('Run search to locate citizen')}</Text>
+        return <Text style={styles.subtitle}>{translate("Enter last name, first name or phone number")}</Text>
     }
 
     return (
@@ -42,6 +42,12 @@ export default class ScreeningScreen extends React.Component {
         props.setFieldValue('searchItems', data)
     }
 
+    clear = (props, query) => {
+        console.log(props, query);
+        // props.setFieldValue('searchItems', []);
+        // props.setFieldValue('values.query', "");
+    }
+
     render() {
         return (
             <SafeAreaView style={styles.container}>
@@ -55,10 +61,20 @@ export default class ScreeningScreen extends React.Component {
                             <View style={styles.form}>
                                 <View style={[styles.horizontal, styles.row]}>
                                     <ValidatedTextInput name='query'
-                                                        {...props} style={styles.searchQuery}/>
+                                                        placeholder={translate("Search")}
+                                                        {...props}
+                                                        style={styles.searchQuery}/>
 
-                                    <IconButton icon='search' style={styles.searchButton}
-                                                onPress={() => this.search(props)}/>
+                                    <IconButton
+                                        icon='search'
+                                        style={styles.searchButton}
+                                        onPress={() => this.search(props)}
+                                    />
+                                    {props.values.query && <IconButton
+                                        icon='remove'
+                                        style={styles.cancelButton}
+                                        onPress={() => this.clear(props)}
+                                    />}
                                 </View>
                                 <SearchResult {...props}/>
 
