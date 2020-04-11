@@ -37,13 +37,16 @@ export default class ScreeningScreen extends React.Component {
 
     ScreeningSchema = Yup.object().shape({})
 
-    search = async (props, query) => {
-        const data = await SearchService.search(props.values.query)
-        props.setFieldValue('searchItems', data)
+    search = async (props) => {
+        if (!props.values.query) return;
+        const data = await SearchService.search(props.values.query);
+        console.log(data);
+        props.setFieldValue('searchItems', data);
     }
 
-    clear = (props, query) => {
-        console.log(props, query);
+    clear = (props) => {
+        console.log(props);
+        props.resetForm({});
         // props.setFieldValue('searchItems', []);
         // props.setFieldValue('values.query', "");
     }
@@ -53,8 +56,10 @@ export default class ScreeningScreen extends React.Component {
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <Formik
-                        initialValues={{}}
-                        onSubmit={this._onSubmit}
+                        initialValues={{
+                            query: ""
+                        }}
+                        onSubmit={() => console.log("EMPTY SUBMIT")}
                         validationSchema={this.ScreeningSchema}
                     >
                         {(props) => (
@@ -70,11 +75,11 @@ export default class ScreeningScreen extends React.Component {
                                         style={styles.searchButton}
                                         onPress={() => this.search(props)}
                                     />
-                                    {props.values.query && <IconButton
+                                    <IconButton
                                         icon='remove'
                                         style={styles.cancelButton}
                                         onPress={() => this.clear(props)}
-                                    />}
+                                    />
                                 </View>
                                 <SearchResult {...props}/>
 
