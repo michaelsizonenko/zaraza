@@ -33,8 +33,8 @@ class Citizen(models.Model):
         ordering = ['created']
 
     def save(self, *args, **kwargs):
-        self.full_text = "{document} {phone_number}".format(document=self.document, phone_number=self.phone_number)
-        super(Citizen, self).save(*args, **kwargs)
+            self.full_text = self.document +' ' +self.phone_number +' '+ self.last_name
+            super(Citizen, self).save(*args, **kwargs)
 
 
 class Temperature(models.Model):
@@ -42,7 +42,6 @@ class Temperature(models.Model):
 
     citizen = models.ForeignKey(Citizen, related_name='temperature_history', on_delete=models.PROTECT)
     temperature = models.FloatField(validators=[MinValueValidator(34.0), MaxValueValidator(42.0)])
-
     # supervisor = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
