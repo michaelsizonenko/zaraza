@@ -22,7 +22,7 @@ class Like(Lookup):
         lhs, lhs_params = self.process_lhs(compiler, connection)
         rhs, rhs_params = self.process_rhs(compiler, connection)
         params = lhs_params + rhs_params
-        return 'LOWER(%s) LIKE LOWER(%s)' % (lhs, rhs), params
+        return "LOWER(%s) LIKE LOWER('%s')" % (lhs, rhs), params
 
 
 @csrf_exempt
@@ -57,12 +57,13 @@ def citizen_detail(request):
             if len(query) == 0:
                 return HttpResponse(status=404)
 
-            list_of_lookups = [Citizen.objects.filter(full_text__like=f"%{str.strip()}%") for str in query]
+            list_of_lookups = [Citizen.objects.filter(full_text__contains=f"{str.strip()}") for str in query]
             combined = functools.reduce(operator.and_, list_of_lookups)
             serializer = CitizenSerializer(combined, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:
             return HttpResponse(status=404)
+
     raise Exception("Unexpected method")
 
 
