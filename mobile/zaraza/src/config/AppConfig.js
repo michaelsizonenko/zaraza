@@ -35,7 +35,7 @@ export const setI18nConfig = () => {
 
 class ConfigController {
     static _instance :ConfigController = null;
-    isLocalhost = true;
+    isLocalhost = false;
     language = 'ua';
 
     setLanguage = (language) => {
@@ -59,9 +59,11 @@ class ConfigController {
     }
 
     getWebUrl = () => {
-        console.log("Get web URL. Is localhost : ", this.isLocalhost);
         let configuration = this.isLocalhost?config.localhost:config.development;
-        return `${configuration.webProtocol}://${configuration.server}:${configuration.httpPort}`;
+        const port = (configuration.webProtocol === "https") ? configuration.httpsPort : configuration.httpPort;
+        const result = `${configuration.webProtocol}://${configuration.server}:${port}`;
+        console.log("Web URL : ", result);
+        return result;
     };
 
     toggleConfig = () => {
