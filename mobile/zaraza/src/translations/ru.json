@@ -42,5 +42,9 @@
   "Start a new registration": "Начать новую регистрацию",
   "Start a search": "Перейти в поиск",
   "Nothing yet Keep for updates": "Тут пока пусто. Следите за обновлениями...",
-  "Submit temperature": "Отправить данные о температуре"
+  "Submit temperature": "Отправить данные о температуре",
+  "Clear": "Очистить",
+  "Back": "Назад",
+  "Search": "Поиск...",
+  "Enter last name, first name or phone number": "Введите фамилию, имя или номер телефона..."
 }

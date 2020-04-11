@@ -268,7 +268,8 @@ export default class RegisterScreen extends React.Component {
             return (
                 <SafeAreaView style={styles.container}>
                     <Text style={styles.header}>{translate("Error occurred!")}</Text>
-                    <Text style={styles.title}>{translate("This is weird! Please make a screen shot and send it to us")}</Text>
+                    <Text
+                        style={styles.title}>{translate("This is weird! Please make a screen shot and send it to us")}</Text>
                     <Text>{this.state.errorMessage}</Text>
                     <View style={styles.formButtonWrapper}>
                         <Button
@@ -299,6 +300,23 @@ export default class RegisterScreen extends React.Component {
                                 {/*todo: add reset button to all steps*/}
                                 {this.state.step === this.steps[0] &&
                                 <View style={styles.formContainer}>
+                                    <View style={styles.formButtonWrapper}>
+                                        <Button disabled={!props.dirty}
+                                                onPress={() => {
+                                                    console.log(props);
+                                                    props.resetForm({});
+                                                    this.setState({
+                                                        progress: false,
+                                                        isValidPhoneNumber: false,
+                                                        isVerificationSent: false,
+                                                        verificationCodeHasEntered: false,
+                                                        step: this.steps[0],
+                                                        verificationCode: '',
+                                                        inputCode: ''
+                                                    });
+                                                }}
+                                                title={translate("Clear")}/>
+                                    </View>
                                     <Text style={styles.header}>{translate("Step 1 :")}</Text>
                                     <Text
                                         style={styles.description}>{translate("Please enter a valid citizen's phone number")}</Text>
@@ -393,6 +411,14 @@ export default class RegisterScreen extends React.Component {
 
                                 {this.state.step === this.steps[1] &&
                                 <View style={styles.formContainer}>
+                                    <View style={styles.formButtonWrapper}>
+                                        <Button onPress={() => {
+                                                    this.setState({
+                                                        step: this.steps[0]
+                                                    });
+                                                }}
+                                                title={translate("Back")}/>
+                                    </View>
                                     <Text style={styles.header}>{translate("Step 2 :")}</Text>
                                     <Text
                                         style={styles.description}>{translate("Please add the personal data of the citizen: first name, second name, gender, date of birth and residential address")}</Text>
@@ -449,6 +475,14 @@ export default class RegisterScreen extends React.Component {
 
                                 {this.state.step === this.steps[2] &&
                                 <View style={styles.formContainer}>
+                                    <View style={styles.formButtonWrapper}>
+                                        <Button onPress={() => {
+                                                    this.setState({
+                                                        step: this.steps[1]
+                                                    });
+                                                }}
+                                                title={translate("Back")}/>
+                                    </View>
                                     <Text style={styles.header}>{translate("Step 3 :")}</Text>
                                     <Text
                                         style={styles.description}>{translate("To continue registration, add series and number of  identity document, take a photo of the citizen")}</Text>
@@ -493,6 +527,14 @@ export default class RegisterScreen extends React.Component {
 
                                 {this.state.step === this.steps[3] &&
                                 <View style={styles.formContainer}>
+                                    <View style={styles.formButtonWrapper}>
+                                        <Button onPress={() => {
+                                                    this.setState({
+                                                        step: this.steps[2]
+                                                    });
+                                                }}
+                                                title={translate("Back")}/>
+                                    </View>
                                     <Text style={styles.header}>{translate("Step 4 :")}</Text>
                                     <Text
                                         style={styles.description}>{translate("Please add citizen temperature information")}</Text>
