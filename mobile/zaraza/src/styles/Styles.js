@@ -1,7 +1,6 @@
 import {StyleSheet} from "react-native";
 
 
-
 export const styles = StyleSheet.create({
     phoneInput: {
         borderWidth: 1,
@@ -73,35 +72,29 @@ export const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
     },
-    searchContainer:{
-
-        flexDirection:'row'
+    searchContainer: {
+        flexDirection: 'row'
     },
-
     row: {
         flexDirection: 'row',
-
         justifyContent: 'flex-start',
-
     },
-    searchQuery:{
-
-        "width": "80%",
+    searchQuery: {
+        "width": "85%",
     },
-    searchButton:{
-        borderWidth: 1,
-
+    searchButton: {
         width: 56,
         height: 56
     },
     cancelButton: {
         position: 'relative',
-        left: -2*56-20,
+        left: -2 * 56 - 10,
+        top: 1,
         width: 56,
         height: 56,
         zIndex: 100
     },
-    searchItemContainer:{
+    searchItemContainer: {
         marginBottom: 5
     }
 

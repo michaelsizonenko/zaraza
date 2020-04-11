@@ -71,11 +71,12 @@ export default class ScreeningScreen extends React.Component {
                                         style={styles.searchButton}
                                         onPress={() => this.search(props)}
                                     />
-                                    <IconButton
+                                    {props.dirty && <IconButton
                                         icon='remove'
+                                        size={15}
                                         style={styles.cancelButton}
                                         onPress={() => this.clear(props)}
-                                    />
+                                    />}
                                 </View>
                                 <SearchResult {...props}/>
 
