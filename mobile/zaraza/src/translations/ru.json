@@ -48,5 +48,6 @@
   "Clear": "Очистить",
   "Back": "Назад",
   "Search": "Поиск...",
-  "Enter last name, first name or phone number": "Введите фамилию, имя или номер телефона..."
+  "Enter last name, first name or phone number": "Введите фамилию, имя или номер телефона...",
+  "Temperature data submitted successfully": "Данные о температуре отправлены успешно"
 }
