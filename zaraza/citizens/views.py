@@ -57,7 +57,7 @@ def citizen_detail(request):
             if len(query) == 0:
                 return HttpResponse(status=404)
 
-            list_of_lookups = [Citizen.objects.filter(full_text__contains=f"{str.strip()}") for str in query]
+            list_of_lookups = [Citizen.objects.filter(full_text__contains=string.strip()) for string in query]
             combined = functools.reduce(operator.and_, list_of_lookups)
             serializer = CitizenSerializer(combined, many=True)
             return JsonResponse(serializer.data, safe=False)
