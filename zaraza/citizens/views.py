@@ -72,7 +72,7 @@ def temperature_list(request):
         serializer = TemperatureSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
+            return HttpResponse(status=201)
         return JsonResponse(serializer.errors, status=400)
 
     raise Exception("Unexpected method")

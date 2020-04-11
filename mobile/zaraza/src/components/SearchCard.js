@@ -4,7 +4,7 @@ import {Formik} from 'formik'
 import {styles} from '../styles/Styles'
 import {systemConfig, translate} from '../config/AppConfig'
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import {ActivityIndicator, View, Button} from 'react-native'
+import {ActivityIndicator, View, Button, Alert} from 'react-native'
 import * as SearchService from '../services/SearchService'
 import {ValidatedTextInput} from './ValidatedInput'
 
@@ -103,7 +103,13 @@ export const SearchCard = (properties) => {
                                         title={translate("Submit temperature")}
                                         onPress={async () => {
                                             const result = await SearchService.setTemperature(person.hash, props.values.temperature)
-                                            console.log(result);
+                                            console.log(result.ok, result);
+                                            if (result.ok && result.status === 201) {
+                                                props.setFieldValue('opened', false)
+                                                props.setFieldValue('temperature', '')
+                                                return;
+                                            }
+                                            Alert.alert(translate("Error occurred!"));
                                         }}
                                     />
                                 </View>
