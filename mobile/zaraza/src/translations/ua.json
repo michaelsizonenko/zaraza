@@ -42,5 +42,7 @@
   "Start a new registration": "Почати нову реєстрацію",
   "Start a search": "Перейти до пошуку",
   "Nothing yet Keep for updates": "Поки що нічого немає. Слідкуйте за оновленнями...",
-  "Submit temperature": "Відправити температурні дані"
+  "Submit temperature": "Відправити температурні дані",
+  "Clear": "Очистити",
+  "Back": "Назад"
 }
