@@ -18,7 +18,7 @@ class CitizenSerializer(serializers.Serializer):
     birth_date = serializers.DateField(required=True)
     address = serializers.CharField(required=True, max_length=100)
     hash = serializers.CharField(max_length=256, read_only=True)
-    image = serializers.CharField(max_length=4096)
+    image = serializers.CharField(max_length=40960)
     # creator = serializers.RelatedField(source='user')
 
     def create(self, validated_data):
