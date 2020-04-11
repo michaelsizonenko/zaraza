@@ -24,6 +24,10 @@ function SearchResult(props) {
         return <Text style={styles.subtitle}>{translate("Enter last name, first name or phone number")}</Text>
     }
 
+    if(props.values.searchItems.length === 0){
+        return <Text style={styles.subtitle}>{translate("No results were found for this request")}</Text>
+    }
+
     return (
         <FlatList
             scrollEnabled={false}

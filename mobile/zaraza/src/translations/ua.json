@@ -49,5 +49,6 @@
   "Back": "Назад",
   "Search": "Пошук...",
   "Enter last name, first name or phone number": "Введіть прізвище, ім'я або номер телефону...",
-  "Temperature data submitted successfully": "Дані про температуру успішно надіслані"
+  "Temperature data submitted successfully": "Дані про температуру успішно надіслані",
+  "No results were found for this request": "За даним запитом нічого не знайдено."
 }
