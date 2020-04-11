@@ -8,6 +8,7 @@ import {ActivityIndicator, View, Button, Alert} from 'react-native'
 import * as SearchService from '../services/SearchService'
 import {ValidatedTextInput} from './ValidatedInput'
 import * as Yup from 'yup'
+import Text from "react-native-paper/src/components/Typography/Text";
 
 const docs = {
     'P': 'Passport (old version)',
@@ -19,7 +20,7 @@ const cardValidation = Yup.object().shape({
     temperature: Yup.number()
         .min(34.2, translate("Too low"))
         .max(42.0, translate("Too high"))
-        .required(translate('Required field'))
+        .required(translate("Required field"))
 });
 
 export const SearchCard = (properties) => {
@@ -33,7 +34,16 @@ export const SearchCard = (properties) => {
         signalChange(higher_props)
     }
 
-    const postTemperature = () => {
+    const postTemperature = async () => {
+        const result = await SearchService.setTemperature(person.hash, props.values.temperature)
+                                            console.log(result.ok, result)
+                                            if (result.ok && result.status === 201) {
+                                                Alert.alert(translate("Temperature data submitted successfully"))
+                                                props.setFieldValue('temperature', '')
+                                                props.setFieldValue('shown', false)
+                                                return
+                                            }
+                                            Alert.alert(translate('Error occurred!'))
     }
 
     return (
@@ -77,27 +87,23 @@ export const SearchCard = (properties) => {
                         </Card.Content>
                         <Card.Cover source={{uri: `data:image/jpeg;base64,${person.image}`}}/>
                         <Card.Actions>
-                            <View style={[styles.horizontal, styles.row]}>
-                                <ValidatedTextInput name='temperature'
-                                                    style={{width: "80%"}}
-                                                    keyboardType={'numeric'}
-                                                    placeholder={translate('Citizen\'s temperature')}
-                                                    {...props}/>
-                                <IconButton
-                                    icon='edit'
-                                    style={{width: 56, height: 56}}
-                                    onPress={async () => {
-                                        const result = await SearchService.setTemperature(person.hash, props.values.temperature)
-                                        console.log(result.ok, result)
-                                        if (result.ok && result.status === 201) {
-                                            Alert.alert(translate("Temperature data submitted successfully"))
-                                            props.setFieldValue('temperature', '')
-                                            props.setFieldValue('shown', false)
-                                            return
-                                        }
-                                        Alert.alert(translate('Error occurred!'))
-                                    }}
-                                />
+                            <View>
+                                <View style={[styles.horizontal, styles.row]}>
+                                    <ValidatedTextInput name='temperature'
+                                                        style={{width: "80%"}}
+                                                        keyboardType={'numeric'}
+                                                        specialStyle={true}
+                                                        placeholder={translate('Citizen\'s temperature')}
+                                                        {...props}/>
+                                    <IconButton
+                                        icon='edit'
+                                        style={{width: 56, height: 56}}
+                                        onPress={props.handleSubmit}
+                                    />
+                                </View>
+                                {!props.touched.temperature && props.errors.temperature &&
+                                <Text style={{fontSize: 10, color: 'red'}}>{props.errors.temperature}</Text>
+                                }
                             </View>
                         </Card.Actions>
                     </>}
