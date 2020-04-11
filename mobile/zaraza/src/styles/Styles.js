@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     searchQuery: {
-        "width": "85%",
+        width: "85%",
     },
     searchButton: {
         width: 56,
