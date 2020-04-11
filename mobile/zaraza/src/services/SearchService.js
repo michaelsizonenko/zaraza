@@ -38,7 +38,7 @@ export async function getImage(hash, temperature) {
 }
 
 
-export async function search(query) {
+export function search(query) {
     console.log("web::search:", {query});
     return sendRequest(systemConfig.getWebUrl() + '/citizens/details/', {query})
         .then(x => {
