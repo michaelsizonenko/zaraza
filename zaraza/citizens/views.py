@@ -21,7 +21,7 @@ class Like(Lookup):
     def as_sql(self, compiler, connection):
         lhs, lhs_params = self.process_lhs(compiler, connection)
         rhs, rhs_params = self.process_rhs(compiler, connection)
-        rhs_params=[f"'%{rhs}%'" for rhs in rhs_params]
+        rhs_params = [f"'%{rhs}%'" for rhs in rhs_params]
         params = lhs_params + rhs_params
         return "LOWER(%s) LIKE LOWER(%s)" % (lhs, rhs), params
 
@@ -66,7 +66,6 @@ def citizen_detail(request):
             return HttpResponse(status=404)
 
     raise Exception("Unexpected method")
-
 
 
 @csrf_exempt
