@@ -33,7 +33,7 @@ class Citizen(models.Model):
         ordering = ['created']
 
     def save(self, *args, **kwargs):
-            self.full_text = self.document +' ' +self.phone_number +' '+ self.last_name
+            self.full_text = "{document} {phone_number}".format(document=self.document, phone_number=self.phone_number)
             super(Citizen, self).save(*args, **kwargs)
 
 
