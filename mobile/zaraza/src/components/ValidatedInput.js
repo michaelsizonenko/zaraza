@@ -73,6 +73,7 @@ export class ValidatedDateInput extends React.Component {
                     });
                 }}
             />
+
             {this.props.touched[this.props.name] && this.props.errors[this.props.name] &&
             <Text style={{fontSize: 10, marginTop: 10, color: 'red'}}>{this.props.errors[this.props.name]}</Text>
             }
@@ -83,10 +84,11 @@ export class ValidatedDateInput extends React.Component {
 
 export function ValidatedTextInput(props) {
     // по name можно доставать значения input
-    let {name, style,values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType, callback} = {...props};
+    let {name, style, values, handleChange, errors, setFieldTouched, touched, handleSubmit, placeholder, numberOfLines, keyboardType, callback, specialStyle} = {...props};
     numberOfLines = numberOfLines ? numberOfLines : 13;
     keyboardType = keyboardType ? keyboardType : 'default';
-
+   console.log(errors[name])
+    console.log(touched[name])
     return <>
         <TextInput
             onChangeText={handleChange(name)}
@@ -99,6 +101,7 @@ export function ValidatedTextInput(props) {
             numberOfLines={numberOfLines}
             style={style}
         />
+        {typeof props.right=='function'&& props.right()}
         {touched[name] && errors[name] &&
         <Text style={{fontSize: 10, color: 'red'}}>{errors[name]}</Text>
         }
