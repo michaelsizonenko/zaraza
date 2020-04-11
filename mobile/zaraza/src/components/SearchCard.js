@@ -34,21 +34,20 @@ export const SearchCard = (properties) => {
         signalChange(higher_props)
     }
 
-    const postTemperature = async () => {
-        const result = await SearchService.setTemperature(person.hash, props.values.temperature)
-                                            console.log(result.ok, result)
-                                            if (result.ok && result.status === 201) {
-                                                Alert.alert(translate("Temperature data submitted successfully"))
-                                                props.setFieldValue('temperature', '')
-                                                props.setFieldValue('shown', false)
-                                                return
-                                            }
-                                            Alert.alert(translate('Error occurred!'))
+    const postTemperature = async (values, {setSubmitting, setErrors, setStatus, resetForm}) => {
+        const result = await SearchService.setTemperature(person.hash, values.temperature)
+        console.log(result.ok, result)
+        if (result.ok && result.status === 201) {
+            Alert.alert(translate("Temperature data submitted successfully"))
+            resetForm({});
+            return
+        }
+        Alert.alert(translate('Error occurred!'))
     }
 
     return (
         <Formik
-            initialValues={{shown: false}}
+            initialValues={{shown: false, temperature: ""}}
             style={styles.searchItemContainer}
             onSubmit={postTemperature}
             validationSchema={cardValidation}
@@ -93,7 +92,7 @@ export const SearchCard = (properties) => {
                                                         style={{width: "80%"}}
                                                         keyboardType={'numeric'}
                                                         specialStyle={true}
-                                                        placeholder={translate('Citizen\'s temperature')}
+                                                        placeholder={translate("Citizen's temperature")}
                                                         {...props}/>
                                     <IconButton
                                         icon='edit'
@@ -101,7 +100,7 @@ export const SearchCard = (properties) => {
                                         onPress={props.handleSubmit}
                                     />
                                 </View>
-                                {!props.touched.temperature && props.errors.temperature &&
+                                {props.touched.temperature && props.errors.temperature &&
                                 <Text style={{fontSize: 10, color: 'red'}}>{props.errors.temperature}</Text>
                                 }
                             </View>
