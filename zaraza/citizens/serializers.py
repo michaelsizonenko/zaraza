@@ -31,8 +31,6 @@ class CitizenSerializer(serializers.Serializer):
         del copied_data['image']
         validated_data['hash'] = make_password(copied_data, SALT)
         instance = Citizen.objects.create(**validated_data)
-        instance.search_vector = SearchVector('first_name', 'second_name', 'last_name', 'phone_number',
-                                              'birth_date', 'address', 'document')
         instance.save()
         return instance
 
@@ -50,9 +48,7 @@ class CitizenSerializer(serializers.Serializer):
         instance.birth_date = validated_data.get('birth_date', instance.birth_date)
         instance.address = validated_data.get('address', instance.address)
         instance.save()
-        instance.search_vector = SearchVector('first_name', 'second_name', 'last_name', 'phone_number',
-                                              'birth_date', 'address', 'document')
-        instance.save()
+
         return instance
 
 

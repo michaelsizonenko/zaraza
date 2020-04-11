@@ -1,4 +1,5 @@
 import functools
+import operator
 
 from django.contrib.postgres.search import SearchQuery
 from django.http import HttpResponse, JsonResponse
@@ -9,6 +10,19 @@ from citizens.phone_verification_controller import PhoneVerificationController
 from citizens.serializers import CitizenSerializer, TemperatureSerializer, VerificationPhoneNumberRequestSerializer
 from citizens.utils import validate_phone_number
 
+from django.db.models import Lookup
+from django.db.models.fields import Field
+
+
+@Field.register_lookup
+class Like(Lookup):
+    lookup_name = 'like'
+
+    def as_sql(self, compiler, connection):
+        lhs, lhs_params = self.process_lhs(compiler, connection)
+        rhs, rhs_params = self.process_rhs(compiler, connection)
+        params = lhs_params + rhs_params
+        return 'LOWER(%s) LIKE LOWER(%s)' % (lhs, rhs), params
 
 @csrf_exempt
 def citizen_list(request):
@@ -42,9 +56,10 @@ def citizen_detail(request):
             if len(query) == 0:
                 return HttpResponse(status=404)
 
-            search_vector = functools.reduce(lambda result, word: result & SearchQuery(word), query, SearchQuery(''))
-            citizens = Citizen.objects.filter(search_vector=search_vector)
-            serializer = CitizenSerializer(citizens, many=True)
+
+            list_of_lookups = [Citizen.objects.filter(full_text__like=f"%{str.strip()}%") for str in query]
+            combined = functools.reduce(operator.and_,list_of_lookups)
+            serializer = CitizenSerializer(combined, many=True)
             return JsonResponse(serializer.data, safe=False)
         except Citizen.DoesNotExist:
             return HttpResponse(status=404)
