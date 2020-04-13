@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
@@ -42,6 +44,7 @@ class Temperature(models.Model):
 
     citizen = models.ForeignKey(Citizen, related_name='temperature_history', on_delete=models.PROTECT)
     temperature = models.FloatField(validators=[MinValueValidator(34.0), MaxValueValidator(42.0)])
+    timecode= models.DateTimeField(default=timezone.now)
     # supervisor = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
